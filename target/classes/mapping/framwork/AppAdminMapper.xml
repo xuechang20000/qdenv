@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuechen.web.dao.AppAdminMapper">
+    <resultMap id="userResult" type="AppUserDTO" autoMapping="true">
+        <id property="userId" column="USER_ID"/>
+        <result property="status" column="USER_STATUS"/>
+        <collection property="appRoles" ofType="AppRole">
+            <id property="roleId" column="ROLE_ID"/>
+            <result property="roleCode" column="role_code"/>
+            <result property="roleName" column="ROLE_NAME"/>
+            <result property="status" column="ROLE_STATUS"/>
+        </collection>
+        <collection property="appMenus" ofType="AppMenu">
+            <id property="menuId" column="MENU_ID" />
+            <result property="url" column="url"/>
+            <result property="icon1" column="icon1"/>
+            <result property="icon2" column="icon2"/>
+            <result property="description" column="description"/>
+            <result property="priority" column="PRIORITY"/>
+            <result property="name" column="MENU_NAME"/>
+            <result property="parentMenuId" column="PARENT_MENU_ID"/>
+            <result property="status" column="MENU_STATUS"/>
+        </collection>
+    </resultMap>
+    <select id="selectUserByUser" parameterType="AppUser" resultMap="userResult" >
+        SELECT A.USER_ID,
+               A.LOGINNAME,
+               A.PASSWORD,
+               A.NAME,
+               A.SEX,
+               A.STATUS USER_STATUS,
+               A.CTIME,
+               A.REMOVED,
+               A.EXT1,
+               A.EXT2,
+               A.EXT3,
+               C.ROLE_ID,
+               C.ROLE_NAME,
+               c.role_code,
+               C.STATUS ROLE_STATUS,
+               F.MENU_ID,
+               F.URL,
+               F.NAME MENU_NAME,
+               F.PARENT_MENU_ID,
+               F.ICON1,
+               F.ICON2,
+               F.description,
+               F.PRIORITY,
+               F.STATUS MENU_STATUS
+          FROM APP_USER A
+          LEFT OUTER JOIN APP_USER_ROLE B
+            ON A.USER_ID = B.USER_ID
+          LEFT OUTER JOIN APP_ROLE C
+            ON B.ROLE_ID = C.ROLE_ID
+          LEFT OUTER JOIN APP_ROLE_PERMISSION D
+            ON C.ROLE_ID = D.ROLE_ID
+          LEFT OUTER JOIN APP_PERMISSION E
+            ON E.PERMISSION_ID = D.PERMISSION_ID
+          LEFT OUTER JOIN APP_MENU F
+            ON E.PERMISSION_RESOURCE_ID = F.MENU_ID
+           AND E.PERMISSION_TYPE = '1'
+         WHERE  a.status = '1'  and a.removed= '0' and A.LOGINNAME = #{loginname} AND f.status='1'
+    </select>
+    <select id="queryPassworkByUser" parameterType="AppUser" resultMap="userResult" >
+        SELECT A.USER_ID,
+        A.LOGINNAME,
+        A.PASSWORD,
+        A.NAME,
+        A.SEX,
+        A.STATUS USER_STATUS,
+        A.CTIME,
+        A.REMOVED,
+        A.EXT1,
+        A.EXT2,
+        A.EXT3
+        FROM APP_USER A
+        WHERE  a.status = '1'  and a.removed= '0' and A.LOGINNAME = #{loginname}
+    </select>
+    <resultMap id="resourceResult" type="AppResource">
+        <id property="resourceId" column="RESOURCE_ID"></id>
+        <result property="resourceCode" column="RESOURCE_CODE"></result>
+        <result property="resourceName" column="RESOURCE_NAME"></result>
+        <result property="status" column="STATUS"></result>
+    </resultMap>
+    <select id="selectResourceByUser" parameterType="AppUser" resultMap="resourceResult">
+      SELECT A.RESOURCE_ID, A.RESOURCE_CODE, A.RESOURCE_NAME, A. STATUS
+          FROM APP_RESOURCE        A,
+               APP_PERMISSION      B,
+               APP_ROLE_PERMISSION C,
+               APP_USER_ROLE       D,
+               APP_USER            E
+         WHERE A.RESOURCE_ID = B.PERMISSION_RESOURCE_ID
+           AND B.PERMISSION_TYPE = '2'
+           AND C.PERMISSION_ID = B.PERMISSION_ID
+           AND D.ROLE_ID = C.ROLE_ID
+           AND E.USER_ID = D.USER_ID
+           and e.status = '1'
+		   and e.removed= '0'
+           AND E.LOGINNAME = #{loginname}
+
+    </select>
+    <resultMap id="roleResult" type="AppRole">
+        <id property="roleId" column="role_ID"></id>
+        <result property="roleCode" column="role_CODE"></result>
+        <result property="roleName" column="role_NAME"></result>
+        <result property="status" column="STATUS"></result>
+    </resultMap>
+    <select id="selectRolesByUserid" parameterType="int" resultMap="roleResult">
+        SELECT C.*
+  FROM APP_USER A, APP_USER_ROLE B, APP_ROLE C
+ WHERE A.USER_ID = B.USER_ID
+   AND B.ROLE_ID = C.ROLE_ID
+   AND A.STATUS = '1'
+   AND A.REMOVED = '0'
+   AND B.STATUS = '1'
+   AND C.STATUS = '1'
+   AND A.USER_ID = #{userId}
+    </select>
+
+    <resultMap id="roleResultInfo" type="AppRoleDTO" autoMapping="true">
+        <id property="roleId" column="role_id"></id>
+        <result property="roleCode" column="role_code"></result>
+        <result property="roleName" column="role_name"></result>
+        <result property="status" column="status"></result>
+        <collection property="appResourceList" ofType="AppResource">
+            <id property="resourceId" column="resource_id"/>
+            <result property="resourceCode" column="resource_code"/>
+            <result property="resourceName" column="resource_name"/>
+            <result property="status" column="resource_status"/>
+        </collection>
+        <collection property="appMenuList" ofType="AppMenu">
+            <id property="menuId" column="MENU_ID" />
+            <result property="url" column="url"/>
+            <result property="icon1" column="icon1"/>
+            <result property="icon2" column="icon2"/>
+            <result property="description" column="description"/>
+            <result property="priority" column="PRIORITY"/>
+            <result property="name" column="MENU_NAME"/>
+            <result property="parentMenuId" column="PARENT_MENU_ID"/>
+            <result property="status" column="MENU_STATUS"/>
+        </collection>
+    </resultMap>
+    <select id="selectRoleInfoByRoleId"  resultMap="roleResultInfo">
+         SELECT A.role_ID,
+                A.role_code,
+                A.role_name,
+                A.STATUS,
+                E.resource_id,
+                E.resource_code,
+                E.resource_name,
+                E.STATUS resource_status,
+                D.MENU_ID,
+                D.URL,
+                D.NAME MENU_NAME,
+                D.PARENT_MENU_ID,
+                D.ICON1,
+                D.ICON2,
+                D.DESCription,
+                D.PRIORITY,
+                D.STATUS MENU_STATUS
+          FROM APP_ROLE A
+          LEFT OUTER JOIN APP_ROLE_PERMISSION B
+            ON A.ROLE_ID = B.ROLE_ID and B.STATUS = '1'
+          LEFT OUTER JOIN APP_PERMISSION C
+            ON B.PERMISSION_ID = C.PERMISSION_ID
+          LEFT OUTER JOIN APP_MENU D
+            ON C.PERMISSION_RESOURCE_ID = D.MENU_ID
+           AND C.PERMISSION_TYPE = '1'
+          LEFT OUTER JOIN APP_RESOURCE E
+            ON C.PERMISSION_RESOURCE_ID = E.RESOURCE_ID
+           AND C.PERMISSION_TYPE = '2'
+         WHERE 1=1
+          <if test="roleId!=null">
+           AND A.ROLE_ID = #{roleId}
+          </if>
+    </select>
+    <select id="selectMaxDictValByCode" parameterType="string" resultType="Integer">
+        select IFNULL(max(cast(dict_val as unsigned int)),0) from app_dict_detail where dict_code=#{dictCode}
+    </select>
+    <resultMap id="noticeResult" type="AppNoticeDTO">
+        <id property="noticeId" column="notice_id"></id>
+        <result property="noticeType" column="notice_type"></result>
+        <result property="noticeTitle" column="notice_title"></result>
+        <result property="noticeContent" column="notice_content"></result>
+        <result property="noticeIsread" column="notice_isread"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="ctime" column="ctime"></result>
+        <result property="removed" column="removed"></result>
+        <result property="noticeReadTime" column="notice_read_time"></result>
+        <result property="name" column="name"></result>
+    </resultMap>
+    <select id="selectAppNotice" parameterType="AppNoticeDTO" resultMap="noticeResult">
+SELECT
+	a.notice_id,
+	a.notice_type,
+	a.notice_title,
+	a.notice_content,
+	a.user_id,
+	a.ctime,
+	a.removed,
+	b.notice_isread,
+	b.notice_read_time,
+	c.name
+FROM
+	app_notice a,
+	app_notice_user b,
+	app_user c
+WHERE
+	a.user_id = c.user_id
+AND a.notice_id = b.notice_id
+AND b.user_id = #{userId}
+AND a.notice_type =#{noticeType}
+<if test="noticeIsread != null">
+    and b.notice_isread=#{noticeIsread}
+</if>
+<if test="removed != null">
+    and a.removed=#{removed}
+</if>
+order by a.ctime DESC
+    </select>
+
+    <resultMap id="appNoticeResult" type="AppNoticeDTO">
+        <id property="noticeId" column="notice_id"></id>
+        <result property="noticeType" column="notice_type"></result>
+        <result property="noticeTitle" column="notice_title"></result>
+        <result property="noticeContent" column="notice_content"></result>
+        <result property="userId" column="user_id_a"></result>
+        <result property="ctime" column="ctime_a"></result>
+        <result property="removed" column="removed"></result>
+        <result property="name" column="name_a"></result>
+        <collection property="appNoticeAttachmentList" ofType="AppNoticeAttachment">
+            <id property="noticeAttachmentId" column="notice_attachment_id"></id>
+            <result property="filename" column="fileName"></result>
+            <result property="ctime" column="ctime_c"></result>
+            <result property="url" column="url"></result>
+            <result property="extname" column="extName"></result>
+        </collection>
+        <collection property="appNoticeUserDTOList" ofType="AppNoticeUserDTO">
+            <id property="noticeUserId" column="notice_user_id"></id>
+            <result property="noticeReadTime" column="notice_read_time"></result>
+            <result property="userId" column="user_id_b"></result>
+            <result property="noticeIsread" column="notice_isread"></result>
+            <result property="name" column="name_b"></result>
+        </collection>
+    </resultMap>
+<select id="selectAppNoticeResult" parameterType="AppNoticeDTO" resultMap="appNoticeResult">
+        SELECT
+	a.notice_id,
+	a.notice_type,
+	a.notice_title,
+	a.notice_content,
+	a.user_id AS user_id_a,
+	(
+		SELECT
+			NAME
+		FROM
+			app_user
+		WHERE
+			user_id = a.user_id
+	) name_a,
+	a.ctime AS ctime_a,
+	a.removed,
+	b.notice_user_id,
+	b.notice_read_time,
+	b.notice_isread,
+	b.user_id AS user_id_b,
+	(
+		SELECT
+			NAME
+		FROM
+			app_user
+		WHERE
+			user_id = b.user_id
+	) name_b,
+	c.notice_attachment_id,
+	c.fileName,
+	c.ctime AS ctime_c,
+	c.extName,
+	c.url
+FROM
+	app_notice a
+LEFT OUTER JOIN app_notice_user b ON a.notice_id = b.notice_id
+LEFT OUTER JOIN app_notice_attachment c ON a.notice_id = c.notice_id
+WHERE
+	a.notice_id = #{noticeId}
+	order by a.ctime DESC
+</select>
+</mapper>

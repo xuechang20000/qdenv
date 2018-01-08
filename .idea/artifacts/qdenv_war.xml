@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="qdenv:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="qdenv.war">
+      <element id="artifact" artifact-name="qdenv:war exploded" />
+    </root>
+  </artifact>
+</component>

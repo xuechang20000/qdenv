@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuechen.web.dao.AppOrganMapper" >
+  <resultMap id="BaseResultMap" type="com.xuechen.web.bo.AppOrgan" >
+    <id column="organ_id" property="organId" jdbcType="INTEGER" />
+    <result column="organ_name" property="organName" jdbcType="VARCHAR" />
+    <result column="parent_organ_id" property="parentOrganId" jdbcType="INTEGER" />
+    <result column="organ_type" property="organType" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    organ_id, organ_name, parent_organ_id, organ_type, address, principal, phone, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xuechen.web.bo.AppOrganExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from app_organ
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_organ
+    where organ_id = #{organId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app_organ
+    where organ_id = #{organId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xuechen.web.bo.AppOrganExample" >
+    delete from app_organ
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xuechen.web.bo.AppOrgan" >
+    insert into app_organ (organ_id, organ_name, parent_organ_id, 
+      organ_type, address, principal, 
+      phone, status)
+    values (#{organId,jdbcType=INTEGER}, #{organName,jdbcType=VARCHAR}, #{parentOrganId,jdbcType=INTEGER}, 
+      #{organType,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xuechen.web.bo.AppOrgan" >
+    insert into app_organ
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="organId != null" >
+        organ_id,
+      </if>
+      <if test="organName != null" >
+        organ_name,
+      </if>
+      <if test="parentOrganId != null" >
+        parent_organ_id,
+      </if>
+      <if test="organType != null" >
+        organ_type,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="principal != null" >
+        principal,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="organId != null" >
+        #{organId,jdbcType=INTEGER},
+      </if>
+      <if test="organName != null" >
+        #{organName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentOrganId != null" >
+        #{parentOrganId,jdbcType=INTEGER},
+      </if>
+      <if test="organType != null" >
+        #{organType,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null" >
+        #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xuechen.web.bo.AppOrganExample" resultType="java.lang.Integer" >
+    select count(*) from app_organ
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update app_organ
+    <set >
+      <if test="record.organId != null" >
+        organ_id = #{record.organId,jdbcType=INTEGER},
+      </if>
+      <if test="record.organName != null" >
+        organ_name = #{record.organName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentOrganId != null" >
+        parent_organ_id = #{record.parentOrganId,jdbcType=INTEGER},
+      </if>
+      <if test="record.organType != null" >
+        organ_type = #{record.organType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.principal != null" >
+        principal = #{record.principal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update app_organ
+    set organ_id = #{record.organId,jdbcType=INTEGER},
+      organ_name = #{record.organName,jdbcType=VARCHAR},
+      parent_organ_id = #{record.parentOrganId,jdbcType=INTEGER},
+      organ_type = #{record.organType,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      principal = #{record.principal,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuechen.web.bo.AppOrgan" >
+    update app_organ
+    <set >
+      <if test="organName != null" >
+        organ_name = #{organName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentOrganId != null" >
+        parent_organ_id = #{parentOrganId,jdbcType=INTEGER},
+      </if>
+      <if test="organType != null" >
+        organ_type = #{organType,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null" >
+        principal = #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where organ_id = #{organId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xuechen.web.bo.AppOrgan" >
+    update app_organ
+    set organ_name = #{organName,jdbcType=VARCHAR},
+      parent_organ_id = #{parentOrganId,jdbcType=INTEGER},
+      organ_type = #{organType,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      principal = #{principal,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where organ_id = #{organId,jdbcType=INTEGER}
+  </update>
+</mapper>
