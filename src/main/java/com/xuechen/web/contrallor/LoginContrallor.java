@@ -1,5 +1,6 @@
 package com.xuechen.web.contrallor;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xuechen.core.utils.Md5Utils;
 import com.xuechen.core.utils.dto.MiniMenuDTO;
@@ -117,6 +118,13 @@ public class LoginContrallor {
     public  String loadMenus(){
         String menusJson=(String)SecurityUtils.getSubject().getSession().getAttribute("menusJson");
         return  menusJson;
+    }
+    @RequestMapping(value = "/loadUserInfo")
+    public  String loadUserInfo(HttpServletRequest request){
+       AppUserDTO appUserDTO=(AppUserDTO) SecurityUtils.getSubject().getSession().getAttribute("user");
+        String dtoJson= JSON.toJSONStringWithDateFormat(appUserDTO, "yyyy-MM-dd HH:mm:ss.SSS");
+        request.setAttribute("dtoJson",dtoJson);
+        return "/WEB-INF/page/f1001/f100101/userInfo";
     }
     public Session getSession(){
         return SecurityUtils.getSubject().getSession();

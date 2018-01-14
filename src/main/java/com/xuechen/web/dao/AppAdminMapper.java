@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface AppAdminMapper {
     List<AppUserDTO> selectUserByUser(AppUser appUser);
+    List<AppUserDTO> selectUsers(AppUser appUser);
     List<AppUserDTO> queryPassworkByUser(AppUser appUser);
     List<AppResource> selectResourceByUser(AppUser appUser);
     List<AppRole> selectRolesByUserid(int userid);

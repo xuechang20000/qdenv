@@ -12,6 +12,15 @@ import java.util.List;
 public class AppUserDTO extends AppUser {
     private List<AppRole> appRoles;
     private List<AppMenu> appMenus;
+    private String roles;
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
 
     public List<AppResource> getAppResources() {
         return appResources;

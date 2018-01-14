@@ -59,7 +59,23 @@
           LEFT OUTER JOIN APP_MENU F
             ON E.PERMISSION_RESOURCE_ID = F.MENU_ID
            AND E.PERMISSION_TYPE = '1'
-         WHERE  a.status = '1'  and a.removed= '0' and A.LOGINNAME = #{loginname} AND f.status='1'
+         WHERE   f.status='1'
+         <if test="loginname!=null">
+             and A.LOGINNAME = #{loginname}
+         </if>
+        <if test="name!=null">
+            AND  a.name like '%#{name}%'
+        </if>
+        <if test="userId!=null">
+            AND  a.userid=#{userId}
+        </if>
+        <if test="status!=null">
+            AND  a.status=#{status}
+        </if>
+        <if test="removed!=null">
+            AND  a.removed=#{removed}
+        </if>
+
     </select>
     <select id="queryPassworkByUser" parameterType="AppUser" resultMap="userResult" >
         SELECT A.USER_ID,
@@ -284,5 +300,45 @@ LEFT OUTER JOIN app_notice_attachment c ON a.notice_id = c.notice_id
 WHERE
 	a.notice_id = #{noticeId}
 	order by a.ctime DESC
+</select>
+
+<select id="selectUsers" parameterType="AppUser" resultMap="userResult">
+    SELECT
+	A.USER_ID,
+               A.LOGINNAME,
+               A.PASSWORD,
+               A.NAME,
+               A.SEX,
+               A.STATUS USER_STATUS,
+               A.CTIME,
+               A.REMOVED,
+               A.EXT1,
+               A.EXT2,
+               A.EXT3,
+	GROUP_CONCAT(c.role_name) AS roles
+FROM
+	app_user a,
+	app_user_role b,
+	app_role c
+WHERE
+	a.user_id = b.user_id
+AND b.role_id = c.role_id
+    <if test="loginname!=null">
+        and A.LOGINNAME = #{loginname}
+    </if>
+    <if test="name!=null">
+        AND  a.name like '%#{name}%'
+    </if>
+    <if test="userId!=null">
+        AND  a.userid=#{userId}
+    </if>
+    <if test="status!=null">
+        AND  a.status=#{status}
+    </if>
+    <if test="removed!=null">
+        AND  a.removed=#{removed}
+    </if>
+GROUP BY
+	a.user_id
 </select>
 </mapper>

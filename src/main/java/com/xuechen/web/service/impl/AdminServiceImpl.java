@@ -156,7 +156,7 @@ public class AdminServiceImpl implements AdminService {
         this.appUserMapper = appUserMapper;
     }
 
-    public List<AppUser> queryAllUser(AppUser appUser){
+    public List<AppUserDTO> queryAllUser(AppUser appUser){
         AppUserExample appUserExample=new AppUserExample();
         AppUserExample.Criteria criteria=appUserExample.createCriteria();
         if(appUser!=null) {
@@ -169,7 +169,7 @@ public class AdminServiceImpl implements AdminService {
                 criteria.andStatusEqualTo("1");
         }
         criteria.andStatusEqualTo("1");
-        return this.appUserMapper.selectByExample(appUserExample);
+        return this.appAdminMapper.selectUsers(appUser);
     }
 
     public List<AppRole> queryAllRole(Integer roleId) {
@@ -212,7 +212,7 @@ public class AdminServiceImpl implements AdminService {
         AppUser appUser=new AppUser();
         appUser.setLoginname(loginname);
         appUser.setStatus("1");
-        List<AppUser> list=queryAllUser(appUser);
+        List<AppUserDTO> list=queryAllUser(appUser);
         if(list.size()>0){
             throw new BusinessException("此帐号名已经存在！");
         }
@@ -427,7 +427,7 @@ public class AdminServiceImpl implements AdminService {
            //如果是文章通知
         }else{
             if("all".equals(users)) {
-                List<AppUser> appUsers = queryAllUser(null);
+                List<AppUserDTO> appUsers = queryAllUser(null);
                 for (AppUser appUser : appUsers) {
                     saveAppNoticeUser(appNotice.getNoticeId(), appUser.getUserId());
                 }

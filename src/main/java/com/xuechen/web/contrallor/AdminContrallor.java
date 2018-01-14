@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xuechen.core.utils.Md5Utils;
 import com.xuechen.web.bo.*;
 import com.xuechen.web.dto.AppNoticeDTO;
 import com.xuechen.web.dto.AppRoleDTO;
 import com.xuechen.web.dto.AppUserDTO;
 import com.xuechen.web.dto.Page;
+import com.xuechen.web.exception.BusinessException;
 import com.xuechen.web.service.AdminService;
+import com.xuechen.web.service.UserService;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,16 @@ public class AdminContrallor {
         @Autowired
         private AdminService adminService;
 
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+        private UserService userService;
         public AdminService getAdminService() {
             return adminService;
         }
@@ -88,9 +101,9 @@ public class AdminContrallor {
         public String queryAllUser(Page page, AppUser appUser){
             PageHelper.startPage(page.getPageIndex()+1,page.getPageSize());
 
-            List<AppUser> appUserList=this.adminService.queryAllUser(appUser);
+            List<AppUserDTO> appUserList=this.adminService.queryAllUser(appUser);
 
-            PageInfo<AppUser> pageInfo = new PageInfo<AppUser>(appUserList);
+            PageInfo<AppUserDTO> pageInfo = new PageInfo<AppUserDTO>(appUserList);
             page.setTotal(pageInfo.getTotal());
             page.setData(appUserList);
             return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
@@ -126,6 +139,22 @@ public class AdminContrallor {
             mav.addObject("dtoJson",JSONObject.toJSON(appUserDTO).toString());
             return mav;
         }
+    @RequestMapping("/updatePassword")
+    @ResponseBody
+    public String updatePassword(String password,String newPassword){
+        AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        if(!Md5Utils.MD5Code(password).equals(appUserDTO.getPassword()))
+            throw new BusinessException("原密码不正确！");
+        AppUser appUser=new AppUser();
+        appUser.setUserId(appUserDTO.getUserId());
+        appUser.setPassword(Md5Utils.MD5Code(newPassword));
+        this.userService.updatePassword(appUser);
+        return "";
+    }
+    @RequestMapping("/loadUpdatePassword")
+    public String loadUpdatePassword(){
+        return "/WEB-INF/page/f1001/f100101/userUpdatePassword";
+    }
         @RequestMapping(value = "/queryAllRoleList",produces = "application/json; charset=utf-8")
         @ResponseBody
         public  String queryAllRoleList(Page page,Integer roleId){
@@ -253,12 +282,13 @@ public class AdminContrallor {
      */
     @RequestMapping(value = "/loadRecevieMail",produces = "application/json; charset=utf-8")
     @ResponseBody
-    public String loadRecevieMail(Page page,String noticeType){
+    public String loadRecevieMail(Page page,String noticeType,String noticeIsread){
             AppUserDTO appUserDTO= (AppUserDTO) SecurityUtils.getSubject().getSession().getAttribute("user");
             AppNoticeDTO appNotice=new AppNoticeDTO();
             appNotice.setNoticeType(noticeType);
             appNotice.setUserId(appUserDTO.getUserId());
             appNotice.setRemoved("0");
+            if(noticeIsread!=null) appNotice.setNoticeIsread(noticeIsread);
             PageHelper.startPage(page.getPageIndex()+1,page.getPageSize());
             List<AppNoticeDTO> appNoticeDTOS=this.adminService.queryPreNotice(appNotice);
             PageInfo<AppNoticeDTO> pageInfo = new PageInfo<AppNoticeDTO>(appNoticeDTOS);

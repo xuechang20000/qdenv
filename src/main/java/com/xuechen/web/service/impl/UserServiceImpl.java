@@ -58,4 +58,8 @@ public class UserServiceImpl implements UserService {
     public void saveAppLogLogin(AppLogLogin appLogLogin){
         this.appLogLoginMapper.insert(appLogLogin);
     }
+    public void updatePassword(AppUser appUser){
+
+        this.appUserMapper.updateByPrimaryKeySelective(appUser);
+    }
 }

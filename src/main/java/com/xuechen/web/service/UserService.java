@@ -16,4 +16,5 @@ public interface UserService {
      public List<AppUserDTO> queryPassworkByUser(AppUser appUser);
      public List<AppResource> selectResourceByUser(AppUser appUser);
      public void saveAppLogLogin(AppLogLogin appLogLogin);
+     public void updatePassword(AppUser appUser);
 }

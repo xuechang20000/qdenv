@@ -44,6 +44,7 @@ public class UserRealm extends AuthorizingRealm {
 
         AppUser appUser=new AppUser();
         appUser.setLoginname(loginname);
+        appUser.setStatus("1");
         List<AppUserDTO> appUserDTOList=userService.queryUserByUser(appUser);
         /**
          * 获取角色列表

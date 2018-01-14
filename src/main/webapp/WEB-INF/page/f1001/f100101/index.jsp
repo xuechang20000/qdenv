@@ -23,9 +23,11 @@
     <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true"
          url="<%=request.getContextPath()%>/admin/queryAllUser"  idField="userId">
             <div property="columns">
-            <div field="userId" width="120" headerAlign="center" allowSort="true">用户ID</div>
-            <div field="loginname" width="120" headerAlign="center" allowSort="true">用户账号</div>
-            <div field="name" width="120" headerAlign="center" allowSort="true">姓名</div>
+            <div field="userId" width="60" headerAlign="center" allowSort="true">用户ID</div>
+            <div field="loginname" width="100" headerAlign="center" allowSort="true">用户账号</div>
+            <div field="name" width="60" headerAlign="center" allowSort="true">姓名</div>
+            <div field="roles" width="180" headerAlign="center" allowSort="true">角色</div>
+            <div field="status" width="60" headerAlign="center" allowSort="true" renderer='oncodeRender'>状态</div>
             <div field="ctime" width="100" headerAlign="center" dataType="date" dateFormat="yyyy-MM-dd HH:mm:ss" allowSort="true">创建日期</div>
             <div headerAlign="center"  renderer="renderUser">操作</div>
         </div>
@@ -43,6 +45,7 @@
     function renderUser(e) {
         return $("#grid_buttons").clone().css("display","inline").html();
     }
+
     function onAdd() {
         Web.util.openMiniWindow('添加用户',"<%=request.getContextPath()%>/admin/loadUserAdd",700,250,function () {
             Web.util.reload("datagrid1");

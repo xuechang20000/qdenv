@@ -10,7 +10,7 @@ import javax.servlet.ServletContext;
 import java.util.List;
 
 public interface AdminService {
-    public List<AppUser> queryAllUser(AppUser appUser);
+    public List<AppUserDTO> queryAllUser(AppUser appUser);
     public List<AppRole> queryAllRole(Integer roleId);
     public List<AppUserRole> saveAppUserRole(Integer userId, String roles);
     public void userAdd(String loginname, String name, String sex, String roles);
