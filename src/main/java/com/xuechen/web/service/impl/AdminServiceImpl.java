@@ -13,6 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.mybatis.generator.internal.util.StringUtility;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -337,6 +338,7 @@ public class AdminServiceImpl implements AdminService {
             return this.appPermissionMapper.selectByExample(appPermissionExample);
     }
     public List<AppDict> queryAppDicts(AppDict appDict){
+
          AppDictExample appDictExample=new AppDictExample();
          AppDictExample.Criteria criteria= appDictExample.createCriteria();
          if(appDict.getDictCode()!=null)

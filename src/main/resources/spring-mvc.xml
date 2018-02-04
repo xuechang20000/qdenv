@@ -13,6 +13,8 @@
 
     <mvc:annotation-driven/>
     <context:component-scan base-package="com.xuechen.web.contrallor"/>
+    <context:component-scan base-package="com.xuechen.qdenv.contrallor"/>
+
     <!--访问静态资源-->
     <mvc:default-servlet-handler/>
     <!--返回模板配置-->

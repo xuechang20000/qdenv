@@ -27,14 +27,14 @@
     <!-- Shiro's main business-tier object for web-enabled applications
          (use DefaultSecurityManager instead when there is no web environment)-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheManager" ref="shiroCacheManager"/>
         <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
         <property name="realm" ref="userRealm"/>
     </bean>
 
     <!-- Let's use some enterprise caching support for better performance.  You can replace this with any enterprise
          caching framework implementation that you like (Terracotta+Ehcache, Coherence, GigaSpaces, etc -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
         <!-- Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one
              will be creaed with a default config:
              <property name="cacheManager" ref="ehCacheManager"/> -->
