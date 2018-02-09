@@ -19,11 +19,20 @@ public class Bz01 {
 
     private Date bbz006;
 
+    private  String aae016;
     private String aae013;
 
     @Id
     public Integer getBbz001() {
         return bbz001;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
     }
 
     public void setBbz001(Integer bbz001) {

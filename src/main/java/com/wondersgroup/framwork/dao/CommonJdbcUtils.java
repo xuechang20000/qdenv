@@ -103,8 +103,22 @@ public class CommonJdbcUtils {
     public static <T> void updateBatch(List<T> list){
        commonJdbcDao.updateBatch(list);
     }
+
+    /**
+     * 更新单个对象
+     * @param object
+     */
     public static void update(Object object){
         commonJdbcDao.update(object);
+    }
+
+    /**
+     * 保存或更新对象
+     * @param object
+     * @param isIncludeNull
+     */
+    public  static  void saveOrUpdateObject(Object object,boolean isIncludeNull){
+        commonJdbcDao.saveOrUpdateObject(object,isIncludeNull);
     }
     /**
      * 更新对象，不包括空值
@@ -150,7 +164,7 @@ public class CommonJdbcUtils {
      * @param args
      * @return
      */
-    public int execute(String sql,Object...args){
+    public static int execute(String sql,Object...args){
         return commonJdbcDao.execute(sql,args);
     }
     /**

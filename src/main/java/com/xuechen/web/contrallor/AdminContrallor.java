@@ -16,13 +16,12 @@ import com.xuechen.web.service.UserService;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -228,10 +227,10 @@ public class AdminContrallor {
         }
         @RequestMapping(value = "/queryRenderedAppDictDetails",produces = "application/json; charset=utf-8")
         @ResponseBody
-        public String queryRenderedAppDictDetails(AppDictDetail appDictDetail){
-
-            List<AppDictDetail> appDictDetails=this.adminService.queryAppDictDetails(appDictDetail);
-
+        public String queryRenderedAppDictDetails(AppDictDetail appDictDetail,HttpServletRequest request){
+            ServletContext context=request.getSession().getServletContext();
+            //List<AppDictDetail> appDictDetails=this.adminService.queryAppDictDetails(appDictDetail);
+            List<AppDictDetail> appDictDetails=(List<AppDictDetail>)context.getAttribute(appDictDetail.getDictCode().toUpperCase());
             return JSONObject.toJSONString(appDictDetails);
         }
         /**

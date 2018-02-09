@@ -24,7 +24,7 @@
                 字典项名称：
             </td>
             <td class="form-td-odd">
-                <input id="dictName"  name="dictName" class="mini-textbox" style="width:200px;" required="true" onvalidation="onChineseValidation" />
+                <input id="dictName"  name="dictName" class="mini-textbox" style="width:200px;" required="true"  />
             </td>
         </tr>
         <tr>

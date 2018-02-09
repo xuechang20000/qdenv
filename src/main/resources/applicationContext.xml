@@ -20,7 +20,7 @@
         <context:exclude-filter type="regex" expression="com.xuechen.qdenv.contrallor.*" />
     </context:component-scan>
 
-    <cache:annotation-driven /> <!-- 启用缓存 -->
+    <!--  <cache:annotation-driven /> 启用缓存 -->
 
     <context:property-placeholder location="classpath:database.properties" />
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -44,17 +44,18 @@
             <ref bean="commonJdbcCore"/>
         </constructor-arg>
     </bean>
-
+<!--
     <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
         <property name="caches">
             <set>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
-                    <!--xxxx对应@Cacheable中的value值-->
+
                     <property name="name" value="qdenv"/>
                 </bean>
             </set>
         </property>
     </bean>
+-->
     <import resource="classpath:spring-mybatis.xml"/>
     <import resource="classpath:spring-shiro.xml"/>
 </beans>

@@ -76,6 +76,7 @@ public class CommonJdbcDaoImpl implements CommonJdbcDao {
             result = this.jdbcTemplate.query(sql, arguments, new ObjectRowMapper(clazz));
         }
         logger.info(String.format("sqltime:%d--%s",System.currentTimeMillis()-startMillis,sql));
+        //System.out.println(String.format("sqltime:%d--%s",System.currentTimeMillis()-startMillis,sql));
         return ((result == null) ? new ArrayList() : result);
     }
 
@@ -246,6 +247,21 @@ public class CommonJdbcDaoImpl implements CommonJdbcDao {
     public void updateObject(Object object,boolean isIncludeNull){
         SqlCreator sqlCreator=ClassUtils.getSqlCreator(object,isIncludeNull);
         sqlCreator.generateUpdateSql();
+        this.jdbcTemplate.update(sqlCreator.getSql(),
+                sqlCreator.getArgs().toArray());
+    }
+    /**
+     * 保存或更新对象
+     * @param object 对象
+     * @param isIncludeNull 是否包括空值
+     */
+    public void saveOrUpdateObject(Object object,boolean isIncludeNull){
+        SqlCreator sqlCreator=ClassUtils.getSqlCreator(object,isIncludeNull);
+        if (sqlCreator.getColumnTypeList()!=null
+                &&sqlCreator.getColumnTypeList().get(sqlCreator.getIdFileName())!=null)
+        sqlCreator.generateUpdateSql();
+        else
+        sqlCreator.generateInsertSql();
         this.jdbcTemplate.update(sqlCreator.getSql(),
                 sqlCreator.getArgs().toArray());
     }

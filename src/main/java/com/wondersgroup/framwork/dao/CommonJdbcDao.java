@@ -19,6 +19,7 @@ public interface CommonJdbcDao {
     public <T> void insertBatchBySelect(List<T> list);
     public <T> void insertBatch(List<T> list);
     public void update(Object object);
+    public void saveOrUpdateObject(Object object,boolean isIncludeNull);
     public void updateSelect(Object object);
     public void insert(Object object);
     public Long getSequence(String sequenceName);

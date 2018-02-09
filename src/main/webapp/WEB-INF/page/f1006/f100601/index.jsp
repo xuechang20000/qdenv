@@ -8,19 +8,9 @@
 </head>
 <body>
 
-<div style="width: 100%; padding-bottom: 3px">
-    <div class="mini-toolbar" style="border-bottom:0;padding:0px; border: 0px">
-        <table style="width:100%;">
-            <tr>
-                <td style="width:100%;">
-                    <a class="mini-button" iconCls="icon-add" onclick="onAdd()">增加</a>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
+
  <div class="mini-fit" style="height:100%;">
-    <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true"
+    <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true" pagerButtons="#buttons"
          url="<%=request.getContextPath()%>/work/f100601/queryHangye"  idField="userId">
             <div property="columns">
             <div field="bhz001"  headerAlign="center" allowSort="true">ID</div>
@@ -34,6 +24,10 @@
     <span id="grid_buttons" style="display: none"  >
         <a class="mini-button" href="javascript:onDelete()" plain="true" iconCls="icon-remove">删除</a>
     </span>
+     <div id="buttons">
+         <span class="separator"></span>
+         <a class="mini-button" iconCls="icon-add" plain="true" onclick="onAdd()">添加</a>
+     </div>
 </div>
 </body>
 <script type="text/javascript">
