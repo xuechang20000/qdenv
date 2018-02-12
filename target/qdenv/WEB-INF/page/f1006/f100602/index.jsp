@@ -61,7 +61,7 @@
     function onCopy() {
         var bhz001=mini.get("datagrid1").getSelected().bhz001;
         Web.util.openMiniWindow('复制',"<%=request.getContextPath()%>/work/f100602/loadBiaoZhunCopy",500,300,function () {
-            Web.util.reload("datagrid1");
+            //Web.util.reload("datagrid1");
         })
     }
     function onDelete() {

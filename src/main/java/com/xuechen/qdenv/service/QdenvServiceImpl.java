@@ -2,12 +2,10 @@ package com.xuechen.qdenv.service;
 
 import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
-import com.xuechen.qdenv.bo.Bz01;
-import com.xuechen.qdenv.bo.Bz02;
-import com.xuechen.qdenv.bo.Bz04;
-import com.xuechen.qdenv.bo.Bz05;
+import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.Bz01Dto;
 import com.xuechen.qdenv.dto.Bz02Dto;
+import com.xuechen.qdenv.dto.Bz03Dto;
 import com.xuechen.qdenv.dto.Bz04Dto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -248,7 +246,16 @@ public class QdenvServiceImpl implements QdenvService {
          CommonJdbcUtils.queryPageList(page,sql,Bz02Dto.class,dto.getBbz001());
          return  page.getData();
     }
-
+    /**
+     * 根据标准id查询检测项目列表
+     * @param dto
+     * @return
+     */
+    public List<Bz02Dto> queryBz02(Bz02Dto dto){
+        String sql="select a.*,case WHEN bcz003='5' THEN CONCAT_WS('~',bcz004,bcz005) ELSE bcz004 end as bcz0045 " +
+                "from bz02 a where bbz001=? order by bcz007 asc";
+       return CommonJdbcUtils.queryList(sql,Bz02Dto.class,dto.getBbz001());
+    }
     /**
      * 保存标准下的检测项目
      * @param bz02s
@@ -260,4 +267,40 @@ public class QdenvServiceImpl implements QdenvService {
         CommonJdbcUtils.insertBatch(bz02s);
         return bz02s;
     }
+
+    /**
+     * 保存分组
+     * @param bz03Dto
+     * @return
+     */
+    public Bz03 saveBz03(Bz03Dto bz03Dto){
+        Bz03 bz03=new Bz03();
+        BeanUtils.copyProperties(bz03Dto,bz03);
+        CommonJdbcUtils.insert(bz03);
+        return bz03;
+    }
+
+    /**
+     * 删除分组
+     * @param bz03Dto
+     */
+    public void deleteBz03(Bz03Dto bz03Dto){
+        String sql="delete from bz03 where bzz001=? ";
+        if (bz03Dto.getBzz001()!=null)
+        CommonJdbcUtils.execute(sql,bz03Dto.getBzz001());
+    }
+
+    /**
+     * 查询分组情况
+     * @param page
+     * @param bz03Dto
+     * @return
+     */
+    public List<Bz03Dto> queryBz03(Page page,Bz03Dto bz03Dto){
+    String sql="select a.*,(select GROUP_CONCAT(b.bcz002) from bz02 b where b.bbz001=a.bbz001 GROUP BY b.bbz001) as bzz003s \n" +
+            "from bz03 a where a.bbz001= ? ";
+            CommonJdbcUtils.queryPageList(page,sql,Bz03Dto.class,bz03Dto.getBbz001());
+            return  page.getData();
+    }
+
 }
