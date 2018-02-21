@@ -21,6 +21,14 @@
         </tr>
         <tr>
             <td class="form-td-even">
+                行业代码：
+            </td>
+            <td class="form-td-odd">
+                <input id="bhz003"  name="bhz003" vtype="maxLength:1" onvalidation="onEnglishValidation" class="mini-textbox" style="width:40px;" required="true"  />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-td-even">
                 备注：
             </td>
             <td class="form-td-odd">

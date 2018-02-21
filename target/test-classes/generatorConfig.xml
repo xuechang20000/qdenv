@@ -65,10 +65,17 @@
 
         <table schema="snjc" tableName="app_notice"></table>
         <table schema="snjc" tableName="app_notice_user"></table>
-        <table schema="snjc" tableName="app_notice_attachment"></table>-->
+        <table schema="snjc" tableName="app_notice_attachment"></table>
         <table schema="snjc" tableName="bz01"></table>
         <table schema="snjc" tableName="bz02"></table>
         <table schema="snjc" tableName="bz03"></table>
-        <table schema="snjc" tableName="bz04"></table>
+        <table schema="snjc" tableName="bz04"></table>-->
+        <table schema="snjc" tableName="wt01"></table>
+        <table schema="snjc" tableName="wt02"></table>
+        <table schema="snjc" tableName="wt03"></table>
+        <table schema="snjc" tableName="wt04"></table>
+        <table schema="snjc" tableName="wt05"></table>
+        <table schema="snjc" tableName="wt09"></table>
+        <table schema="snjc" tableName="dw01"></table>
       </context>
    </generatorConfiguration>

@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="mini-fit" style="height:100%;">
-    <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true"
+    <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true" pageSize="15"
          url="<%=request.getContextPath()%>/admin/queryAllRoleList"  idField="userId">
         <div property="columns">
             <div field="roleId" width="120" headerAlign="center" allowSort="true">角色ID</div>

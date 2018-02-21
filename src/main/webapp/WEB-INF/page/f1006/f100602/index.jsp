@@ -16,9 +16,9 @@
             <div field="bbz001" width="20"  headerAlign="center" allowSort="true">ID</div>
             <div field="bbz002" width="140"width="20" headerAlign="center" allowSort="true">标准名称</div>
             <div field="bbz003" width="40" headerAlign="center" allowSort="true">标签名称</div>
-            <div field="bbz004" width="60" headerAlign="center" allowSort="true">标准代码</div>
+            <div field="bbz004" width="80" headerAlign="center" allowSort="true">标准代码</div>
             <!--<div field="bbz005"  width="40" headerAlign="center" allowSort="true">标准年度</div>-->
-            <div field="bzh002s"  width="120" headerAlign="center" allowSort="true">所属行业</div>
+            <div field="bzh002s"  width="100" headerAlign="center" allowSort="true">所属行业</div>
             <div field="bbz006"  width="50" headerAlign="center" dataType="date" dateFormat="yyyy-MM-dd" allowSort="true">建立时间</div>
             <div field="aae016"  width="40" headerAlign="center" allowSort="true" renderer="oncodeRender">有效标志</div>
             <div field="aae013"  headerAlign="center" allowSort="true">说明</div>

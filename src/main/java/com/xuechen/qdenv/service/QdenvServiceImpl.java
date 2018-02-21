@@ -22,6 +22,7 @@ public class QdenvServiceImpl implements QdenvService {
      * 保存行业
      */
     public void saveBz04(Bz04 bz04){
+        bz04.setBhz003(bz04.getBhz003().toUpperCase());
         CommonJdbcUtils.insert(bz04);
     }
     /**
@@ -297,7 +298,7 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public List<Bz03Dto> queryBz03(Page page,Bz03Dto bz03Dto){
-    String sql="select a.*,(select GROUP_CONCAT(b.bcz002) from bz02 b where b.bbz001=a.bbz001 GROUP BY b.bbz001) as bzz003s \n" +
+    String sql="select a.*,(select GROUP_CONCAT(b.bcz002) from bz02 b where b.bbz001=a.bbz001  and FIND_IN_SET(b.bcz001,a.bzz003) GROUP BY b.bbz001) as bzz003s \n" +
             "from bz03 a where a.bbz001= ? ";
             CommonJdbcUtils.queryPageList(page,sql,Bz03Dto.class,bz03Dto.getBbz001());
             return  page.getData();

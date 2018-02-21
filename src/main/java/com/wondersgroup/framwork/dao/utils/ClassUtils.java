@@ -8,7 +8,6 @@ import com.wondersgroup.framwork.dao.bo.SqlCreator;
 import com.wondersgroup.framwork.dao.impl.CommonJdbcDaoImpl;
 import com.wondersgroup.framwork.dao.mapper.ObjectRowMapper;
 import oracle.jdbc.driver.OracleTypes;
-import oracle.jdbc.oracore.OracleType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -13,7 +13,7 @@
 <div class="mini-fit" style="height:100%;">
     <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true" pagerButtons="#buttons"
          url="<%=request.getContextPath()%>/work/f100602/queryXiangMu"  idField="bcz001" pageSize="100"
-         allowCellEdit="true" allowCellSelect="true"
+         allowCellEdit="true" allowCellSelect="true" showGroupSummary="true" showSummaryRow="true"
          editNextOnEnterKey="true"  editNextRowCell="true" navEditMode="true">
         <div property="columns">
             <div field="index" type="indexcolumn" ></div>
@@ -29,6 +29,9 @@
             </div>
             <div field="bcz006"  width="40" headerAlign="center" >单位
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="40" />
+            </div>
+            <div field="bcz010" width="60" headerAlign="center" summaryType="sum" dataType="currency" currencyUnit="￥">单项收费(元)
+                <input property="editor" class="mini-textbox"  style="width:100%;" minWidth="40" />
             </div>
             <!--<div field="bcz007"  width="20" headerAlign="center" >排序</div>-->
             <div field="bcz008"  headerAlign="center" width="140">检测依据
@@ -70,7 +73,7 @@
 
     function addRow() {
        if(!validateRows()) return false;
-        var newRow = { bcz002: "",bcz003:"",bcz0045:"",bcz006:"" };
+        var newRow = { bcz002: "",bcz003:"",bcz0045:"",bcz006:"",bcz010:"" };
         grid.addRow(newRow, -1);
         grid.beginEditCell(newRow, "bcz002");
     }
@@ -116,6 +119,15 @@
         }
         if(row.bcz006=='') {
             Web.util.showTipsWanring("单位请填写完整");
+            return false;
+        }
+        if(row.bcz010=='') {
+            Web.util.showTipsWanring("单项收费标准请填写完整");
+            return false;
+        }
+        var reg=/^[-\+]?\d+(\.\d+)?$/;
+        if(!reg.test(row.bcz010)) {
+            Web.util.showTipsWanring("单项收费标准输入格式不正确");
             return false;
         }
         if (row.bcz003==5){

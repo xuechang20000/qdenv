@@ -65,10 +65,6 @@ public class AdminContrallor {
         public String index_f100103(){
             return "/WEB-INF/page/f1001/f100103/index";
         }
-        @RequestMapping("/f100201/index")
-        public String index_f100201(){
-            return "/WEB-INF/page/f1002/f100201/index";
-        }
         @RequestMapping("/f100401/index")
         public String index_f100401(){
             return "/WEB-INF/page/f1004/f100401/index";

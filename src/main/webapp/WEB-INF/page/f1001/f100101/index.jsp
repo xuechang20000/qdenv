@@ -20,8 +20,8 @@
     </div>
 </div>
  <div class="mini-fit" style="height:100%;">
-    <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true"
-         url="<%=request.getContextPath()%>/admin/queryAllUser"  idField="userId">
+    <div id="datagrid1" class="mini-datagrid" style="width: 100%;height:100%;" allowResize="true" pageSize="14"
+         url="<%=request.getContextPath()%>/admin/queryAllUser"  idField="userId" allowAlternating="true">
             <div property="columns">
             <div field="userId" width="60" headerAlign="center" allowSort="true">用户ID</div>
             <div field="loginname" width="100" headerAlign="center" allowSort="true">用户账号</div>

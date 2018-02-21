@@ -14,7 +14,8 @@
          url="<%=request.getContextPath()%>/work/f100601/queryHangye"  idField="userId">
             <div property="columns">
             <div field="bhz001"  headerAlign="center" allowSort="true">ID</div>
-            <div field="bzh002"  headerAlign="center" allowSort="true">行业名称</div>
+            <div field="bhz003"  headerAlign="center" allowSort="true">行业代码</div>
+                <div field="bzh002"  headerAlign="center" allowSort="true">行业名称</div>
             <div field="aae016"  headerAlign="center" allowSort="true" renderer="oncodeRender">有效标志</div>
             <div field="aae013"  headerAlign="center" allowSort="true">备注</div>
             <div headerAlign="center"  renderer="renderUser">操作</div>

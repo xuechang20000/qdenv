@@ -147,6 +147,22 @@ public class BzContrallor {
         this.qdenvService.queryBz01(page,dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
     }
+    /**
+     * 查询标准list
+     * @param page
+     * @return
+     */
+    @RequestMapping(value="/f100602/queryBiaozhunList",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryBiaozhunList(Page page,Bz01Dto dto){
+        List<Bz01Dto> bz01Dtos=this.qdenvService.queryBz01(dto);
+        return JSON.toJSONStringWithDateFormat(bz01Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    /**
+     * 保存标准
+     * @param bz01Dto
+     * @return
+     */
     @RequestMapping(value="/f100602/saveBiaozhun",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String saveBiaozhun(Bz01Dto bz01Dto){
@@ -157,6 +173,12 @@ public class BzContrallor {
         this.qdenvService.saveBz01(bz01Dto);
         return  JSON.toJSONStringWithDateFormat(bz01Dto, "yyyy-MM-dd HH:mm:ss.SSS");
     }
+
+    /**
+     * 复制标准
+     * @param bz01Dto
+     * @return
+     */
     @RequestMapping(value="/f100602/copyBiaozhun",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String copyBiaozhun(Bz01Dto bz01Dto){
@@ -180,7 +202,7 @@ public class BzContrallor {
     }
     /**
      * 查询检测项目
-     * @param page
+     * @param dto
      * @return
      */
     @RequestMapping(value="/f100602/queryXiangMuList",produces = "application/json; charset=utf-8")

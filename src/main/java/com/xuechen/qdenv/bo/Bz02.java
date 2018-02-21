@@ -25,6 +25,15 @@ public class Bz02 {
 
     private String bcz009;
 
+    public Double getBcz010() {
+        return bcz010;
+    }
+
+    public void setBcz010(Double bcz010) {
+        this.bcz010 = bcz010;
+    }
+
+    private Double bcz010;
     @Id
     public Integer getBcz001() {
         return bcz001;

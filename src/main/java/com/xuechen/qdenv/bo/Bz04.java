@@ -11,6 +11,15 @@ public class Bz04 {
 
     private  String aae016;
 
+    public String getBhz003() {
+        return bhz003;
+    }
+
+    public void setBhz003(String bhz003) {
+        this.bhz003 = bhz003;
+    }
+
+    private String bhz003;
     public String getAae016() {
         return aae016;
     }
