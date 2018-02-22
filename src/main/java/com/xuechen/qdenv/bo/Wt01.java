@@ -31,7 +31,7 @@ public class Wt01 {
 
     private String daw005;
 
-    private Date wat004;
+    private String wat004;
 
     private Integer userid;
 
@@ -162,11 +162,11 @@ public class Wt01 {
         this.daw005 = daw005 == null ? null : daw005.trim();
     }
 
-    public Date getWat004() {
+    public String getWat004() {
         return wat004;
     }
 
-    public void setWat004(Date wat004) {
+    public void setWat004(String wat004) {
         this.wat004 = wat004;
     }
 

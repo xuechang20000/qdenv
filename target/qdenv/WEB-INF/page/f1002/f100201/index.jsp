@@ -47,7 +47,7 @@
                     <label for="aae003">委托年月：</label>
                 </td>
                 <td>
-                    <input id="aae003" name="aae003" class="mini-monthpicker" onvaluechanged="setWat002" style="width: 100px;" format="yyyyMM" required="true"/>
+                    <input id="aae003" name="aae003" class="mini-monthpicker" onvaluechanged="setWat002"  style="width: 100px;" format="yyyyMM" required="true"/>
                 </td>
             </tr>
             <tr>
@@ -104,7 +104,7 @@
                 </td>
                 <td>
                     <input id="wft002" name="wft002" onblur="getSumFee" style="width:70px" class="mini-textbox" vtype="int" value="0"/>
-                    <label for="daw004">检测费</label> <input id="wft004" onblur="getSumFee" style="width:70px" name="wft004" value="0" class="mini-textbox" vtype="int"/>
+                    <label for="wft004">检测费</label> <input id="wft004" onblur="getSumFee" style="width:70px" name="wft004" value="0" class="mini-textbox" vtype="int"/>
                     <label for="wft006">折扣率</label> <input id="wft006" onblur="getSumFee" style="width:40px" name="wft006" value="1"  class="mini-textbox" vtype="float;range:0,1"/>
                     <label for="wft007">合计：</label> <input id="wft007" style="width:70px" name="wft007"  class="mini-textbox" vtype="int"/>
                 </td>
@@ -144,6 +144,10 @@
                     <input id="aae013" name="aae013" style="width: 300px;"  class="mini-textarea" />
                 </td>
             </tr>
+            <tr><td colspan="2" align="center">
+                <a class="mini-button" href="javascript:doSubmit();"  iconCls="icon-save" >保存</a>
+                <a class="mini-button" href="javascript:doReset();"  iconCls="icon-redo" >重置</a>
+            </td></tr>
         </table>
     </div>
     </fieldset>
@@ -152,19 +156,17 @@
     <div class="mini-fit" style="height:100%;">
     <fieldset id="fd2" >
         <legend><span>费用信息</span></legend>
-        <table style="width:100%;" align="left">
+        <table style="width:100%;" align="left" >
             <tr>
-                <td align="right">
-                  选取标准：
-                </td>
-                <td align="left">
-                    <div id="bbz001" class="mini-combobox" style="width:80%;"  popupWidth="400" textField="bbz002" valueField="bbz001"
+                <td align="left" style="padding-bottom: 4px">
+                  &nbsp;&nbsp;选取标准：
+                    <div id="bbz001" class="mini-combobox" style="width:60%;"  popupWidth="600" textField="bbz002" valueField="bbz001"
                          url="<%=request.getContextPath()%>/work/f100602/queryBiaozhunList" value="" multiSelect="false"  showClose="true" onitemclick="onItemClick" >
                         <div property="columns">
                             <div header="ID" field="bbz001" width="20" visible="false"></div>
-                            <div header="标准名称" width="170" field="bbz002"></div>
+                            <div header="标准名称" width="240" field="bbz002"></div>
                             <div header="标签" field="bbz003"></div>
-                            <div header="标准代码" field="bbz004"></div>
+                            <div header="标准代码" width="100"  field="bbz004"></div>
                         </div>
                     </div>
                 </td>
@@ -198,6 +200,8 @@
     </fieldset>
 </div>
 </div>
+
+
 <span id="grid_buttons" style="display: none"  >
          <a class="mini-button" href="javascript:onRemove()" plain="true" iconCls="icon-remove">删除</a>
     </span>
@@ -221,6 +225,7 @@
     <br/>
         <a class="mini-button" href="javascript:onSelectbz02();"  iconCls="icon-ok" >选择</a>
 </div>
+
 
 </body>
 <script type="text/javascript">
@@ -351,6 +356,39 @@ function setWat002() {
         mini.get("wat015").setValue(wat015);
         mini.get("wat016").setValue(wat016);
     })
+}
+function doSubmit() {
+    var form = new mini.Form("#form1");
+    form.validate();
+    if (form.isValid() == false) {
+        Web.util.showTipsWanring('填写有误，请修正！');
+        return;
+    }
+    if(!validateRows()) return;
+    Web.util.confirm("确定要保存？",function (action) {
+        var data = form.getData(true);
+        data.wat003=mini.get("wat003").getValue();
+        data.bhz003=mini.get("bhz003").getValue();
+        data.aab301=mini.get("aab301").getValue();
+        var jsonGrid1= grid.findRows(function(row){ return true;});
+        var jsonGrid2= grid2.findRows(function(row){ return true;});
+        jsonGrid1=JSON.stringify(jsonGrid1);
+        jsonGrid2=JSON.stringify(jsonGrid2);
+        console.info(jsonGrid1)
+        console.info(jsonGrid2)
+        if( typeof(jsonGrid1)!= 'undefined')  data.json1=jsonGrid1;
+        if( typeof(jsonGrid2)!= 'undefined')   data.json2=jsonGrid2;
+        var url="${pageContext.request.contextPath}/work/f100201/saveBz01";
+        Web.util.request(url,"post",data,function () {
+            
+        })
+    });
+}
+function doReset() {
+    var form = new mini.Form("#form1");
+    form.reset();
+    grid.clearRows();
+    grid.clearRows();
 }
 </script>
 </html>

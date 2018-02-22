@@ -6,10 +6,7 @@ import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.qdenv.bo.Bz02;
 import com.xuechen.qdenv.bo.Bz03;
 import com.xuechen.qdenv.bo.Bz04;
-import com.xuechen.qdenv.dto.Bz01Dto;
-import com.xuechen.qdenv.dto.Bz02Dto;
-import com.xuechen.qdenv.dto.Bz03Dto;
-import com.xuechen.qdenv.dto.Bz04Dto;
+import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
 import com.xuechen.web.dto.AppUserDTO;
 import org.apache.shiro.SecurityUtils;
@@ -52,5 +49,12 @@ public class WtContrallor {
         String wat016=this.qdenvService.getWat016(wat015);
         if (wat016.equals("0")) wat016="1";
         return wat016;
+    }
+    @RequestMapping(value="/f100201/saveBz01",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveBz01(Wt01Dto dto){
+        //String wat016=this.qdenvService.getWat016(wat015);
+        //if (wat016.equals("0")) wat016="1";
+        return "";
     }
 }
