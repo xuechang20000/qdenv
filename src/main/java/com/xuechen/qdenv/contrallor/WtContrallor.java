@@ -46,4 +46,11 @@ public class WtContrallor {
         return "/WEB-INF/page/f1002/f100201/index";
     }
 
+    @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String getWat016(String wat015){
+        String wat016=this.qdenvService.getWat016(wat015);
+        if (wat016.equals("0")) wat016="1";
+        return wat016;
+    }
 }

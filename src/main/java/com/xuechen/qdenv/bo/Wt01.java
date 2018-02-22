@@ -10,6 +10,8 @@ public class Wt01 {
     private Integer wat001;
 
     private String wat002;
+    private String wat015;
+    private int wat016;
 
     private Integer aae003;
 
@@ -70,6 +72,22 @@ public class Wt01 {
 
     public void setWat002(String wat002) {
         this.wat002 = wat002 == null ? null : wat002.trim();
+    }
+
+    public String getWat015() {
+        return wat015;
+    }
+
+    public void setWat015(String wat015) {
+        this.wat015 = wat015;
+    }
+
+    public int getWat016() {
+        return wat016;
+    }
+
+    public void setWat016(int wat016) {
+        this.wat016 = wat016;
     }
 
     public Integer getAae003() {

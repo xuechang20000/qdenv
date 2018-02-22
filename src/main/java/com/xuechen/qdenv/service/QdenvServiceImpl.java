@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wondersgroup.framwork.dao.CommonJdbcUtils.queryCount;
+
 /**
  * 业务service
  */
@@ -304,4 +306,14 @@ public class QdenvServiceImpl implements QdenvService {
             return  page.getData();
     }
 
+    /**
+     * 查询序号
+     * @param wat015
+     * @return
+     */
+    public String getWat016(String wat015){
+        String sql="select max(wat016) from wt01 where wat015=?";
+        long wat016=CommonJdbcUtils.queryCount(sql,wat015);
+        return String.valueOf(wat016);
+    }
 }
