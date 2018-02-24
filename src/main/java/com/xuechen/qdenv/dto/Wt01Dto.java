@@ -8,7 +8,9 @@ public class Wt01Dto extends Wt01 {
     private String json2;
 
     private String wft002;
+    private String wft003;
     private String wft004;
+    private String wft005;
     private String wft006;
     private String wft007;
     public String getJson1() {
@@ -57,5 +59,21 @@ public class Wt01Dto extends Wt01 {
 
     public void setWft007(String wft007) {
         this.wft007 = wft007;
+    }
+
+    public String getWft003() {
+        return wft003;
+    }
+
+    public void setWft003(String wft003) {
+        this.wft003 = wft003;
+    }
+
+    public String getWft005() {
+        return wft005;
+    }
+
+    public void setWft005(String wft005) {
+        this.wft005 = wft005;
     }
 }

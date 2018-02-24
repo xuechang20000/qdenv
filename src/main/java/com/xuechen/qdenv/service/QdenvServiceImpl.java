@@ -3,14 +3,14 @@ package com.xuechen.qdenv.service;
 import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.qdenv.bo.*;
-import com.xuechen.qdenv.dto.Bz01Dto;
-import com.xuechen.qdenv.dto.Bz02Dto;
-import com.xuechen.qdenv.dto.Bz03Dto;
-import com.xuechen.qdenv.dto.Bz04Dto;
+import com.xuechen.qdenv.dto.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.wondersgroup.framwork.dao.CommonJdbcUtils.queryCount;
@@ -313,7 +313,120 @@ public class QdenvServiceImpl implements QdenvService {
      */
     public String getWat016(String wat015){
         String sql="select max(wat016) from wt01 where wat015=?";
-        long wat016=CommonJdbcUtils.queryCount(sql,wat015);
+        long wat016=CommonJdbcUtils.queryObject(sql,Long.class,wat015);
+        wat016=wat016+1;
         return String.valueOf(wat016);
     }
+
+    /**
+     * 保存委托表
+     * @param wt01Dto
+     * @param wt02Dtos
+     * @param wt03Dtos
+     * @return
+     */
+@Transactional
+    public Wt01 saveWt(Wt01Dto wt01Dto,List<Wt02Dto> wt02Dtos,List<Wt03Dto> wt03Dtos){
+        Wt01 wt01=new Wt01();
+        BeanUtils.copyProperties(wt01Dto,wt01);
+        wt01.setWat017(new Date());
+        //保存主表
+        CommonJdbcUtils.saveOrUpdateObject(wt01,false);
+        //保存财务表
+        Wt05 wt05=new Wt05();
+        BeanUtils.copyProperties(wt01Dto,wt05);
+    if (wt01Dto.getWft002()!=null&&!wt01Dto.getWft002().trim().equals(""))
+        wt05.setWft002(Double.valueOf(wt01Dto.getWft002()));
+    if (wt01Dto.getWft003()!=null&&!wt01Dto.getWft003().trim().equals(""))
+        wt05.setWft003(Double.valueOf(wt01Dto.getWft003()));
+    if (wt01Dto.getWft004()!=null&&!wt01Dto.getWft004().trim().equals(""))
+        wt05.setWft004(Double.valueOf(wt01Dto.getWft004()));
+    if (wt01Dto.getWft005()!=null&&!wt01Dto.getWft005().trim().equals(""))
+        wt05.setWft005(Double.valueOf(wt01Dto.getWft005()));
+    if (wt01Dto.getWft006()!=null&&!wt01Dto.getWft006().trim().equals(""))
+        wt05.setWft006(Double.valueOf(wt01Dto.getWft006()));
+    if (wt01Dto.getWft007()!=null&&!wt01Dto.getWft007().trim().equals(""))
+        wt05.setWft007(Double.valueOf(wt01Dto.getWft007()));
+
+        wt05.setWat001(wt01.getWat001());
+        wt05.setAae013("");
+        saveWt05(wt05);
+        //保存采样点
+        for(Wt03Dto wt03Dto:wt03Dtos){
+            for (Wt02Dto wt02Dto:wt02Dtos){
+                if (wt02Dto.getIdx().equals(wt03Dto.getIdx())){
+                    if (wt02Dto.getWt03DtoList()==null) wt02Dto.setWt03DtoList(new ArrayList<Wt03Dto>());
+                    wt03Dto.setWat001(wt01.getWat001());
+                    wt02Dto.setWat001(wt01.getWat001());
+                    wt02Dto.getWt03DtoList().add(wt03Dto);
+                }
+            }
+        }
+        saveWt02(wt02Dtos);
+        return wt01;
+    }
+
+    /**
+     * 保存财务表
+     * @param wt05
+     * @return
+     */
+    public Wt05 saveWt05(Wt05 wt05){
+        CommonJdbcUtils.saveOrUpdateObject(wt05,false);
+        return wt05;
+    }
+    /**
+     * 保存报告（标准）
+     * @param wt02Dtos
+     */
+    public void saveWt02(List<Wt02Dto> wt02Dtos){
+        Wt02 wt02=null;
+        for (Wt02Dto wt02Dto:wt02Dtos){
+            wt02=new Wt02();
+            BeanUtils.copyProperties(wt02Dto,wt02);
+            if (wt02.getWbt001()==null) wt02.setWbt002(new Date());
+            CommonJdbcUtils.saveOrUpdateObject(wt02,false);
+            for (Wt03Dto wt03Dto:wt02Dto.getWt03DtoList()){
+                wt03Dto.setWbt001(wt02.getWbt001());
+                saveOrUpdateWt03(wt03Dto);
+            }
+        }
+    }
+
+    /**
+     * 添加采样点
+     * @param wt03Dto
+     * @return
+     */
+    public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto){
+        Wt03 wt03=new Wt03();
+        BeanUtils.copyProperties(wt03Dto,wt03);
+        //保存采样点
+        CommonJdbcUtils.saveOrUpdateObject(wt03,false);
+        List<Wt04> wt04s=getWt04List(wt03Dto.getBcz001s(),wt03.getWct001(),wt03.getWbt001());
+        saveWt04List(wt04s);
+        return wt03;
+    }
+
+    /**
+     * 查询检测项目列表
+     * @param bcz001s
+     * @return
+     */
+    public  List<Wt04> getWt04List(String bcz001s,Integer wct001,Integer wbt001){
+        String sql="select "+wbt001+" as wbc001,"+wct001+" as wct001,bcz001,bcz002,bcz003,bcz004,bcz005,bcz006,bcz008," +
+                "bcz010 as wxt004 from bz02 where FIND_IN_SET(bcz001,?)";
+        return CommonJdbcUtils.queryList(sql,Wt04.class,bcz001s);
+    }
+
+    /**
+     * 保存检测项目列表
+     * @param wt04s
+     */
+    public void saveWt04List(List<Wt04> wt04s){
+        for (Wt04 wt04:wt04s){
+            CommonJdbcUtils.saveOrUpdateObject(wt04,false);
+        }
+    }
+
 }

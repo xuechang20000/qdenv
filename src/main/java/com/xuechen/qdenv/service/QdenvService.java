@@ -1,13 +1,8 @@
 package com.xuechen.qdenv.service;
 
 import com.wondersgroup.framwork.dao.bo.Page;
-import com.xuechen.qdenv.bo.Bz02;
-import com.xuechen.qdenv.bo.Bz03;
-import com.xuechen.qdenv.bo.Bz04;
-import com.xuechen.qdenv.dto.Bz01Dto;
-import com.xuechen.qdenv.dto.Bz02Dto;
-import com.xuechen.qdenv.dto.Bz03Dto;
-import com.xuechen.qdenv.dto.Bz04Dto;
+import com.xuechen.qdenv.bo.*;
+import com.xuechen.qdenv.dto.*;
 
 import java.util.List;
 
@@ -28,4 +23,10 @@ public interface QdenvService {
     public void deleteBz03(Bz03Dto bz03Dto);
     public List<Bz03Dto> queryBz03(Page page,Bz03Dto bz03Dto);
     public String getWat016(String wat015);
+    public Wt01 saveWt(Wt01Dto wt01Dto, List<Wt02Dto> wt02Dtos, List<Wt03Dto> wt03Dtos);
+    public Wt05 saveWt05(Wt05 wt05);
+    public void saveWt02(List<Wt02Dto> wt02Dtos);
+    public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto);
+    public  List<Wt04> getWt04List(String bcz001s,Integer wct001,Integer wbt001);
+    public void saveWt04List(List<Wt04> wt04s);
 }

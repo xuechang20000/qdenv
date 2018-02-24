@@ -258,12 +258,14 @@ public class CommonJdbcDaoImpl implements CommonJdbcDao {
     public void saveOrUpdateObject(Object object,boolean isIncludeNull){
         SqlCreator sqlCreator=ClassUtils.getSqlCreator(object,isIncludeNull);
         if (sqlCreator.getColumnTypeList()!=null
-                &&sqlCreator.getColumnTypeList().get(sqlCreator.getIdFileName())!=null)
-        sqlCreator.generateUpdateSql();
+                &&sqlCreator.getColumnTypeList().get(sqlCreator.getIdFileName())!=null){
+            sqlCreator.generateUpdateSql();
+            this.jdbcTemplate.update(sqlCreator.getSql(),
+                    sqlCreator.getArgs().toArray());
+        }
         else
-        sqlCreator.generateInsertSql();
-        this.jdbcTemplate.update(sqlCreator.getSql(),
-                sqlCreator.getArgs().toArray());
+            insertObject(object,isIncludeNull);
+
     }
     /**
      * 插入对象

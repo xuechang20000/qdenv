@@ -145,7 +145,7 @@
                 </td>
             </tr>
             <tr><td colspan="2" align="center">
-                <a class="mini-button" href="javascript:doSubmit();"  iconCls="icon-save" >保存</a>
+                <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
                 <a class="mini-button" href="javascript:doReset();"  iconCls="icon-redo" >重置</a>
             </td></tr>
         </table>
@@ -175,7 +175,8 @@
         <div id="datagrid" class="mini-datagrid" style="width: 100%;height: 150px;" allowResize="true" pageSize="10"
              onrowclick="onrowclick" idField="bbz001">
             <div property="columns">
-                <div type="indexcolumn">IDX</div>
+                <div type="checkcolumn" ></div>
+                <div field="idx" width="20" headerAlign="center">IDX</div>
                 <div field="bbz001" width="20" headerAlign="center" visible="false" >ID</div>
                 <div field="bbz002" width="200" headerAlign="center" >标准名称</div>
                 <div field="bbz003" width="40" headerAlign="center" >标签</div>
@@ -187,7 +188,7 @@
              allowResize="true" pageSize="100"  allowCellEdit="true" allowCellSelect="true" oncellclick="onBcz002sClick"
              editNextOnEnterKey="true"  editNextRowCell="true" idField="idx" showGroupSummary="true" showSummaryRow="true">
             <div property="columns">
-                <div field="bbz001" width="20" headerAlign="center" visible="false" >IDX</div>
+                <div field="bbz001" width="20" headerAlign="center" visible="false" >标准id</div>
                 <div field="idx" width="20" headerAlign="center" >IDX</div>
                 <div field="wct002" width="50" headerAlign="center"  >采样点名称
                     <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200" /></div>
@@ -237,7 +238,14 @@
         return $("#grid_buttons").clone().css("display","inline").html();
     }
     function onRemove() {
-        grid.removeRow( grid.getSelected());
+        var row1=grid.getSelected();
+        var rows2=grid2.findRows(function (row) {
+            if (row.idx==row1.idx) {
+                return true;
+            }
+        });
+        grid2.removeRows(rows2,true);
+        grid.removeRow(row1);
     }
     function renderUser2(e) {
         return $("#grid_buttons2").clone().css("display","inline").html();
@@ -245,9 +253,10 @@
     function onRemove2() {
         grid2.removeRow( grid2.getSelected());
     }
+    var v_idx=1;
     function onItemClick(e) {
         var select=mini.get("bbz001").getSelected();
-        var row={bbz001:select.bbz001,bbz002:select.bbz002,bbz003:select.bbz003,bbz004:select.bbz004}
+        var row={idx:v_idx++,wbt003:'0',bbz001:select.bbz001,bbz002:select.bbz002,bbz003:select.bbz003,bbz004:select.bbz004}
         grid.addRow(row,-1);
     }
     function addGrid2Row() {
@@ -257,7 +266,7 @@
             return;
         }
         if(!validateRows()) return false;
-        var newRow={idx:grid.indexOf(selectGrids)+1,bbz001:selectGrids.bbz001}
+        var newRow={idx:selectGrids.idx,bbz001:selectGrids.bbz001}
         grid2.addRow(newRow,-1);
     }
     function validateRows() {
@@ -370,6 +379,7 @@ function doSubmit() {
         data.wat003=mini.get("wat003").getValue();
         data.bhz003=mini.get("bhz003").getValue();
         data.aab301=mini.get("aab301").getValue();
+        data.userid=mini.get("userid").getValue();
         var jsonGrid1= grid.findRows(function(row){ return true;});
         var jsonGrid2= grid2.findRows(function(row){ return true;});
         jsonGrid1=JSON.stringify(jsonGrid1);
@@ -378,17 +388,20 @@ function doSubmit() {
         console.info(jsonGrid2)
         if( typeof(jsonGrid1)!= 'undefined')  data.json1=jsonGrid1;
         if( typeof(jsonGrid2)!= 'undefined')   data.json2=jsonGrid2;
-        var url="${pageContext.request.contextPath}/work/f100201/saveBz01";
-        Web.util.request(url,"post",data,function () {
-            
+        var url="${pageContext.request.contextPath}/work/f100201/saveWt";
+        Web.util.request(url,"post",data,function (data) {
+           mini.get("doSubmit").disable();
+           Web.util.showTips("保存成功！")
         })
     });
 }
 function doReset() {
     var form = new mini.Form("#form1");
     form.reset();
+    $("#span_wat002").html('');
     grid.clearRows();
-    grid.clearRows();
+    grid2.clearRows();
+    mini.get("doSubmit").enable();
 }
 </script>
 </html>

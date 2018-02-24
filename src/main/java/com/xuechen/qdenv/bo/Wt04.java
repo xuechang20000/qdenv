@@ -1,5 +1,6 @@
 package com.xuechen.qdenv.bo;
 
+import com.wondersgroup.framwork.dao.annotation.Id;
 import com.wondersgroup.framwork.dao.annotation.Table;
 
 import java.util.Date;
@@ -34,6 +35,7 @@ public class Wt04 {
 
     private Date wxt006;
 
+    @Id
     public Integer getWxt001() {
         return wxt001;
     }
