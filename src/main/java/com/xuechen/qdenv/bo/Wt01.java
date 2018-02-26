@@ -34,6 +34,7 @@ public class Wt01 {
     private String wat004;
 
     private Date wat017;
+    private String wat018;
     private Integer userid;
 
     private String wat009;
@@ -105,6 +106,14 @@ public class Wt01 {
 
     public void setWat003(String wat003) {
         this.wat003 = wat003 == null ? null : wat003.trim();
+    }
+
+    public String getWat018() {
+        return wat018;
+    }
+
+    public void setWat018(String wat018) {
+        this.wat018 = wat018;
     }
 
     public String getBhz003() {

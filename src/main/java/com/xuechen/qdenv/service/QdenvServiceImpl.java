@@ -305,7 +305,16 @@ public class QdenvServiceImpl implements QdenvService {
             CommonJdbcUtils.queryPageList(page,sql,Bz03Dto.class,bz03Dto.getBbz001());
             return  page.getData();
     }
-
+    /**
+     * 查询分组情况
+     * @param bz03Dto
+     * @return
+     */
+    public List<Bz03Dto> queryBz03List(Bz03Dto bz03Dto){
+        String sql="select a.*,(select GROUP_CONCAT(b.bcz002) from bz02 b where b.bbz001=a.bbz001  and FIND_IN_SET(b.bcz001,a.bzz003) GROUP BY b.bbz001) as bzz003s \n" +
+                "from bz03 a where a.bbz001= ? ";
+        return  CommonJdbcUtils.queryList(sql,Bz03Dto.class,bz03Dto.getBbz001());
+    }
     /**
      * 查询序号
      * @param wat015
@@ -330,6 +339,12 @@ public class QdenvServiceImpl implements QdenvService {
         Wt01 wt01=new Wt01();
         BeanUtils.copyProperties(wt01Dto,wt01);
         wt01.setWat017(new Date());
+        //保存状态
+    if (wt01.getWat004()!=null){
+        wt01.setWat018("LC_ORD");//预约状态
+    }else{
+        wt01.setWat018("LC_INI");//新建状态
+    }
         //保存主表
         CommonJdbcUtils.saveOrUpdateObject(wt01,false);
         //保存财务表

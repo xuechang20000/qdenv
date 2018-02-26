@@ -257,4 +257,10 @@ public class BzContrallor {
         this.qdenvService.queryBz03(page,bz03Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
     }
+    @RequestMapping(value="/f100603/queryFenzuList",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryFenzuList(Bz03Dto bz03Dto){
+        List<Bz03Dto> bz03Dtos=this.qdenvService.queryBz03List(bz03Dto);
+        return JSON.toJSONStringWithDateFormat(bz03Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
 }

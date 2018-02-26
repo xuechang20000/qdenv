@@ -43,7 +43,10 @@ public class WtContrallor {
     public String index_f100201(){
         return "/WEB-INF/page/f1002/f100201/index";
     }
-
+    @RequestMapping("/f100202/index")
+    public String index_f100202(){
+        return "/WEB-INF/page/f1002/f100202/index";
+    }
     @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String getWat016(String wat015){

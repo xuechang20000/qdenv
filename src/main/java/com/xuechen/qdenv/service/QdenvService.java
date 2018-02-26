@@ -22,6 +22,7 @@ public interface QdenvService {
     public Bz03 saveBz03(Bz03Dto bz03Dto);
     public void deleteBz03(Bz03Dto bz03Dto);
     public List<Bz03Dto> queryBz03(Page page,Bz03Dto bz03Dto);
+    public List<Bz03Dto> queryBz03List(Bz03Dto bz03Dto);
     public String getWat016(String wat015);
     public Wt01 saveWt(Wt01Dto wt01Dto, List<Wt02Dto> wt02Dtos, List<Wt03Dto> wt03Dtos);
     public Wt05 saveWt05(Wt05 wt05);

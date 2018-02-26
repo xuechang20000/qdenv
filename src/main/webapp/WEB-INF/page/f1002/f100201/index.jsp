@@ -216,6 +216,15 @@
 
 <div id="bz02list" class="mini-panel"  title="选择检测项目" iconCls="icon-add"
      style="width:500px;height:380px;" buttons="close">
+                &nbsp;&nbsp;选取组合：
+                <div id="bbz003s" class="mini-combobox" style="width:60%; margin-bottom: 6px;"  popupWidth="350" textField="bzz002" valueField="bzz001"
+                     multiSelect="false"  showClose="true" onitemclick="onItemClick2" >
+                    <div property="columns">
+                        <div header="组合名称" width="100" field="bzz002"></div>
+                        <div header="组合列表" field="bzz003s"></div>
+                        <div header="组合列表id" width="50"  field="bzz003"></div>
+                    </div>
+                </div>
     <div id="listbox2" class="mini-listbox" valueField="bcz001" textField="bcz002" showCheckBox="true" multiSelect="true" url="" >
         <div property="columns">
             <div header="ID" field="bcz001"></div>
@@ -254,10 +263,17 @@
         grid2.removeRow( grid2.getSelected());
     }
     var v_idx=1;
+
     function onItemClick(e) {
         var select=mini.get("bbz001").getSelected();
         var row={idx:v_idx++,wbt003:'0',bbz001:select.bbz001,bbz002:select.bbz002,bbz003:select.bbz003,bbz004:select.bbz004}
         grid.addRow(row,-1);
+    }
+    function onItemClick2(e) {
+        var select=mini.get("bbz003s").getSelected();
+        mini.get("listbox2").setValue('')
+        mini.get("listbox2").setValue(select.bzz003)
+
     }
     function addGrid2Row() {
         var selectGrids=grid.getSelected();
@@ -289,12 +305,13 @@
     }
     function onrowclick(e) {
         bbz001=e.record.bbz001;
-        mini.get("listbox2").load("${pageContext.request.contextPath}/work/f100602/queryXiangMuList?bbz001="+bbz001)
+        mini.get("bbz003s").load("${pageContext.request.contextPath}/work/f100603/queryFenzuList?bbz001="+bbz001)
     }
     var grid2_now_row;
     function onBcz002sClick(e) {
         if(e.column.field=='bcz002s'){
         $("#bz02list").css("display","block");
+        mini.get("listbox2").load("${pageContext.request.contextPath}/work/f100602/queryXiangMuList?bbz001="+bbz001)
         grid2_now_row=grid2.getSelected();
         }
     }
