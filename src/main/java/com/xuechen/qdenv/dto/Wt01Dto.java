@@ -2,6 +2,8 @@ package com.xuechen.qdenv.dto;
 
 import com.xuechen.qdenv.bo.Wt01;
 
+import java.util.List;
+
 public class Wt01Dto extends Wt01 {
 
     private String json1;
@@ -13,6 +15,11 @@ public class Wt01Dto extends Wt01 {
     private String wft005;
     private String wft006;
     private String wft007;
+    private String wft010;
+    private String s_date;
+    private String e_date;
+    private String username;
+    private List<Wt02Dto> wt02DtoList;
     public String getJson1() {
         return json1;
     }
@@ -75,5 +82,45 @@ public class Wt01Dto extends Wt01 {
 
     public void setWft005(String wft005) {
         this.wft005 = wft005;
+    }
+
+    public String getS_date() {
+        return s_date;
+    }
+
+    public void setS_date(String s_date) {
+        this.s_date = s_date;
+    }
+
+    public String getE_date() {
+        return e_date;
+    }
+
+    public void setE_date(String e_date) {
+        this.e_date = e_date;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getWft010() {
+        return wft010;
+    }
+
+    public void setWft010(String wft010) {
+        this.wft010 = wft010;
+    }
+
+    public List<Wt02Dto> getWt02DtoList() {
+        return wt02DtoList;
+    }
+
+    public void setWt02DtoList(List<Wt02Dto> wt02DtoList) {
+        this.wt02DtoList = wt02DtoList;
     }
 }

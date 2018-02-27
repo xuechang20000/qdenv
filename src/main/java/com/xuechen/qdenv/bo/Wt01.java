@@ -36,7 +36,7 @@ public class Wt01 {
     private Date wat017;
     private String wat018;
     private Integer userid;
-
+    private String aae016;
     private String wat009;
 
     private String wat010;
@@ -282,5 +282,13 @@ public class Wt01 {
 
     public void setWat006(byte[] wat006) {
         this.wat006 = wat006;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
     }
 }

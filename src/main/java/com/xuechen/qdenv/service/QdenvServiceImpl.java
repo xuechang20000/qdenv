@@ -2,6 +2,7 @@ package com.xuechen.qdenv.service;
 
 import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
+import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import org.springframework.beans.BeanUtils;
@@ -444,4 +445,114 @@ public class QdenvServiceImpl implements QdenvService {
         }
     }
 
+    public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
+        StringBuffer stringBuffer=new StringBuffer();
+        stringBuffer.append("select a.*,b.wft007,b.wft010,c.name as username from wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
+        if(wt01Dto.getWat001()!=null){
+            stringBuffer.append(" and a.wat001=? ");
+            args.add(wt01Dto.getWat001());
+        }
+        if(wt01Dto.getWat002()!=null){
+            stringBuffer.append(" and a.wat002=? ");
+            args.add(wt01Dto.getWat002());
+        }
+        if(StringTools.hasText(wt01Dto.getWat018())){
+            stringBuffer.append(" and a.wat018=? ");
+            args.add(wt01Dto.getWat018());
+        }
+        if(wt01Dto.getAae003()!=null){
+            stringBuffer.append(" and a.aae003=? ");
+            args.add(wt01Dto.getAae003());
+        }
+        if(StringTools.hasText(wt01Dto.getWat003())){
+            stringBuffer.append(" and a.wat003=? ");
+            args.add(wt01Dto.getWat003());
+        }
+        if(StringTools.hasText(wt01Dto.getBhz003())){
+            stringBuffer.append(" and a.bhz003=? ");
+            args.add(wt01Dto.getBhz003());
+        }
+        if(wt01Dto.getDaw002()!=null){
+            stringBuffer.append(" and a.daw002 like ? ");
+            args.add("%"+wt01Dto.getDaw002()+"%");
+        }
+        if(StringTools.hasText(wt01Dto.getAab301())){
+            stringBuffer.append(" and a.aab301=? ");
+            args.add(wt01Dto.getAab301());
+        }
+        if(wt01Dto.getS_date()!=null&&!wt01Dto.getS_date().trim().equals("")){
+            stringBuffer.append(" AND a.wat017>=str_to_date('"+wt01Dto.getS_date()+"','%Y-%m-%d')  ");
+        }
+        if(wt01Dto.getE_date()!=null&&!wt01Dto.getE_date().trim().equals("")){
+            stringBuffer.append(" AND a.wat017<=str_to_date('"+wt01Dto.getE_date()+"','%Y-%m-%d')  ");
+        }
+        if(wt01Dto.getUserid()!=null){
+            stringBuffer.append(" and a.userid=? ");
+            args.add(wt01Dto.getUserid());
+        }
+        return stringBuffer.toString();
+    }
+    /**
+     * 查询委托列表
+     * @param dto
+     * @return
+     */
+    public List<Wt01Dto> queryWtList(Wt01Dto dto){
+        List<Object> args=new ArrayList<Object>();
+        String sql=generateQueryWt(args,dto);
+        return CommonJdbcUtils.queryList(sql,Wt01Dto.class,args.toArray());
+    }
+    /**
+     * 查询委托page
+     * @param dto
+     * @return
+     */
+    public List<Wt01Dto> queryWt(Page page,Wt01Dto dto){
+        List<Object> args=new ArrayList<Object>();
+        String sql=generateQueryWt(args,dto);
+        CommonJdbcUtils.queryPageList(page,sql,Wt01Dto.class,args.toArray());
+        return page.getData();
+    }
+
+    /**
+     * 根据委托ID查询报告
+     * @param wt02Dto
+     * @return
+     */
+    public List<Wt02Dto> queryWt02(Wt02Dto wt02Dto){
+        String sql="select a.*,b.bbz002,b.bbz003,b.bbz004 from wt02 a,bz01 b where a.bbz001=b.bbz001 and a.wat001=?";
+        List<Wt02Dto> wt02Dtos= CommonJdbcUtils.queryList(sql,Wt02Dto.class,wt02Dto.getWat001());
+        Wt03Dto wt03Dto=new Wt03Dto();
+        for (Wt02Dto dto:wt02Dtos){
+            wt03Dto.setWbt001(dto.getWbt001());
+            dto.setWt03DtoList(queryWt03(wt03Dto));
+        }
+        return  wt02Dtos;
+    }
+
+    /**
+     * 根据报告查询采样点
+     * @param wt03Dto
+     * @return
+     */
+    public List<Wt03Dto> queryWt03(Wt03Dto wt03Dto){
+        String sql="select * from wt03 where wbt001=?";
+        List<Wt03Dto> wt03Dtos= CommonJdbcUtils.queryList(sql,Wt03Dto.class,wt03Dto.getWbt001());
+        Wt04Dto wt04Dto=new Wt04Dto();
+        for (Wt03Dto dto:wt03Dtos){
+            wt04Dto.setWct001(dto.getWct001());
+            dto.setWt04DtoList(queryWt04(wt04Dto));
+        }
+        return wt03Dtos;
+    }
+
+    /**
+     * 根据采样点查询检测项目
+     * @param wt04Dto
+     * @return
+     */
+    public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto){
+        String sql="select * from wt04 where wct001=?";
+        return CommonJdbcUtils.queryList(sql,Wt04Dto.class,wt04Dto.getWct001());
+    }
 }

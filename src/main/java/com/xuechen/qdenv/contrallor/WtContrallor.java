@@ -62,4 +62,22 @@ public class WtContrallor {
         Wt01 wt01=this.qdenvService.saveWt(dto,wt02Dtos,wt03Dtos);
         return JSON.toJSONString(wt01);
     }
+    @RequestMapping(value="/f100201/queryWt",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt(Page page,Wt01Dto wt01Dto){
+        this.qdenvService.queryWt(page,wt01Dto);
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100201/queryWtList",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWtList(Wt01Dto wt01Dto){
+        List<Wt01Dto> wt01Dtos=this.qdenvService.queryWtList(wt01Dto);
+        return JSON.toJSONStringWithDateFormat(wt01Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100201/queryWt02",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt02(Wt02Dto wt02Dto){
+        List<Wt02Dto> wt02Dtos=this.qdenvService.queryWt02(wt02Dto);
+        return JSON.toJSONStringWithDateFormat(wt02Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
 }

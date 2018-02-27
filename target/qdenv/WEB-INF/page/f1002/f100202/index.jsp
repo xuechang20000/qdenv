@@ -15,51 +15,70 @@
     <legend><span>查询条件</span></legend>
     <div id="form1" >
     自：
-    <input class="mini-datepicker" style="width:150px;" id="s_date" name="s_date"  />
+    <input class="mini-datepicker" style="width:100px;" id="s_date" name="s_date"  />
     至
-    <input class="mini-datepicker" style="width:150px;" id="e_date" name="e_date" />
-    <input id="wat003" class="mini-combobox" style="width: 150px;" onvaluechanged="setWat002" textField="dictName" valueField="dictVal"
+    <input class="mini-datepicker" style="width:100px;" id="e_date" name="e_date" />
+    <input id="wat003" class="mini-combobox" style="width: 150px;"  textField="dictName" valueField="dictVal"
            url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=WAT003"   allowInput="true" showNullItem="true" emptyText="请选择检测类别..." />
-    <input id="bhz003" class="mini-combobox" style="width: 150px;" onvaluechanged="setWat002" textField="bzh002" valueField="bhz003"
+    <input id="bhz003" class="mini-combobox" style="width: 150px;"  textField="bzh002" valueField="bhz003"
            url="<%=request.getContextPath()%>/work/f100601/queryHangyeList"    allowInput="true" showNullItem="true" emptyText="请选择行业类别..."/>
-    <input id="aab301" class="mini-combobox" style="width: 100px;" onvaluechanged="setWat002" textField="dictName" valueField="dictVal"
+    <input id="aab301" class="mini-combobox" style="width: 100px;"  textField="dictName" valueField="dictVal"
            url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=AAB301"    showNullItem="true" emptyText="请选择区市..."/>
     <a class="mini-button" id="id_onSerach" iconCls="icon-search" onclick="onSerach">查询</a>
     </div>
 </fieldset>
-<div id="datagrid1" class="mini-datagrid" style="width:100%;height:300px;" allowResize="true"
-     url="<%=request.getContextPath()%>/work/f10010202/queryStuListByCurentUserPub.action"
-     idField="stuid"  pageSize='100' pagerButtons="#exportExcel" sortMode="client"    >
+<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"
+     url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail"
+     onrowdblclick="onShowRowDetail"  idField="wat001"  pageSize='100'  sortMode="client"    >
     <div property="columns">
-        <div field="stuid" width="120" headerAlign="center" align="center" visible="false" allowSort="true">学生id</div>
-        <div field="groupname" width="70" headerAlign="center" align="center" allowSort="true">用户组名称</div>
-        <div field="stu_name" width="60" headerAlign="center" align="center" allowSort="true">学生姓名</div>
-        <div field="cellphone" width="90" headerAlign="center"  align="center" allowSort="true" >手机</div>
-        <div field="stu_level" width="60" headerAlign="center"  align="center" allowSort="true" renderer='oncodeRender'>学生级别</div>
-        <div field="recorderor" width="60" headerAlign="center"  align="center" allowSort="true" >学习顾问</div>
-        <div field="followor" width="60" headerAlign="center"  align="center" allowSort="true" >跟进服务人</div>
-        <div field="examlevelor" width="60" headerAlign="center"  align="center" allowSort="true" >报考层次</div>
-        <div field="examclassor" width="60" headerAlign="center" align="center"  allowSort="true" >考试科类</div>
-        <div field="firstwishschoolor" width="60" headerAlign="center" align="center"  allowSort="true" >一志愿院校</div>
-        <div field="firstwishspecialtyor" width="60" headerAlign="center" align="center"  allowSort="true" >一志愿专业</div>
-        <div field="learningformor" width="60" headerAlign="center" align="center"  allowSort="true" >学习形式</div>
-        <div field="manualschool" width="60" headerAlign="center" align="center"  allowSort="true" >手输院校</div>
-        <div field="manualspecialty" width="60" headerAlign="center" align="center"  allowSort="true" >手输专业</div>
-        <div field="blongrelation" width="60" headerAlign="center" align="center"  allowSort="true"  renderer='oncodeRender'>隶属关系</div>
-        <div field="proce_stepname" width="140" headerAlign="center" align="center"  allowSort="true" >当前状态</div>
-        <div field="do" width="100" headerAlign="center" align="center"  allowSort="true" renderer='onrenderDO'>详情</div>
+        <div type="expandcolumn"></div>
+        <div field="wat001" width="40" headerAlign="center" align="center" visible="false" allowSort="true">委托id</div>
+        <div field="wat002" width="60" headerAlign="center" align="center" allowSort="true">编号</div>
+        <div field="wat018" width="40" headerAlign="center" align="center"  allowSort="true">状态</div>
+        <div field="aab301" width="50" headerAlign="center"  align="center" renderer="oncodeRender" allowSort="true" >地区</div>
+        <div field="daw005" width="140" headerAlign="center"  align="center" allowSort="true" >地点</div>
+        <div field="daw002" width="140" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
+        <div field="userid" width="60" headerAlign="center" visible="false" align="center" allowSort="true" >创建人</div>
+        <div field="username" width="60" headerAlign="center"  align="center" allowSort="true" >创建人</div>
+        <div field="wat017" width="40" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
+        <div field="wft007" width="40" headerAlign="center" align="center" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
+        <div field="wft010" width="40" headerAlign="center" align="center" visible="false" allowSort="true" >是否实收</div>
+        <div field="do" width="50" headerAlign="center" align="center" visible="false" allowSort="true" renderer='onrenderDO'>操作</div>
     </div>
 </div>
+
 </body>
+<script id="formTemplate" type="text/x-jquery-tmpl">
+<div>
+<span>报告:{{= bbz002}}</span>
+{{each(i,wt03) wt03DtoList}}
+<div>${i+1}:{{= wt03.wct002}}</div>
+{{/each}}
+</div>
+</script>
 <script type="text/javascript">
     mini.parse();
+    var grid=mini.get("datagrid1");
+    grid.load();
 function onSerach() {
     var form = new mini.Form("#form1");
     var data = form.getData(true);
     data.wat003=mini.get("wat003").getValue();
     data.bhz003=mini.get("bhz003").getValue();
     data.aab301=mini.get("aab301").getValue();
-    alert(JSON.stringify(data))
+    grid.load(data);
+}
+function onShowRowDetail(e) {
+    var grid = e.sender;
+    var row = e.record;
+    var td = grid.getRowDetailCellEl(row);
+    var o={}
+    var url="${pageContext.request.contextPath}/work/f100201/queryWt02"
+    Web.util.request(url,'post',{wat001:row.wat001},function (data) {
+        td.innerHTML = "";
+        $("#formTemplate").tmpl(data).appendTo(td);
+    })
+
 }
 </script>
 
