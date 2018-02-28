@@ -7,6 +7,12 @@
 <%@include file="/include/head.jsp"%>
     <style type="text/css">
         #fd2{margin-bottom: 5px;padding: 5px}
+        .temp_report{margin-bottom:3px;background-color: #efefef;padding: 4px; border: 1px solid;border-color: #9c9c9c}
+        .temp_report img:hover{cursor:pointer}
+        .temp_report img{vertical-align:middle}
+        .temp_report_title{font-weight: bold;color: #1296db}
+        .temp_select_title{color:#1296db}
+        .temp_select{padding-bottom: 4px}
     </style>
 
 </head>
@@ -14,6 +20,8 @@
 <fieldset id="fd2">
     <legend><span>查询条件</span></legend>
     <div id="form1" >
+        <input id="wat018" class="mini-combobox" style="width: 100px;"  textField="wlt002" valueField="wlt003"
+               url="<%=request.getContextPath()%>/work/f100201/queryWt06"   allowInput="true" showNullItem="true" emptyText="全部状态" />
     自：
     <input class="mini-datepicker" style="width:100px;" id="s_date" name="s_date"  />
     至
@@ -29,12 +37,13 @@
 </fieldset>
 <div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"
      url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail"
-     onrowdblclick="onShowRowDetail"  idField="wat001"  pageSize='100'  sortMode="client"    >
+     idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu"  >
     <div property="columns">
         <div type="expandcolumn"></div>
         <div field="wat001" width="40" headerAlign="center" align="center" visible="false" allowSort="true">委托id</div>
         <div field="wat002" width="60" headerAlign="center" align="center" allowSort="true">编号</div>
-        <div field="wat018" width="40" headerAlign="center" align="center"  allowSort="true">状态</div>
+        <div field="wat018" width="40" headerAlign="center" align="center" visible="false" allowSort="true">状态</div>
+        <div field="wat018s" width="40" headerAlign="center" align="center"  allowSort="true">状态</div>
         <div field="aab301" width="50" headerAlign="center"  align="center" renderer="oncodeRender" allowSort="true" >地区</div>
         <div field="daw005" width="140" headerAlign="center"  align="center" allowSort="true" >地点</div>
         <div field="daw002" width="140" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
@@ -46,14 +55,43 @@
         <div field="do" width="50" headerAlign="center" align="center" visible="false" allowSort="true" renderer='onrenderDO'>操作</div>
     </div>
 </div>
-
+<ul id="gridMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
+    <li name="DO_1" iconCls="icon-node" onclick="onWt01DO('DO_1')">相关信息</li>
+    <li name="DO_2" iconCls="icon-node" onclick="onWt01DO('DO_2')">委托协议</li>
+    <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3')">信息修正</li>
+    <li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4')">检测数据</li>
+    <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5')">重新检测</li>
+    <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6')">快递信息</li>
+    <li name="DO_12" iconCls="icon-downgrade" onclick="onWt01DO('DO_12')">提交(下一环节)</li>
+    <li name="DO_13" iconCls="icon-upgrade" onclick="onWt01DO('DO_13')">退回(上一环节)</li>
+</ul>
 </body>
 <script id="formTemplate" type="text/x-jquery-tmpl">
-<div>
-<span>报告:{{= bbz002}}</span>
+<div class="temp_report">
+
+<span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
+ <img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">
+ <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})">
+ <img src="${pageContext.request.contextPath}/resources/image/preview.png"/ onclick="onPreviewWt02({{= wbt001}})">
+ <img src="${pageContext.request.contextPath}/resources/image/out.png"/ onclick="onOutWt02({{= wbt001}})">
+ <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})">
+</span>
+
 {{each(i,wt03) wt03DtoList}}
-<div>${i+1}:{{= wt03.wct002}}</div>
+<div class="temp_select">
+    <span class="temp_select_title">
+    <img src="${pageContext.request.contextPath}/resources/image/delete.png" onclick="onDeleteWt03({{= wt03.wct001}})"/>
+    <img src="${pageContext.request.contextPath}/resources/image/edit.png" onclick="onEditWt03({{= wt03.wct001}})"/>
+    (ID:{{= wt03.wct001}}){{= wt03.wct002}}</span>
+    项目：
+    <span>
+        {{each(j,wt04) wt03.wt04DtoList}}
+        ,{{= wt04.bcz002}}
+        {{/each}}
+    </span>
+</div>
 {{/each}}
+
 </div>
 </script>
 <script type="text/javascript">
@@ -79,6 +117,41 @@ function onShowRowDetail(e) {
         $("#formTemplate").tmpl(data).appendTo(td);
     })
 
+}
+    function onBeforeOpen(e) {
+        var menu = e.sender;
+        var editItem = mini.getbyName("edit", menu);
+        var removeItem = mini.getbyName("remove", menu);
+        var row = grid.getSelected();
+        //editItem.show();
+        //removeItem.enable();
+    }
+function onDeleteWt03(v) {
+    alert(v);
+}
+function onEditWt03(v) {
+    alert(v);
+}
+function onAddWt03(v) {
+    alert(v);
+}
+function onEditWt02(v) {
+    alert(v);
+}
+function onPreviewWt02(v) {
+    alert(v);
+}
+function onOutWt02(v) {
+    alert(v);
+}
+function onCheckWt02(v) {
+    alert(v);
+}
+function onWt01DO(v) {
+    var row = grid.getSelected();
+    if("DO_1"==v){
+        alert(row.wat001)
+    }
 }
 </script>
 

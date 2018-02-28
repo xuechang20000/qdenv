@@ -5,22 +5,25 @@ import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
+import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.wondersgroup.framwork.dao.CommonJdbcUtils.queryCount;
+
 
 /**
  * 业务service
  */
 @Service
 public class QdenvServiceImpl implements QdenvService {
+    private static Logger logger= org.apache.log4j.Logger.getLogger(QdenvServiceImpl.class);
     /**
      * 保存行业
      */
@@ -447,7 +450,8 @@ public class QdenvServiceImpl implements QdenvService {
 
     public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
         StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append("select a.*,b.wft007,b.wft010,c.name as username from wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
+        stringBuffer.append("select a.*,b.wft007,b.wft010,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s " +
+                "from wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
         if(wt01Dto.getWat001()!=null){
             stringBuffer.append(" and a.wat001=? ");
             args.add(wt01Dto.getWat001());
@@ -554,5 +558,23 @@ public class QdenvServiceImpl implements QdenvService {
     public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto){
         String sql="select * from wt04 where wct001=?";
         return CommonJdbcUtils.queryList(sql,Wt04Dto.class,wt04Dto.getWct001());
+    }
+
+    /**
+     * 查询操作人员环节权限列表
+     * @param isPermission
+     * @return
+     */
+    public List<Wt06Dto> queryWt06(Boolean isPermission){
+        String sql="select * from wt06 ";
+        List<Wt06Dto> list=null;
+        list =CommonJdbcUtils.queryList(sql,Wt06Dto.class);
+        if (isPermission){
+            Subject subject= SecurityUtils.getSubject();
+           for (Wt06Dto dto:list){
+              logger.debug("dddddddd"+subject.isPermitted(dto.getWlt003()));
+           }
+        }
+        return list;
     }
 }

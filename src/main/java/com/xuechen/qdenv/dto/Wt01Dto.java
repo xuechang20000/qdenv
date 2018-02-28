@@ -9,6 +9,7 @@ public class Wt01Dto extends Wt01 {
     private String json1;
     private String json2;
 
+    private String wat018s;
     private String wft002;
     private String wft003;
     private String wft004;
@@ -122,5 +123,13 @@ public class Wt01Dto extends Wt01 {
 
     public void setWt02DtoList(List<Wt02Dto> wt02DtoList) {
         this.wt02DtoList = wt02DtoList;
+    }
+
+    public String getWat018s() {
+        return wat018s;
+    }
+
+    public void setWat018s(String wat018s) {
+        this.wat018s = wat018s;
     }
 }

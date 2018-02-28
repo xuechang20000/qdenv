@@ -35,4 +35,5 @@ public interface QdenvService {
     public List<Wt02Dto> queryWt02(Wt02Dto wt02Dto);
     public List<Wt03Dto> queryWt03(Wt03Dto wt03Dto);
     public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto);
+    public List<Wt06Dto> queryWt06(Boolean isPermission);
 }
