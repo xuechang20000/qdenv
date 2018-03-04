@@ -56,12 +56,12 @@
     </div>
 </div>
 <ul id="gridMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
-    <li name="DO_1" iconCls="icon-node" onclick="onWt01DO('DO_1')">相关信息</li>
-    <li name="DO_2" iconCls="icon-node" onclick="onWt01DO('DO_2')">委托协议</li>
-    <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3')">信息修正</li>
-    <li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4')">检测数据</li>
-    <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5')">重新检测</li>
-    <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6')">快递信息</li>
+    <li name="DO_1" iconCls="icon-node" onclick="onWt01DO('DO_1','相关信息')">相关信息</li>
+    <li name="DO_2" iconCls="icon-node" onclick="onWt01DO('DO_2','委托协议')">委托协议</li>
+    <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
+    <li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>
+    <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5','重新检测')">重新检测</li>
+    <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6','快递信息')">快递信息</li>
     <li name="DO_12" iconCls="icon-downgrade" onclick="onWt01DO('DO_12')">提交(下一环节)</li>
     <li name="DO_13" iconCls="icon-upgrade" onclick="onWt01DO('DO_13')">退回(上一环节)</li>
 </ul>
@@ -147,11 +147,12 @@ function onOutWt02(v) {
 function onCheckWt02(v) {
     alert(v);
 }
-function onWt01DO(v) {
+function onWt01DO(v,t) {
     var row = grid.getSelected();
-    if("DO_1"==v){
-        alert(row.wat001)
-    }
+    var url="${pageContext.request.contextPath}/work/f100202/load"+v+"?wat001="+row.wat001;
+    Web.util.openMiniWindow(t,url,1000,550,function () {
+        grid.reload();
+    })
 }
 </script>
 

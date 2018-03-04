@@ -8,6 +8,7 @@ public class Wt03Dto extends Wt03 {
     private String idx;
     private String bcz002s;
     private String bcz001s;
+    private String _state;
 
     private List<Wt04Dto> wt04DtoList;
     public String getIdx() {
@@ -40,5 +41,13 @@ public class Wt03Dto extends Wt03 {
 
     public void setWt04DtoList(List<Wt04Dto> wt04DtoList) {
         this.wt04DtoList = wt04DtoList;
+    }
+
+    public String get_state() {
+        return _state;
+    }
+
+    public void set_state(String _state) {
+        this._state = _state;
     }
 }

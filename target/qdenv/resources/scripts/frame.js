@@ -1,7 +1,6 @@
 mini.namespace("Web.util");
 
 var timeout__ = 1000;
-
 Web.util.request = function(url,method,params,successFunction,failureFunction,waitMsg){
 	var method__ = 'POST';
 	if(method)
@@ -92,9 +91,11 @@ Web.util.formLoad = function(formId,url,method,params,successFunction,failureFun
 	           data=mini.decode(text);   //反序列化成对象
 	           }catch(e){
 	        	   fialureF(text);
+	        	   return ;
 	           }
+	           if(data[0]) data=data[0];
 	           form.setData(data);             //设置多个控件数据
-	           if(successFunction) successFunction();
+	           if(successFunction) successFunction(data);
 	       },
 	       error:fialureF
 	   });

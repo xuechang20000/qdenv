@@ -269,6 +269,7 @@
         var select=mini.get("bbz001").getSelected();
         var row={idx:v_idx++,wbt003:'0',bbz001:select.bbz001,bbz002:select.bbz002,bbz003:select.bbz003,bbz004:select.bbz004}
         grid.addRow(row,-1);
+        grid.select(row)
     }
     function onItemClick2(e) {
         var select=mini.get("bbz003s").getSelected();
@@ -305,15 +306,17 @@
         return true;
     }
     function onrowclick(e) {
-        bbz001=e.record.bbz001;
-        mini.get("bbz003s").load("${pageContext.request.contextPath}/work/f100603/queryFenzuList?bbz001="+bbz001)
+       //bbz001=e.record.bbz001;
+       // mini.get("bbz003s").load("${pageContext.request.contextPath}/work/f100603/queryFenzuList?bbz001="+bbz001)
     }
     var grid2_now_row;
     function onBcz002sClick(e) {
         if(e.column.field=='bcz002s'){
-        $("#bz02list").css("display","block");
-        mini.get("listbox2").load("${pageContext.request.contextPath}/work/f100602/queryXiangMuList?bbz001="+bbz001)
-        grid2_now_row=grid2.getSelected();
+            $("#bz02list").css("display","block");
+            bbz001=e.record.bbz001;
+            mini.get("bbz003s").load("${pageContext.request.contextPath}/work/f100603/queryFenzuList?bbz001="+bbz001)
+            mini.get("listbox2").load("${pageContext.request.contextPath}/work/f100602/queryXiangMuList?bbz001="+bbz001)
+            grid2_now_row=grid2.getSelected();
         }
     }
     function onSelectbz02() {

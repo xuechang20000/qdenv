@@ -10,6 +10,7 @@ public class Wt02Dto extends Wt02 {
     private String bbz002;
     private String bbz003;
     private String bbz004;
+    private String _state;
     public String getIdx() {
         return idx;
     }
@@ -48,5 +49,13 @@ public class Wt02Dto extends Wt02 {
 
     public void setBbz004(String bbz004) {
         this.bbz004 = bbz004;
+    }
+
+    public String get_state() {
+        return _state;
+    }
+
+    public void set_state(String _state) {
+        this._state = _state;
     }
 }

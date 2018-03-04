@@ -61,6 +61,7 @@ public class LoginContrallor {
             AppUser appUser=new AppUser();
             appUser.setLoginname(loginname);
             appUserDTO=this.userService.queryUserByUser(appUser).get(0);
+            //appUserDTO.setAppResources(this.userService.selectResourceByUser(appUser));
             setSession(appUserDTO);
             saveLogLogin(appUserDTO.getUserId(),loginname,password,ip,"1","用户名为:【" + loginname + "】登陆成功！");
             return  "/WEB-INF/page/index";
@@ -104,6 +105,7 @@ public class LoginContrallor {
     }
     public  void setSession(AppUserDTO appUserDTO){
         Subject subject=SecurityUtils.getSubject();
+
         subject.getSession().setAttribute("user",appUserDTO);
         List<AppMenu> menus=appUserDTO.getAppMenus();
         if(menus!=null&&menus.size()>0){

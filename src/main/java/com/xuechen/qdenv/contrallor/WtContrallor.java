@@ -47,6 +47,30 @@ public class WtContrallor {
     public String index_f100202(){
         return "/WEB-INF/page/f1002/f100202/index";
     }
+    @RequestMapping("/f100202/loadDO_1")
+    public String index_load_do_1(){
+        return "/WEB-INF/page/f1002/f100202/DO_1";
+    }
+    @RequestMapping("/f100202/loadDO_2")
+    public String index_load_do_2(){
+        return "/WEB-INF/page/f1002/f100202/DO_2";
+    }
+    @RequestMapping("/f100202/loadDO_3")
+    public String index_load_do_3(){
+        return "/WEB-INF/page/f1002/f100202/DO_3";
+    }
+    @RequestMapping("/f100202/loadDO_4")
+    public String index_load_do_4(){
+        return "/WEB-INF/page/f1002/f100202/DO_4";
+    }
+    @RequestMapping("/f100202/loadDO_5")
+    public String index_load_do_5(){
+        return "/WEB-INF/page/f1002/f100202/DO_5";
+    }
+    @RequestMapping("/f100202/loadDO_6")
+    public String index_load_do_6(){
+        return "/WEB-INF/page/f1002/f100202/DO_6";
+    }
     @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String getWat016(String wat015){

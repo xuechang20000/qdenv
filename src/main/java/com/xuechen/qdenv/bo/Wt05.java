@@ -31,18 +31,6 @@ public class Wt05 {
 
     private Date wft011;
 
-    private String wft012;
-
-    private String wft013;
-
-    private Double wft014;
-
-    private String wft015;
-
-    private Date wft016;
-
-    private String wft017;
-
     private String aae013;
 
     @Id
@@ -140,54 +128,6 @@ public class Wt05 {
 
     public void setWft011(Date wft011) {
         this.wft011 = wft011;
-    }
-
-    public String getWft012() {
-        return wft012;
-    }
-
-    public void setWft012(String wft012) {
-        this.wft012 = wft012 == null ? null : wft012.trim();
-    }
-
-    public String getWft013() {
-        return wft013;
-    }
-
-    public void setWft013(String wft013) {
-        this.wft013 = wft013 == null ? null : wft013.trim();
-    }
-
-    public Double getWft014() {
-        return wft014;
-    }
-
-    public void setWft014(Double wft014) {
-        this.wft014 = wft014;
-    }
-
-    public String getWft015() {
-        return wft015;
-    }
-
-    public void setWft015(String wft015) {
-        this.wft015 = wft015 == null ? null : wft015.trim();
-    }
-
-    public Date getWft016() {
-        return wft016;
-    }
-
-    public void setWft016(Date wft016) {
-        this.wft016 = wft016;
-    }
-
-    public String getWft017() {
-        return wft017;
-    }
-
-    public void setWft017(String wft017) {
-        this.wft017 = wft017 == null ? null : wft017.trim();
     }
 
     public String getAae013() {

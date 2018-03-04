@@ -326,7 +326,8 @@ public class QdenvServiceImpl implements QdenvService {
      */
     public String getWat016(String wat015){
         String sql="select max(wat016) from wt01 where wat015=?";
-        long wat016=CommonJdbcUtils.queryObject(sql,Long.class,wat015);
+        Long wat016=CommonJdbcUtils.queryObject(sql,Long.class,wat015);
+        if (wat016==null) return "1";
         wat016=wat016+1;
         return String.valueOf(wat016);
     }
@@ -344,16 +345,23 @@ public class QdenvServiceImpl implements QdenvService {
         BeanUtils.copyProperties(wt01Dto,wt01);
         wt01.setWat017(new Date());
         //保存状态
-    if (wt01.getWat004()!=null){
-        wt01.setWat018("LC_ORD");//预约状态
-    }else{
-        wt01.setWat018("LC_INI");//新建状态
+    if(wt01.getWat001()==null) {
+        if (wt01.getWat004() != null) {
+            wt01.setWat018("LC_ORD");//预约状态
+        } else {
+            wt01.setWat018("LC_INI");//新建状态
+        }
     }
         //保存主表
         CommonJdbcUtils.saveOrUpdateObject(wt01,false);
         //保存财务表
-        Wt05 wt05=new Wt05();
-        BeanUtils.copyProperties(wt01Dto,wt05);
+        Wt05 wt05=null;
+        if (wt01Dto.getWat001()!=null)
+        wt05=CommonJdbcUtils.queryFirst("select * from wt05 where wat001=? ",Wt05.class,wt01Dto.getWat001());
+        else
+        wt05=new Wt05();
+
+        wt05.setWat001(wt01.getWat001());
     if (wt01Dto.getWft002()!=null&&!wt01Dto.getWft002().trim().equals(""))
         wt05.setWft002(Double.valueOf(wt01Dto.getWft002()));
     if (wt01Dto.getWft003()!=null&&!wt01Dto.getWft003().trim().equals(""))
@@ -370,14 +378,21 @@ public class QdenvServiceImpl implements QdenvService {
         wt05.setWat001(wt01.getWat001());
         wt05.setAae013("");
         saveWt05(wt05);
-        //保存采样点
-        for(Wt03Dto wt03Dto:wt03Dtos){
-            for (Wt02Dto wt02Dto:wt02Dtos){
-                if (wt02Dto.getIdx().equals(wt03Dto.getIdx())){
-                    if (wt02Dto.getWt03DtoList()==null) wt02Dto.setWt03DtoList(new ArrayList<Wt03Dto>());
-                    wt03Dto.setWat001(wt01.getWat001());
-                    wt02Dto.setWat001(wt01.getWat001());
-                    wt02Dto.getWt03DtoList().add(wt03Dto);
+        if (wt03Dtos!=null) {
+            //保存采样点
+            for (Wt03Dto wt03Dto : wt03Dtos) {
+                if (wt03Dto.getWbt001()!=null&&!"".equals(wt03Dto.getWbt001()))
+                {
+                    saveOrUpdateWt03(wt03Dto);
+                    continue;
+                }
+                for (Wt02Dto wt02Dto : wt02Dtos) {
+                    if (wt02Dto.getIdx().equals(wt03Dto.getIdx())) {
+                        if (wt02Dto.getWt03DtoList() == null) wt02Dto.setWt03DtoList(new ArrayList<Wt03Dto>());
+                        wt03Dto.setWat001(wt01.getWat001());
+                        wt02Dto.setWat001(wt01.getWat001());
+                        wt02Dto.getWt03DtoList().add(wt03Dto);
+                    }
                 }
             }
         }
@@ -401,32 +416,49 @@ public class QdenvServiceImpl implements QdenvService {
     public void saveWt02(List<Wt02Dto> wt02Dtos){
         Wt02 wt02=null;
         for (Wt02Dto wt02Dto:wt02Dtos){
+            if ("removed".equals(wt02Dto.get_state())){
+                deleteWt02(wt02Dto.getWbt001());
+                continue;
+            }
             wt02=new Wt02();
             BeanUtils.copyProperties(wt02Dto,wt02);
             if (wt02.getWbt001()==null) wt02.setWbt002(new Date());
             CommonJdbcUtils.saveOrUpdateObject(wt02,false);
-            for (Wt03Dto wt03Dto:wt02Dto.getWt03DtoList()){
-                wt03Dto.setWbt001(wt02.getWbt001());
-                saveOrUpdateWt03(wt03Dto);
+            if (wt02Dto.getWt03DtoList()!=null) {
+                for (Wt03Dto wt03Dto : wt02Dto.getWt03DtoList()) {
+                    wt03Dto.setWbt001(wt02.getWbt001());
+                    saveOrUpdateWt03(wt03Dto);
+                }
             }
         }
     }
 
+    public void deleteWt02(Integer wbt001){
+        CommonJdbcUtils.execute("delete from wt02 where wbt001=?",wbt001);
+    }
     /**
      * 添加采样点
      * @param wt03Dto
      * @return
      */
     public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto){
+
         Wt03 wt03=new Wt03();
         BeanUtils.copyProperties(wt03Dto,wt03);
+        if ("removed".equals(wt03Dto.get_state())){
+            deleteWt03(wt03Dto.getWct001());
+            return wt03;
+        }
         //保存采样点
         CommonJdbcUtils.saveOrUpdateObject(wt03,false);
         List<Wt04> wt04s=getWt04List(wt03Dto.getBcz001s(),wt03.getWct001(),wt03.getWbt001());
         saveWt04List(wt04s);
         return wt03;
     }
-
+    public void deleteWt03(Integer wct001){
+        CommonJdbcUtils.execute("delete from wt03 where wct001=?",wct001);
+        CommonJdbcUtils.execute("delete from wt04 where wct001=?",wct001);
+    }
     /**
      * 查询检测项目列表
      * @param bcz001s
@@ -450,7 +482,7 @@ public class QdenvServiceImpl implements QdenvService {
 
     public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
         StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append("select a.*,b.wft007,b.wft010,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s " +
+        stringBuffer.append("select a.*,b.wft002,b.wft004,b.wft006,b.wft007,b.wft010,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s " +
                 "from wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
         if(wt01Dto.getWat001()!=null){
             stringBuffer.append(" and a.wat001=? ");
@@ -494,6 +526,8 @@ public class QdenvServiceImpl implements QdenvService {
             stringBuffer.append(" and a.userid=? ");
             args.add(wt01Dto.getUserid());
         }
+        stringBuffer.append(" and  FIND_IN_SET(a.wat018,?) ");
+        args.add(queryWt06s(true));
         return stringBuffer.toString();
     }
     /**
@@ -568,13 +602,32 @@ public class QdenvServiceImpl implements QdenvService {
     public List<Wt06Dto> queryWt06(Boolean isPermission){
         String sql="select * from wt06 ";
         List<Wt06Dto> list=null;
+        List<Wt06Dto> rlist=new ArrayList<Wt06Dto>();
         list =CommonJdbcUtils.queryList(sql,Wt06Dto.class);
         if (isPermission){
             Subject subject= SecurityUtils.getSubject();
            for (Wt06Dto dto:list){
-              logger.debug("dddddddd"+subject.isPermitted(dto.getWlt003()));
+              if (subject.isPermitted(dto.getWlt003())){
+                  rlist.add(dto);
+              }
            }
+            return rlist;
         }
         return list;
+    }
+    /**
+     * 查询操作人员环节权限列表
+     * @param isPermission
+     * @return
+     */
+    public String queryWt06s(Boolean isPermission){
+        List<Wt06Dto> list=queryWt06(isPermission);
+        String res="";
+        for (Wt06Dto dto:list){
+            if ("".equals(res)) res=res+dto.getWlt003();
+            else
+                res=res+","+dto.getWlt003();
+        }
+        return  res;
     }
 }
