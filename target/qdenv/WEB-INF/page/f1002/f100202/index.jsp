@@ -62,6 +62,7 @@
     <li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>
     <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5','重新检测')">重新检测</li>
     <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6','快递信息')">快递信息</li>
+    <li name="DO_14" iconCls="icon-node" onclick="onWt01DO('DO_14','安排采样')">安排采样</li>
     <li name="DO_12" iconCls="icon-downgrade" onclick="onWt01DO('DO_12')">提交(下一环节)</li>
     <li name="DO_13" iconCls="icon-upgrade" onclick="onWt01DO('DO_13')">退回(上一环节)</li>
 </ul>
@@ -150,7 +151,7 @@ function onCheckWt02(v) {
 function onWt01DO(v,t) {
     var row = grid.getSelected();
     var url="${pageContext.request.contextPath}/work/f100202/load"+v+"?wat001="+row.wat001;
-    Web.util.openMiniWindow(t,url,1000,550,function () {
+    Web.util.openMiniWindow(t,url,1000,500,function () {
         grid.reload();
     })
 }

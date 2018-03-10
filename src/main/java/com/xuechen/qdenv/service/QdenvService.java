@@ -7,6 +7,7 @@ import com.xuechen.qdenv.dto.*;
 import java.util.List;
 
 public interface QdenvService {
+    public Wt09 saveWt09(Wt09Dto wt09Dto);
     public void saveBz04(Bz04 bz04);
     public void updateBz04(Bz04 bz04);
     public List<Bz04Dto> queryBz04(Page page, Bz04Dto bz04Dto);
@@ -24,10 +25,12 @@ public interface QdenvService {
     public List<Bz03Dto> queryBz03(Page page,Bz03Dto bz03Dto);
     public List<Bz03Dto> queryBz03List(Bz03Dto bz03Dto);
     public String getWat016(String wat015);
+    public Wt01 saveWt(Wt01Dto wt01Dto);
     public Wt01 saveWt(Wt01Dto wt01Dto, List<Wt02Dto> wt02Dtos, List<Wt03Dto> wt03Dtos);
     public Wt05 saveWt05(Wt05 wt05);
     public void saveWt02(List<Wt02Dto> wt02Dtos);
     public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto);
+    public void updateWt03(List<Wt03Dto> wt03Dtos);
     public  List<Wt04> getWt04List(String bcz001s,Integer wct001,Integer wbt001);
     public void saveWt04List(List<Wt04> wt04s);
     public List<Wt01Dto> queryWtList(Wt01Dto dto);

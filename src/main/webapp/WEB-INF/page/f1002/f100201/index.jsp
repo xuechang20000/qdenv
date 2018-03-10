@@ -40,6 +40,9 @@
                     <input id="wat015"  name="wat015" visible="false" readonly="true" class="mini-textbox" required="true" />
                     <input id="wat016"  name="wat016" visible="false" readonly="true" class="mini-textbox" required="true" />
                     <input id="wat002"  name="wat002" visible="false" readonly="true" class="mini-textbox" required="true" />
+                    <input id="wat010"  name="wat002" visible="false" readonly="true" class="mini-textbox" required="true" />
+                    <input id="wat011"  name="wat002" visible="false" readonly="true" class="mini-textbox" required="true" />
+                    <input id="wat012"  name="wat002" visible="false" readonly="true" class="mini-textbox" required="true" />
                     <input id="aae016"  name="aae016" value="1" visible="false" readonly="true" class="mini-textbox" required="true" />
                 </td>
             </tr>
@@ -388,6 +391,10 @@ function setWat002() {
     })
 }
 function doSubmit() {
+    //邮寄信息
+    mini.get("wat010").setValue(mini.getValue("daw005"));//地址
+    mini.get("wat011").setValue(mini.getValue("daw003"));//联系人
+    mini.get("wat012").setValue(mini.getValue("daw004"));//电话
     var form = new mini.Form("#form1");
     form.validate();
     if (form.isValid() == false) {

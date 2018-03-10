@@ -10,6 +10,7 @@ public class Wt01Dto extends Wt01 {
     private String json2;
 
     private String wat018s;
+    private Integer wft001;
     private String wft002;
     private String wft003;
     private String wft004;
@@ -131,5 +132,13 @@ public class Wt01Dto extends Wt01 {
 
     public void setWat018s(String wat018s) {
         this.wat018s = wat018s;
+    }
+
+    public Integer getWft001() {
+        return wft001;
+    }
+
+    public void setWft001(Integer wft001) {
+        this.wft001 = wft001;
     }
 }
