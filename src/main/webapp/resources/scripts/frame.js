@@ -197,7 +197,7 @@ Web.util.showTipsWanring=function(content,state,x,y,timeout) {
     if(!x) x='center';
     if(!y) y='center';
     if(!state) state='warning';
-    if(!timeout) timeout=1000;
+    if(!timeout) timeout=3000;
     mini.showTips({
         content: content,
         state: state,

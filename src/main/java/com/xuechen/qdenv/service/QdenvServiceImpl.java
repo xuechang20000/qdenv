@@ -6,6 +6,7 @@ import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import com.xuechen.web.dto.AppUserDTO;
+import com.xuechen.web.exception.BusinessException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -543,6 +544,7 @@ public class QdenvServiceImpl implements QdenvService {
      * @param wt03Dtos
      * @return
      */
+    @Transactional
     public void updateWt03(List<Wt03Dto> wt03Dtos){
         Wt03 wt03=null;
         AppUserDTO user=(AppUserDTO) SecurityUtils.getSubject().getSession().getAttribute("user" );
@@ -747,5 +749,138 @@ public class QdenvServiceImpl implements QdenvService {
                 res=res+","+dto.getWlt003();
         }
         return  res;
+    }
+
+    /**
+     * 查询人员分配列表
+     * @param wat001
+     * @return
+     */
+    public List<Wt08Dto> queryWt08ByWat001(Integer wat001){
+        String sql="select a.*,b.wat002,b.wat004,b.aae013 from wt08 a,wt01 b where a.wat001=b.wat001 and a.wat001=?";
+        List<Wt08Dto>  wt08Dtos=  CommonJdbcUtils.queryList(sql,Wt08Dto.class,wat001);
+        if (wt08Dtos==null||wt08Dtos.size()==0){
+            sql="select b.wat002,b.wat004,b.aae013 from wt01 b where b.wat001=?";
+             wt08Dtos=  CommonJdbcUtils.queryList(sql,Wt08Dto.class,wat001);
+        }
+        return  wt08Dtos;
+    }
+
+    /**
+     * 保存人员分配列表
+     * @param wt08s
+     */
+    @Transactional
+    public void saveWt08List(Wt01Dto wt01Dto,List<Wt08> wt08s){
+        Wt01 wt01=new Wt01();
+        BeanUtils.copyProperties(wt01Dto,wt01);
+        CommonJdbcUtils.updateSelect(wt01);
+        CommonJdbcUtils.execute("delete  from wt08 where wat001=?",wt01Dto.getWat001());
+        CommonJdbcUtils.insertBatch(wt08s);
+        /**
+         * 保存日志
+         */
+        Wt09Dto wt09Dto=new Wt09Dto();
+        wt09Dto.setWat001(wt01.getWat001());
+        wt09Dto.setWgt005("DO_14");
+        wt09Dto.setWgt006("安排采样");
+        String aae013=String.format("预约时间：%s",wt01.getWat004());
+        wt09Dto.setAae013(aae013);
+        saveWt09(wt09Dto);
+    }
+
+    /**
+     * 获取下一步状态码
+     * @param wat018
+     */
+    public Wt06 getNextWt06(String wat018,Integer step){
+        String stringStep=step>=0?"+"+String.valueOf(step):String.valueOf(step);
+        String sql="select * from wt06 where wlt004=(select wlt004"+stringStep+" from wt06 where wlt003=?)";
+        return CommonJdbcUtils.queryFirst(sql,Wt06.class,wat018);
+    }
+
+    /**
+     * 跳转下一步,或上一步,如果返回为空，则表示没有找到下一步或上一步
+     * @param wt01Dto
+     * @return
+     */
+    public Wt01Dto saveNextStep(Wt01Dto wt01Dto,Integer step){
+        Wt06 wt06=getNextWt06(wt01Dto.getWat018(),step);
+        if (wt06==null) return  null;
+        CommonJdbcUtils.execute("update wt01 set wat018=? where wat001=?",wt06.getWlt003(),wt01Dto.getWat001());
+        wt01Dto.setWat018(wt06.getWlt003());
+        /**
+         * 保存日志
+         */
+        Wt09Dto wt09Dto=new Wt09Dto();
+        wt09Dto.setWat001(wt01Dto.getWat001());
+        if (step>0) {
+            wt09Dto.setWgt005("DO_12");
+            wt09Dto.setWgt006("提交");
+        }
+        else {
+            wt09Dto.setWgt005("DO_13");
+            wt09Dto.setWgt006("退回");
+        }
+        String aae013=String.format("跳转频数：%s",step);
+        wt09Dto.setAae013(aae013);
+        saveWt09(wt09Dto);
+        return wt01Dto;
+    }
+
+    /**
+     * 进入下一环节
+     * @param wt01Dto
+     * @return
+     */
+    public Wt01Dto saveNextProcess(Wt01Dto wt01Dto){
+        List<Wt01Dto> wt01Dtos=queryWtList(wt01Dto);
+        if (wt01Dtos.isEmpty()||wt01Dtos.size()==0){
+            throw new BusinessException("未找到此委托信息");
+        }
+        Wt01Dto dto=wt01Dtos.get(0);
+        String sql=null;
+        if ("LC_INI".equals(dto.getWat018())){//新建
+            if (dto.getWat004()==null)
+                throw  new BusinessException("预约日期为空，不能进入预约环节");
+        }else if ("LC_ORD".equals(dto.getWat018())){//预约
+            List<Wt08Dto> wt08s=queryWt08ByWat001(dto.getWat001());
+            if (wt08s==null||wt08s.size()==0)  new BusinessException("未安排采样人员，不能进入采样环节");
+        }else if ("LC_COL".equals(dto.getWat018())){//采样
+            sql="select * from wt03 where wat001=? and (wct003 is null or wct004 is null or wct005 is null)";
+            List<Wt03> wt03s=CommonJdbcUtils.queryList(sql,Wt03.class,dto.getWat001());
+            if (wt03s!=null&&wt03s.size()>0)
+                throw new BusinessException("采样点数据未录入或者录入不完整，不允许进入检测环节");
+        }else if ("LC_TES".equals(dto.getWat018())){//检测
+            sql="select a.* from wt04 a,wt03 b,wt01 c where a.wct001=b.wct001 and b.wat001=c.wat001 and a.wxt002 is NULL " +
+                    "and c.wat001=? ";
+            List<Wt04> wt04s=CommonJdbcUtils.queryList(sql,Wt04.class,dto.getWat001());
+            if (wt04s!=null&&wt04s.size()>0)
+                throw new BusinessException("检测数据未录入或者录入不完整，不允许进入检测待审环节");
+        }else if ("LC_CHE".equals(dto.getWat018())){//检测待审
+
+        }else if ("LC_PUB".equals(dto.getWat018())){//发布
+
+        }
+        if (saveNextStep(dto,1)==null){
+            throw new BusinessException("下一步无步骤");
+        }
+        return dto;
+    }
+    /**
+     * 进入上一环节
+     * @param wt01Dto
+     * @return
+     */
+    public Wt01Dto savePreProcess(Wt01Dto wt01Dto){
+        List<Wt01Dto> wt01Dtos=queryWtList(wt01Dto);
+        if (wt01Dtos.isEmpty()||wt01Dtos.size()==0){
+            throw new BusinessException("未找到此委托信息");
+        }
+        Wt01Dto dto=wt01Dtos.get(0);
+        if (saveNextStep(dto,-1)==null){
+            throw new BusinessException("上一步无步骤");
+        }
+        return dto;
     }
 }

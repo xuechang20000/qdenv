@@ -1,5 +1,6 @@
 package com.xuechen.qdenv.service;
 
+import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
@@ -39,4 +40,8 @@ public interface QdenvService {
     public List<Wt03Dto> queryWt03(Wt03Dto wt03Dto);
     public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto);
     public List<Wt06Dto> queryWt06(Boolean isPermission);
+    public List<Wt08Dto> queryWt08ByWat001(Integer wat001);
+    public void saveWt08List(Wt01Dto wt01Dto,List<Wt08> wt08s);
+    public Wt01Dto saveNextProcess(Wt01Dto wt01Dto);
+    public Wt01Dto savePreProcess(Wt01Dto wt01Dto);
 }

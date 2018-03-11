@@ -3,10 +3,7 @@ package com.xuechen.qdenv.contrallor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wondersgroup.framwork.dao.bo.Page;
-import com.xuechen.qdenv.bo.Bz02;
-import com.xuechen.qdenv.bo.Bz03;
-import com.xuechen.qdenv.bo.Bz04;
-import com.xuechen.qdenv.bo.Wt01;
+import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
 import com.xuechen.web.dto.AppUserDTO;
@@ -67,6 +64,10 @@ public class WtContrallor {
     public String index_load_do_5(){
         return "/WEB-INF/page/f1002/f100202/DO_5";
     }
+    @RequestMapping("/f100202/loadDO_14")
+    public String index_load_do_14(){
+        return "/WEB-INF/page/f1002/f100202/DO_14";
+    }
     @RequestMapping("/f100202/loadDO_6")
     public String index_load_do_6(){
         return "/WEB-INF/page/f1002/f100202/DO_6";
@@ -122,5 +123,68 @@ public class WtContrallor {
         List<Wt03Dto> wt03Dtos=JSONObject.parseArray(wt03s,Wt03Dto.class);
         this.qdenvService.updateWt03(wt03Dtos);
         return JSON.toJSONStringWithDateFormat(wt03Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+
+    /**
+     * 查询人员分配列表
+     * @param wat001
+     * @return
+     */
+    @RequestMapping(value="/f100201/queryWt08ListByWat001",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt08ListByWat001(String wat001){
+        if (wat001==null) return "";
+        List<Wt08Dto> wt08Dtos= this.qdenvService.queryWt08ByWat001(Integer.valueOf(wat001));
+
+        return JSON.toJSONStringWithDateFormat(wt08Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+
+    /**
+     * 保存人员分配列表
+     * @param wt01Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/saveWt08List",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveWt08List(Wt01Dto wt01Dto ){
+        if (wt01Dto.getJson1()==null) return "";
+        String[] strs=wt01Dto.getJson1().split(",");
+        Wt08 wt08=null;
+        List<Wt08> wt08s=new ArrayList<Wt08>(strs.length);
+        AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        for (String userid:strs){
+            wt08=new Wt08();
+            wt08.setWat001(wt01Dto.getWat001());
+            wt08.setAae013(wt01Dto.getAae013());
+            wt08.setWdt004(new Date());
+            wt08.setWdt005(appUserDTO.getUserId());
+            wt08.setUserid(Integer.valueOf(userid));
+            wt08s.add(wt08);
+        }
+        this.qdenvService.saveWt08List(wt01Dto,wt08s);
+        return JSON.toJSONStringWithDateFormat(wt08s, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+
+    /**
+     * 跳转下一步（提交）
+     * @param wt01Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/saveNextStep",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveNextStep(Wt01Dto wt01Dto ){
+        Wt01Dto dto=this.qdenvService.saveNextProcess(wt01Dto);
+        return JSON.toJSONStringWithDateFormat(dto, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    /**
+     * 跳转上一步（退回）
+     * @param wt01Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/savePreStep",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String savePreStep(Wt01Dto wt01Dto ){
+        Wt01Dto dto=this.qdenvService.savePreProcess(wt01Dto);
+        return JSON.toJSONStringWithDateFormat(dto, "yyyy-MM-dd HH:mm:ss.SSS");
     }
 }
