@@ -337,6 +337,64 @@ public class QdenvServiceImpl implements QdenvService {
                 "from bz03 a where a.bbz001= ? ";
         return  CommonJdbcUtils.queryList(sql,Bz03Dto.class,bz03Dto.getBbz001());
     }
+
+    /**
+     * 生成查询仪器语句
+     * @param args
+     * @param bz06Dto
+     * @return
+     */
+    public String generateQueryBz06Sql( List<String> args,Bz06Dto bz06Dto){
+        StringBuffer sb=new StringBuffer("select * from bz06 where 1=1 ");
+        if (bz06Dto.getBmz001()!=null){
+            sb.append(" and bmz001=? ");
+            args.add(bz06Dto.getBmz001().toString());
+        }
+        if (StringTools.hasText(bz06Dto.getBmz002())){
+            sb.append(" and bmz002 like ?");
+            args.add("%"+bz06Dto.getBmz002()+"%");
+        }
+        if (bz06Dto.getAae016()!=null){
+            sb.append(" and aae016=? ");
+            args.add(bz06Dto.getAae016());
+        }
+        return  sb.toString();
+    }
+    /**
+     * 查询仪器列表
+     * @param page
+     * @param bz06Dto
+     * @return
+     */
+    public List<Bz06Dto> queryBz06(Page page,Bz06Dto bz06Dto){
+        List<String> args=new ArrayList<String>();
+        String sql=generateQueryBz06Sql(args,bz06Dto);
+        CommonJdbcUtils.queryPageList(page,sql,Bz06Dto.class,args.toArray());
+        return page.getData();
+    }
+    /**
+     * 查询仪器列表
+     * @param page
+     * @param bz06Dto
+     * @return
+     */
+    public List<Bz06Dto> queryBz06List(Bz06Dto bz06Dto){
+        List<String> args=new ArrayList<String>();
+        String sql=generateQueryBz06Sql(args,bz06Dto);
+        return  CommonJdbcUtils.queryList(sql,Bz06Dto.class,args.toArray());
+    }
+
+    /**
+     * 保存或者更改仪器
+     * @param bz06Dto
+     * @return
+     */
+    public Bz06 saveOrUpdateBz06(Bz06Dto bz06Dto){
+        Bz06 bz06=new Bz06();
+        BeanUtils.copyProperties(bz06Dto,bz06);
+        CommonJdbcUtils.saveOrUpdateObject(bz06,false);
+        return  bz06;
+    }
     /**
      * 查询序号
      * @param wat015

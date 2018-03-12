@@ -34,6 +34,9 @@ public class Wt04 {
     private Integer wxt005;
 
     private Date wxt006;
+    private String wxt007;
+    private String wxt008;
+    private String wxt009;
 
     @Id
     public Integer getWxt001() {
@@ -154,5 +157,29 @@ public class Wt04 {
 
     public void setWxt006(Date wxt006) {
         this.wxt006 = wxt006;
+    }
+
+    public String getWxt007() {
+        return wxt007;
+    }
+
+    public void setWxt007(String wxt007) {
+        this.wxt007 = wxt007;
+    }
+
+    public String getWxt008() {
+        return wxt008;
+    }
+
+    public void setWxt008(String wxt008) {
+        this.wxt008 = wxt008;
+    }
+
+    public String getWxt009() {
+        return wxt009;
+    }
+
+    public void setWxt009(String wxt009) {
+        this.wxt009 = wxt009;
     }
 }

@@ -127,24 +127,31 @@ function onShowRowDetail(e) {
         //editItem.show();
         //removeItem.enable();
     }
+    //删除采样点
 function onDeleteWt03(v) {
     alert(v);
 }
+    //编辑采样点
 function onEditWt03(v) {
     alert(v);
 }
+    //添加采样点
 function onAddWt03(v) {
     alert(v);
 }
+    //编写报告
 function onEditWt02(v) {
     alert(v);
 }
+//签发报告
 function onPreviewWt02(v) {
     alert(v);
 }
+    //输出报告
 function onOutWt02(v) {
     alert(v);
 }
+    //审核报告
 function onCheckWt02(v) {
     alert(v);
 }

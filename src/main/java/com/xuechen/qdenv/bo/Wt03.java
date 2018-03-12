@@ -40,6 +40,7 @@ public class Wt03 {
 
     private Date wct014;
 
+    private String wct015;
     @Id
     public Integer getWct001() {
         return wct001;
@@ -175,5 +176,13 @@ public class Wt03 {
 
     public void setWct014(Date wct014) {
         this.wct014 = wct014;
+    }
+
+    public String getWct015() {
+        return wct015;
+    }
+
+    public void setWct015(String wct015) {
+        this.wct015 = wct015;
     }
 }

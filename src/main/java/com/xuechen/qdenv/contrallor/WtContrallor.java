@@ -44,6 +44,10 @@ public class WtContrallor {
     public String index_f100202(){
         return "/WEB-INF/page/f1002/f100202/index";
     }
+    @RequestMapping("/f100203/index")
+    public String index_f100203(){
+        return "/WEB-INF/page/f1002/f100203/index";
+    }
     @RequestMapping("/f100202/loadDO_1")
     public String index_load_do_1(){
         return "/WEB-INF/page/f1002/f100202/DO_1";

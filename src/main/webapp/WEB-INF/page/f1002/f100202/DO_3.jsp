@@ -255,7 +255,7 @@
             mini.get("bhz003").setValue(data.bhz003);
             mini.get("userid").setValue(data.userid);
             mini.get("aae003").setValue(""+data.aae003);
-        })
+        });
         var url="${pageContext.request.contextPath}/work/f100201/queryWt02"
         Web.util.request(url,'post',{wat001:wat001},function (data) {
             var i=0;
