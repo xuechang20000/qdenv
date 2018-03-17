@@ -345,19 +345,26 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public String generateQueryBz06Sql( List<String> args,Bz06Dto bz06Dto){
-        StringBuffer sb=new StringBuffer("select * from bz06 where 1=1 ");
+        StringBuffer sb=new StringBuffer("SELECT  a.*, CONCAT(a.bmz002, '(', b.`dict_name`, ')') AS bmz002s " +
+                " FROM  bz06 a,  app_dict_detail b " +
+                " WHERE a.bmz003 = b.`dict_val`   AND b.`dict_code` = 'BMZ003'");
         if (bz06Dto.getBmz001()!=null){
-            sb.append(" and bmz001=? ");
+            sb.append(" and a.bmz001=? ");
             args.add(bz06Dto.getBmz001().toString());
         }
+        if (bz06Dto.getBmz003()!=null){
+            sb.append(" and a.bmz003=? ");
+            args.add(bz06Dto.getBmz003());
+        }
         if (StringTools.hasText(bz06Dto.getBmz002())){
-            sb.append(" and bmz002 like ?");
+            sb.append(" and a.bmz002 like ?");
             args.add("%"+bz06Dto.getBmz002()+"%");
         }
         if (bz06Dto.getAae016()!=null){
-            sb.append(" and aae016=? ");
+            sb.append(" and a.aae016=? ");
             args.add(bz06Dto.getAae016());
         }
+        sb.append(" order by a.bmz003 ");
         return  sb.toString();
     }
     /**
@@ -374,7 +381,6 @@ public class QdenvServiceImpl implements QdenvService {
     }
     /**
      * 查询仪器列表
-     * @param page
      * @param bz06Dto
      * @return
      */
@@ -660,8 +666,11 @@ public class QdenvServiceImpl implements QdenvService {
 
     public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
         StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append("select a.*,b.wft001,b.wft002,b.wft004,b.wft006,b.wft007,b.wft010,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s " +
-                "from wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
+        stringBuffer.append("select a.*,b.wft001,b.wft002,b.wft004,b.wft006,b.wft007,b.wft010,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s, " +
+                " (select GROUP_CONCAT(d.wdt001) from wt08 d WHERE a.wat001=d.wat001) wdt001s, " +
+                "(select GROUP_CONCAT(d.userid) from wt08 d WHERE a.wat001=d.wat001) fuserids, " +
+                "(select GROUP_CONCAT(d.name) from wt08 d WHERE a.wat001=d.wat001) fnames from " +
+                " wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
         if(wt01Dto.getWat001()!=null){
             stringBuffer.append(" and a.wat001=? ");
             args.add(wt01Dto.getWat001());

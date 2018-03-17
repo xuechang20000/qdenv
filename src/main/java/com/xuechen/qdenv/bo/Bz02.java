@@ -34,6 +34,7 @@ public class Bz02 {
     }
 
     private Double bcz010;
+    private String bcz011;
     @Id
     public Integer getBcz001() {
         return bcz001;
@@ -113,5 +114,13 @@ public class Bz02 {
 
     public void setBcz009(String bcz009) {
         this.bcz009 = bcz009 == null ? null : bcz009.trim();
+    }
+
+    public String getBcz011() {
+        return bcz011;
+    }
+
+    public void setBcz011(String bcz011) {
+        this.bcz011 = bcz011;
     }
 }

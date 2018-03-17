@@ -22,7 +22,7 @@
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200" /></div>
             <div type="comboboxcolumn" field="bcz003" width="40" headerAlign="center"   >标准类型
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="dictName" valueField="dictVal"
-                         url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=bcz003" />
+                       popupWidth="120"  url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=bcz003" />
             </div>
             <div field="bcz0045" width="60" headerAlign="center" >标准值
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60" />
@@ -32,6 +32,10 @@
             </div>
             <div field="bcz010" width="60" headerAlign="center" summaryType="sum" dataType="currency" currencyUnit="￥">单项收费(元)
                 <input property="editor" class="mini-textbox"  style="width:100%;" minWidth="40" />
+            </div>
+            <div type="comboboxcolumn" field="bcz011" width="80" headerAlign="center"   >主要检测仪器
+                <input property="editor" class="mini-combobox" style="width:100%;" textField="bmz002s" valueField="bmz001"
+                       popupWidth="300"   url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1" />
             </div>
             <!--<div field="bcz007"  width="20" headerAlign="center" >排序</div>-->
             <div field="bcz008"  headerAlign="center" width="140">检测依据

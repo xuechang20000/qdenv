@@ -22,6 +22,9 @@ public class Wt01Dto extends Wt01 {
     private String e_date;
     private String username;
     private List<Wt02Dto> wt02DtoList;
+    private String wdt001s;
+    private String fuserids;
+    private String fnames;
     public String getJson1() {
         return json1;
     }
@@ -140,5 +143,29 @@ public class Wt01Dto extends Wt01 {
 
     public void setWft001(Integer wft001) {
         this.wft001 = wft001;
+    }
+
+    public String getWdt001s() {
+        return wdt001s;
+    }
+
+    public void setWdt001s(String wdt001s) {
+        this.wdt001s = wdt001s;
+    }
+
+    public String getFuserids() {
+        return fuserids;
+    }
+
+    public void setFuserids(String fuserids) {
+        this.fuserids = fuserids;
+    }
+
+    public String getFnames() {
+        return fnames;
+    }
+
+    public void setFnames(String fnames) {
+        this.fnames = fnames;
     }
 }

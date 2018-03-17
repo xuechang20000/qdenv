@@ -10,9 +10,13 @@
     </style>
 </head>
 <body>
-委托编号：
-<input id="wat002"  name="wat002" class="mini-textbox" style="width:200px;" />
-<a class="mini-button" iconCls="icon-search" id="doSearch" onclick="onSerach()">查询</a>
+    <span id="search">
+    委托编号:<input id="wat002"  name="wat002" class="mini-textbox" value="${param.wat002}" style="width:200px;" />
+    <a class="mini-button" iconCls="icon-search" id="doSearch" onclick="onSerach()">查询</a>
+    </span>
+
+    <span id="back" style="display: none;">&nbsp;&nbsp;<a class="mini-button" iconCls="icon-undo" plain="true" onclick="javascript:history.go(-1);">返回</a></span>
+
 <div class="mini-panel" id="content"   style="width:100%;height: 500px" showHeader="false" bodyStyle="padding:0px;margin:0px"
      showToolbar="false" showCloseButton="false" showFooter="false"
 >
@@ -37,6 +41,14 @@
         })
 
     }
+    (function () {
+        var wat002=mini.get("wat002").getValue();
+        if(wat002){
+            onSerach();
+            $("#search").hide();
+            $("#back").show();
+        }
+    })()
 </script>
 
 </html>

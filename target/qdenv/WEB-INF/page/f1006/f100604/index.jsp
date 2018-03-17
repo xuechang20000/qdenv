@@ -25,8 +25,8 @@
             <div property="columns">
             <div field="bmz001" width="40" headerAlign="center" allowSort="true">仪器ID</div>
             <div field="bmz002" width="180" headerAlign="center" allowSort="true">仪器名称</div>
-            <div field="bmz003" width="60" headerAlign="center" allowSort="true" renderer='oncodeRender'>仪器类别</div>
-            <div field="bmz004" width="330" headerAlign="center" allowSort="true">仪器编号列表</div>
+            <div field="bmz003" width="80" headerAlign="center" allowSort="true" renderer='oncodeRender'>仪器类别</div>
+            <div field="bmz004" width="300" headerAlign="center" allowSort="true">仪器编号列表</div>
             <div field="aae016" width="40" headerAlign="center" allowSort="true" renderer='oncodeRender'>状态</div>
             <div field="aae013" width="100" headerAlign="center" >备注</div>
             <div headerAlign="center" width="130" renderer="renderUser">操作</div>
