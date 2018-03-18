@@ -312,7 +312,7 @@ public class AdminContrallor {
     @RequestMapping(value = "/uploadAttachMent",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String uploadAttachment(HttpServletRequest request,String id){
-        Map map=FileUtils.uploadFiles(request,"E:\\springUpload\\");
+        Map map=FileUtils.uploadFilesByType(request,"MAIL");
         AppNoticeAttachment appNoticeAttachment=new AppNoticeAttachment();
         appNoticeAttachment.setCtime(new Date());
         appNoticeAttachment.setExtname((String)map.get("fileExtName"));

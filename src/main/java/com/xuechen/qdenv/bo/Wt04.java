@@ -37,6 +37,8 @@ public class Wt04 {
     private String wxt007;
     private String wxt008;
     private String wxt009;
+    private String wxt010;
+
 
     @Id
     public Integer getWxt001() {
@@ -181,5 +183,13 @@ public class Wt04 {
 
     public void setWxt009(String wxt009) {
         this.wxt009 = wxt009;
+    }
+
+    public String getWxt010() {
+        return wxt010;
+    }
+
+    public void setWxt010(String wxt010) {
+        this.wxt010 = wxt010;
     }
 }

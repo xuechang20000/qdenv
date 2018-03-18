@@ -617,12 +617,14 @@ public class QdenvServiceImpl implements QdenvService {
             BeanUtils.copyProperties(wt03Dto,wt03);
             CommonJdbcUtils.updateSelect(wt03);
             Wt04 wt04=null;
-            for (Wt04Dto wt04Dto:wt03Dto.getWt04DtoList()){
-                wt04=new Wt04();
-                BeanUtils.copyProperties(wt04Dto,wt04);
-                wt04.setWxt005(user.getUserId());
-                wt04.setWxt006(new Date());
-                CommonJdbcUtils.updateSelect(wt04);
+            if (wt03Dto.getWt04DtoList()!=null) {
+                for (Wt04Dto wt04Dto : wt03Dto.getWt04DtoList()) {
+                    wt04 = new Wt04();
+                    BeanUtils.copyProperties(wt04Dto, wt04);
+                    wt04.setWxt005(user.getUserId());
+                    wt04.setWxt006(new Date());
+                    CommonJdbcUtils.updateSelect(wt04);
+                }
             }
         }
         /**
@@ -761,8 +763,17 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public List<Wt03Dto> queryWt03(Wt03Dto wt03Dto){
-        String sql="select * from wt03 where wbt001=?";
-        List<Wt03Dto> wt03Dtos= CommonJdbcUtils.queryList(sql,Wt03Dto.class,wt03Dto.getWbt001());
+        StringBuffer sb=new StringBuffer("select * from wt03 where 1=1 ");
+        List<String> args=new ArrayList<String>();
+        if (wt03Dto.getWbt001()!=null){
+            sb.append(" and wbt001=? ");
+            args.add(wt03Dto.getWbt001().toString());
+        }
+        if (wt03Dto.getWct001()!=null){
+            sb.append(" and wct001=? ");
+            args.add(wt03Dto.getWct001().toString());
+        }
+        List<Wt03Dto> wt03Dtos= CommonJdbcUtils.queryList(sb.toString(),Wt03Dto.class,args.toArray());
         Wt04Dto wt04Dto=new Wt04Dto();
         for (Wt03Dto dto:wt03Dtos){
             wt04Dto.setWct001(dto.getWct001());

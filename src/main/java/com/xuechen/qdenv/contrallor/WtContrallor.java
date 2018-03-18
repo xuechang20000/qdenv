@@ -2,11 +2,14 @@ package com.xuechen.qdenv.contrallor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
+import com.xuechen.web.bo.AppNoticeAttachment;
 import com.xuechen.web.dto.AppUserDTO;
+import com.xuechen.web.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * "标准控制器"
@@ -80,6 +84,10 @@ public class WtContrallor {
     public String index_load_do_6(){
         return "/WEB-INF/page/f1002/f100202/DO_6";
     }
+    @RequestMapping("/f100202/loadWt03")
+    public String index_loadWt03(){
+        return "/WEB-INF/page/f1002/f100202/wt03";
+    }
     @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String getWat016(String wat015){
@@ -118,6 +126,12 @@ public class WtContrallor {
     public String queryWt02(Wt02Dto wt02Dto){
         List<Wt02Dto> wt02Dtos=this.qdenvService.queryWt02(wt02Dto);
         return JSON.toJSONStringWithDateFormat(wt02Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100201/queryWt03",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt03(Wt03Dto wt03Dto){
+        List<Wt03Dto> wt03Dtos=this.qdenvService.queryWt03(wt03Dto);
+        return JSON.toJSONStringWithDateFormat(wt03Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @RequestMapping(value="/f100201/queryWt06",produces = "application/json; charset=utf-8")
     @ResponseBody
@@ -194,5 +208,19 @@ public class WtContrallor {
     public String savePreStep(Wt01Dto wt01Dto ){
         Wt01Dto dto=this.qdenvService.savePreProcess(wt01Dto);
         return JSON.toJSONStringWithDateFormat(dto, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value = "/f100201/uploadWt03Photo",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String uploadWt03Photo(HttpServletRequest request,String wct001){
+        Map map= FileUtils.uploadFilesByType(request,"COLL");
+        Wp01 wp01=new Wp01();
+        wp01.setWtp004(new Date());
+        wp01.setWtp007((String)map.get("fileExtName"));
+        wp01.setWtp006((String)map.get("fileName"));
+        wp01.setWtp005((String)map.get("filePath"));
+        wp01.setWtp002("COLL");
+        wp01.setWtp003(wct001);
+        CommonJdbcUtils.insert(wp01);
+        return map.get("filePath").toString();
     }
 }

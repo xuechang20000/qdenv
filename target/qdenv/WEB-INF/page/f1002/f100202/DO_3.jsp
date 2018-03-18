@@ -196,7 +196,7 @@
                 <div field="bcz001s"  width="120" headerAlign="center" visible="false" >检测项目id</div>
                 <div field="bcz002s"  width="170" headerAlign="center"  >检测项目</div>
                 <div field="bcz010"  width="30" headerAlign="center"  summaryType="sum" dataType="currency" currencyUnit="￥" >费用</div>
-                <div headerAlign="center" width="20" renderer="renderUser2" >操作</div>
+                <div headerAlign="center" width="30" renderer="renderUser2" >操作</div>
             </div>
         </div>
     </div>
@@ -207,6 +207,7 @@
     </span>
 <span id="grid_buttons2" style="display: none"  >
          <a class="mini-button" href="javascript:onRemove2()" plain="true" iconCls="icon-remove"></a>
+         <a class="mini-button" href="javascript:onEdit2()" plain="true" iconCls="icon-edit"></a>
     </span>
 <div id="buttons">
     <span class="separator"></span>
@@ -304,8 +305,19 @@
         grid2.removeRow( grid2.getSelected());
         setJianceFee();
     }
-    var v_idx=1;
+    function onEdit2() {
+        var row=grid2.getSelected();
+        if(!row.wct001){
+            Web.util.showTipsWanring("请先保存再操作")
+            return;
+        }
+        var url='${pageContext.request.contextPath}/work/f100202/loadWt03?wct001='+row.wct001;
+        Web.util.openMiniWindow("采样编辑",url,700,500,function () {
+            
+        })
+    }
 
+    var v_idx=1;
     function onItemClick(e) {
         var select=mini.get("bbz001").getSelected();
         var row={idx:v_idx++,wat001:wat001,wbt003:'0',bbz001:select.bbz001,bbz002:select.bbz002,bbz003:select.bbz003,bbz004:select.bbz004}

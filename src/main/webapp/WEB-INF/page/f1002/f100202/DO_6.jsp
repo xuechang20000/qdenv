@@ -93,7 +93,7 @@
             <td><a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a></td>
         </tr>
     </table>
-
+</div>
 </body>
 </html>
 <script type="text/javascript">

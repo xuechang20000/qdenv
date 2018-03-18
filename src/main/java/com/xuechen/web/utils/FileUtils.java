@@ -13,6 +13,35 @@ import java.util.*;
 
 public class FileUtils {
 
+     private  static String filePath_mail;
+     private  static String filePath_head;
+     private  static String filePath_collect;
+     public FileUtils(){
+     }
+     public FileUtils(String filePath_collect,String filePath_head,String filePath_mail){
+         this.filePath_collect=filePath_collect;
+         this.filePath_head=filePath_head;
+         this.filePath_mail=filePath_mail;
+     }
+
+    /**
+     * 根据上传类型上传
+     * @param request
+     * @param uploadType
+     * @return
+     */
+     public static Map uploadFilesByType(HttpServletRequest request, String uploadType){
+         if ("MAIL".equals(uploadType)){
+             return uploadFiles(request,filePath_mail);
+         }
+         if ("COLL".equals(uploadType)){
+             return uploadFiles(request,filePath_collect);
+         }
+         if ("HEAD".equals(uploadType)){
+             return uploadFiles(request,filePath_head);
+         }
+         return  null;
+     }
     /**
      * 批量上传
      * @return
@@ -91,5 +120,29 @@ public class FileUtils {
     public static int getRandm(){
         Random random=new Random();
         return  random.nextInt(1000);
+    }
+
+    public static String getFilePath_mail() {
+        return filePath_mail;
+    }
+
+    public static void setFilePath_mail(String filePath_mail) {
+        FileUtils.filePath_mail = filePath_mail;
+    }
+
+    public static String getFilePath_head() {
+        return filePath_head;
+    }
+
+    public static void setFilePath_head(String filePath_head) {
+        FileUtils.filePath_head = filePath_head;
+    }
+
+    public static String getFilePath_collect() {
+        return filePath_collect;
+    }
+
+    public static void setFilePath_collect(String filePath_collect) {
+        FileUtils.filePath_collect = filePath_collect;
     }
 }
