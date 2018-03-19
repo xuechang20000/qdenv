@@ -641,6 +641,23 @@ public class QdenvServiceImpl implements QdenvService {
         saveWt09(wt09Dto);
 
     }
+    public List<Wp01Dto> queryWp01List(Wp01Dto wp01Dto){
+        StringBuffer sb=new StringBuffer("select * from wp01 where 1=1 ");
+        List<String> args=new ArrayList<String>();
+        if (wp01Dto.getWtp001()!=null){
+            sb.append(" and wtp001=? ");
+            args.add(wp01Dto.getWtp001().toString());
+        }
+        if (wp01Dto.getWtp002()!=null){
+            sb.append(" and wtp002=? ");
+            args.add(wp01Dto.getWtp002());
+        }
+        if (wp01Dto.getWtp003()!=null){
+            sb.append(" and wtp003=? ");
+            args.add(wp01Dto.getWtp003());
+        }
+        return CommonJdbcUtils.queryList(sb.toString(),Wp01Dto.class,args.toArray());
+    }
     public void deleteWt03(Integer wct001){
         CommonJdbcUtils.execute("delete from wt03 where wct001=?",wct001);
         CommonJdbcUtils.execute("delete from wt04 where wct001=?",wct001);

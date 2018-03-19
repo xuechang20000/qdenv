@@ -10,7 +10,9 @@
     <style type="text/css">
         #form1 table td{padding: 3px}
         .mini-panel-border{border: none}
-
+        #zyupload{margin-bottom: 0px;padding-bottom: 0px}
+        #displayPhoto{clear:both}
+        #displayPhoto img{padding: 4px}
     </style>
 </head>
 <body>
@@ -139,6 +141,9 @@
 </div>
     <div title="照片上传">
         <div id="zyupload" class="zyupload"></div>
+        <div id="displayPhoto" >
+
+        </div>
     </div>
 </div>
 
@@ -153,6 +158,7 @@
     mini.parse();
     var wct001=${param.wct001};
     loadWt03();
+    loadPhotos();
     var grid= mini.get("datagrid");
     function loadWt03() {
         var url ='${pageContext.request.contextPath}/work/f100201/queryWt03'
@@ -168,6 +174,18 @@
                 grid.addRow(row);
             }
         });
+    }
+    function loadPhotos() {
+        var url='${pageContext.request.contextPath}/work/f100201/queryWp01List';
+        Web.util.request(url,"post",{wtp002:'COLL',wtp003:wct001},function (data) {
+            var img,i=0;
+            $("#displayPhoto").html("");
+            for(var d;d=data[i++];){
+                img='<img src="${pageContext.request.contextPath}/work/f100201/downLoadAttachment?wtp001='+d.wtp001+'" width="200" alt=""/>'
+                $(img).appendTo($("#displayPhoto"))
+            }
+        })
+        
     }
   function doSubmit() {
       var form = new mini.Form("#form1");
@@ -197,7 +215,7 @@
         // 初始化插件
         $("#zyupload").zyUpload({
             width            :   "650px",                 // 宽度
-            height           :   "300px",                 // 宽度
+            height           :   "200px",                 // 宽度
             itemWidth        :   "140px",                 // 文件项的宽度
             itemHeight       :   "115px",                 // 文件项的高度
             url              :   "<%=request.getContextPath()%>/work/f100201/uploadWt03Photo?wct001="+wct001,              // 上传文件的路径
@@ -222,7 +240,8 @@
                 console.info(file.name);
                 console.info("此文件上传到服务器地址：");
                 console.info(response);
-                $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+                loadPhotos();
+                //$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
             },
             onFailure: function(file, response){          // 文件上传失败的回调方法
                 console.info("此文件上传失败：");

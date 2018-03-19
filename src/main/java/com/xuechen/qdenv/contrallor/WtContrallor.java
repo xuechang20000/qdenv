@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -213,14 +214,38 @@ public class WtContrallor {
     @ResponseBody
     public String uploadWt03Photo(HttpServletRequest request,String wct001){
         Map map= FileUtils.uploadFilesByType(request,"COLL");
+        AppUserDTO user = (AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
         Wp01 wp01=new Wp01();
         wp01.setWtp004(new Date());
         wp01.setWtp007((String)map.get("fileExtName"));
         wp01.setWtp006((String)map.get("fileName"));
         wp01.setWtp005((String)map.get("filePath"));
         wp01.setWtp002("COLL");
+        wp01.setUserid(user.getUserId());
         wp01.setWtp003(wct001);
         CommonJdbcUtils.insert(wp01);
         return map.get("filePath").toString();
+    }
+    /**
+     * 下载附件
+     * @param wp01Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/downLoadAttachment",produces = "application/json; charset=utf-8")
+    public void downloadWp01List(HttpServletRequest request, HttpServletResponse response,Wp01Dto wp01Dto ){
+        List<Wp01Dto> wp01Dtos=this.qdenvService.queryWp01List(wp01Dto);
+        if (wp01Dtos!=null&&wp01Dtos.size()>0)
+       FileUtils.downLoadFile(request,response,wp01Dtos.get(0).getWtp005());
+    }
+    /**
+     * 查询附件
+     * @param wp01Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/queryWp01List",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWp01List(Wp01Dto wp01Dto ){
+        List<Wp01Dto> wp01Dtos=this.qdenvService.queryWp01List(wp01Dto);
+        return JSON.toJSONStringWithDateFormat(wp01Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
 }
