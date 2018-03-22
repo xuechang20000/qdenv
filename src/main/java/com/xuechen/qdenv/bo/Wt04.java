@@ -38,6 +38,9 @@ public class Wt04 {
     private String wxt008;
     private String wxt009;
     private String wxt010;
+    private String wxt011;
+    private String wxt012;
+    private String wxt013;
 
 
     @Id
@@ -191,5 +194,29 @@ public class Wt04 {
 
     public void setWxt010(String wxt010) {
         this.wxt010 = wxt010;
+    }
+
+    public String getWxt011() {
+        return wxt011;
+    }
+
+    public void setWxt011(String wxt011) {
+        this.wxt011 = wxt011;
+    }
+
+    public String getWxt012() {
+        return wxt012;
+    }
+
+    public void setWxt012(String wxt012) {
+        this.wxt012 = wxt012;
+    }
+
+    public String getWxt013() {
+        return wxt013;
+    }
+
+    public void setWxt013(String wxt013) {
+        this.wxt013 = wxt013;
     }
 }

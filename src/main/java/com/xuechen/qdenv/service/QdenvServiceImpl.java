@@ -208,6 +208,7 @@ public class QdenvServiceImpl implements QdenvService {
         sb.append("       A.BBZ006,                                        ");
         sb.append("       A.AAE013,                                        ");
         sb.append("       A.AAE016,                                        ");
+        sb.append("       A.BMZ003,                                        ");
         sb.append("       GROUP_CONCAT(D.BZH002) AS bzh002s,                ");
         sb.append("       GROUP_CONCAT(D.BHZ001) AS bhz001i                ");
         sb.append("  FROM BZ01 A                                           ");
@@ -805,7 +806,8 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto){
-        String sql="select * from wt04 where wct001=?";
+        String sql="select a.*,c.bmz001,c.bmz002,c.bmz003,c.bmz004 from wt04 a LEFT JOIN bz02 b on a.bcz001=b.bcz001 LEFT JOIN bz06 c on b.bcz012=c.bmz001 " +
+                " where a.wct001= ?";
         return CommonJdbcUtils.queryList(sql,Wt04Dto.class,wt04Dto.getWct001());
     }
 

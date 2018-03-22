@@ -33,7 +33,11 @@
             <div field="bcz010" width="60" headerAlign="center" summaryType="sum" dataType="currency" currencyUnit="￥">单项收费(元)
                 <input property="editor" class="mini-textbox"  style="width:100%;" minWidth="40" />
             </div>
-            <div type="comboboxcolumn" field="bcz011" width="80" headerAlign="center"   >主要检测仪器
+            <div type="comboboxcolumn" field="bcz011" width="80" headerAlign="center"   >主要采样仪器
+                <input property="editor" class="mini-combobox" style="width:100%;" textField="bmz002s" valueField="bmz001"
+                       popupWidth="300"   url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1" />
+            </div>
+            <div type="comboboxcolumn" field="bcz012" width="80" headerAlign="center"   >主要检测仪器
                 <input property="editor" class="mini-combobox" style="width:100%;" textField="bmz002s" valueField="bmz001"
                        popupWidth="300"   url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1" />
             </div>

@@ -3,21 +3,56 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <title>字典管理</title>
+    <title>检测数据</title>
     <%@include file="/include/head.jsp"%>
     <style type="text/css">
-        .collect{width:100%;padding:3px;margin-top:6px;text-align: center;background-color: #efefef;border-color: black ;border-collapse: collapse;}
-        .collect_list table{padding: 0px;margin-left: 20px;}
-        .collect .collect_jc{width:100%}
-        .collect .collect_jc input{width:100px}
-        .collect .collect_jc td{padding: 4px; border-bottom: 1px solid #9c9c9c;}
-        .collect_env{margin-left: 10px; width:90%}
-        .collect_env td{padding: 0px;text-align: center}
+        #collect_list table{width: 95%; text-align: center;margin-left: 10px}
+        table.dataintable {
+            margin-top:15px;
+            border-collapse:collapse;
+            border:1px solid #aaa;
+            width:100%;
+        }
+
+        table.dataintable th {
+            vertical-align:baseline;
+            padding:5px 15px 5px 6px;
+            background-color:#1296db;
+            border:1px solid #3F3F3F;
+            text-align:left;
+            color:#fff;
+        }
+
+        table.dataintable td {
+            vertical-align:text-top;
+            padding:6px 15px 6px 6px;
+            border:1px solid #aaa;
+        }
+
+        table.dataintable tr:nth-child(odd) {
+            background-color:#F5F5F5;
+        }
+
+        table.dataintable tr:nth-child(even) {
+            background-color:#fff;
+        }
     </style>
 </head>
 <body>
 <h4 id="wat002"></h4>
 <div id="collect_list">
+    <table class="dataintable">
+    <tr>
+        <th>采样点</th>
+    <th>检测项目</th>
+    <th>检测值</th>
+    <th>检测仪器</th>
+    <th>检测仪器编号</th>
+    <th>标准值</th>
+    <th>是否合格</th>
+    </tr>
+
+</table>
 </div>
 <br/>
 <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
@@ -26,43 +61,36 @@
 
 <script id="formTemplate" type="text/x-jquery-tmpl">
 
-<table class="collect">
-    <tr>
-      <td class="collect_name">采样点ID:{{= wct001}}<br>{{= wct002}}
-      <input type="hidden" value="{{= wct001}}" name="wct001"/></td>
-        <td>
-            <table class="collect_jc" >
+     {{each(i,wt04) wt04DtoList}}
 
-                 {{each(j,wt04) wt04DtoList}}
-                <tr>
-                    <td>{{= bcz002}} <input type="hidden" value="{{= wxt001}}" name="wxt001"/></td>
-                    <td><input name="wxt002" type="text" value="{{= wxt002 }}" />
+    <tr>
+    {{if i==0}}
+        {{ else }}
+         <td rowspan="{{= wt04size}}">采样点ID:{{= wct001}}<br>{{= wct002}}</td>
+        {{/if}}
+        <td>{{= bcz002}}{{= j}} <input type="hidden" value="{{= wxt001}}" name="wxt001"/></td>
+        <td><input name="wxt002" type="text" value="{{= wxt002 }}" />
+                    <input name="wct001" type="hidden" value={{= wct001}}  />
                     <input name="bcz003" type="hidden" value={{= bcz003}}  />
                     <input name="bcz004" type="hidden" value={{= bcz004}}  />
-                    <input name="bcz005" type="hidden" value={{= bcz005}}   />
-                    </td>
-                    <td>{{if bcz003=='5'}}
+                    <input name="bcz005" type="hidden" value={{= bcz005}}   /></td>
+       <td>{{= bmz002}}</td>
+        <td>
+            <select name="wxt012" >
+             {{each(k,ml) mlist}}
+                <option value="{{= ml}}"  {{if typeof wxt012!='undefined'&& ml==wxt012}} selected ="selected"  {{/if}}>{{= ml}}</option>
+             {{/each}}
+            <select>
+        </td>
+        <td>{{if bcz003=='5'}}
                     {{= bcz004}}~{{= bcz005}}{{= bcz006}}
                     {{else}}
                      {{= bcz004}}
-                    {{/if}}
-                    </td>
-                    <td><input name="wxt003"  type="checkbox" {{if typeof wxt003!='undefined'&&(wxt003=='1')}} checked=true {{/if}} /></td>
-                </tr>
-                {{/each}}
-            </table>
-        </td>
-        <td>
-            <table class="collect_env">
-                <tr>
-                    <td>实验室环境条件：<br/><textarea name="wct011" rows="" cols="">{{= wct011}}</textarea></td>
-                    <td>实验室环境备注：<br/><textarea name="wct012" rows="" cols="">{{= wct012}}</textarea></td>
-                </tr>
-            </table>
-        </td>
-
+                    {{/if}}</td>
+        <td><input name="wxt003"  type="checkbox" {{if typeof wxt003!='undefined'&&(wxt003=='1')}} checked=true {{/if}} /></td>
     </tr>
-</table>
+
+      {{/each}}
 </script>
 </body>
 <script type="text/javascript">
@@ -102,47 +130,52 @@
             for(var d;d=data[i++];){
                 var j=0;
                 for (var c;c=d.wt03DtoList[j++];){
+                    c.wt04size=c.wt04DtoList.length;
+                    var k=0;
+                    for(var m;m=c.wt04DtoList[k++]; ){
+                        if(m.bmz004){
+                           m.mlist=m.bmz004.split(",");
+                        }
+                    }
                     renderData.push(c);
                 }
             }
-            $("#formTemplate").tmpl(renderData).appendTo(document.getElementById("collect_list"));
+            $("#formTemplate").tmpl(renderData).appendTo($("#collect_list .dataintable"));
             bindKeyDown();
         });
 
     }
     function doSubmit() {
         var wt03Array=new Array()
-        $(".collect").each(function(i){
+        $("#collect_list .dataintable tr").each(function(i){
             var wt03={}
             var wct001=$(this).find("input[name='wct001']").val();
-            var wct011=$(this).find("textarea[name='wct011']").val();
-            var wct012=$(this).find("textarea[name='wct012']").val();
             wt03.wct001=wct001;
-            wt03.wct011=wct011;
-            wt03.wct012=wct012;
+            wt03.wct011=""
             wt03.wt04DtoList=new Array();
-            $(this).find(".collect_jc tr").each(function () {
                 var wt04={}
                 var wxt001=$(this).find("input[name='wxt001']").val();
+                if(!wxt001) return true;
                 var wxt002=$(this).find("input[name='wxt002']").val();
-
+                var wxt012=$(this).find("select[name='wxt012']").val();
                 var wxt003=$(this).find("input[name='wxt003']").prop("checked");
                 wt04.wxt001=wxt001;
                 wt04.wxt002=wxt002;
+                wt04.wxt012=wxt012;
                 if(wxt003==true) wxt003='1'; else wxt003='0';
                 wt04.wxt003=wxt003;
                 wt03.wt04DtoList.push(wt04)
-            })
             wt03Array.push(wt03);
         });
-
+        //alert(JSON.stringify(wt03Array));
         var url="${pageContext.request.contextPath}/work/f100201/updateWt03"
         Web.util.request(url,"post",{wt03s:JSON.stringify(wt03Array)},function () {
+            Web.util.showTips("保存成功")
             mini.get('doSubmit').disable()
         })
     }
     function doCheck() {
-        $(".collect_jc tr").each(function () {
+        $("#collect_list .dataintable tr").each(function () {
             var bcz003=$(this).find("input[name='bcz003']").val();
             var bcz004=$(this).find("input[name='bcz004']").val();
             var bcz005=$(this).find("input[name='bcz005']").val();

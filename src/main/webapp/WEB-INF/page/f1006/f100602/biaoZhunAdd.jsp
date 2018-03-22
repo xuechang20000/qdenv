@@ -37,6 +37,16 @@
         </tr>
         <tr>
             <td class="form-td-even">
+                所属部门：
+            </td>
+            <td class="form-td-odd">
+                <input id="bmz003" class="mini-combobox" onvaluechanged="setWat002" textField="dictName" valueField="dictVal"
+                       url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=BMZ003"  required="true" allowInput="true" nullItemText="请选择..."/>
+
+            </td>
+        </tr>
+        <tr>
+            <td class="form-td-even">
                 所属行业：
             </td>
             <td class="form-td-odd">
@@ -92,6 +102,7 @@
                     return;
                 }
                     data.bhz001ss=mini.get("bz04s").getValue()
+            data.bmz003=mini.get("bmz003").getValue();
                     Web.util.requestAsync(url,'',data,function(data,textstatus){
                         //alert(data);
                         Web.util.showTips("保存成功！ ");
