@@ -42,6 +42,8 @@ public class Wt02 {
     private Date wbt015;
 
     private byte[] wbt013;
+    private String wct011;
+    private String wct012;
 @Id
     public Integer getWbt001() {
         return wbt001;
@@ -185,5 +187,21 @@ public class Wt02 {
 
     public void setWbt013(byte[] wbt013) {
         this.wbt013 = wbt013;
+    }
+
+    public String getWct011() {
+        return wct011;
+    }
+
+    public void setWct011(String wct011) {
+        this.wct011 = wct011;
+    }
+
+    public String getWct012() {
+        return wct012;
+    }
+
+    public void setWct012(String wct012) {
+        this.wct012 = wct012;
     }
 }

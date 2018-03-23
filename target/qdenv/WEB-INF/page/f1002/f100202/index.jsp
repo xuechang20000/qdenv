@@ -59,7 +59,7 @@
     <li name="DO_1" iconCls="icon-node" onclick="onWt01DO('DO_1','相关信息')">相关信息</li>
     <li name="DO_2" iconCls="icon-node" onclick="onWt01DO('DO_2','委托协议')">委托协议</li>
     <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
-    <li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>
+    <!--<li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>-->
    <!-- <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5','重新检测')">重新检测</li>-->
     <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6','快递信息')">快递信息</li>
     <li name="DO_14" iconCls="icon-node" onclick="onWt01DO('DO_14','安排采样')">安排采样人员</li>
@@ -141,7 +141,11 @@ function onAddWt03(v) {
 }
     //编写报告
 function onEditWt02(v) {
-    alert(v);
+    var row = grid.getSelected();
+    var url="${pageContext.request.contextPath}/work/f100202/loadDO_4?wbt001="+v;
+    Web.util.openMiniWindow('检测数据录入', url, 1000, 500, function () {
+        grid.reload();
+    })
 }
 //签发报告
 function onPreviewWt02(v) {

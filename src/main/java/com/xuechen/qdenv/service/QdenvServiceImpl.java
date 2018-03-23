@@ -765,8 +765,17 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public List<Wt02Dto> queryWt02(Wt02Dto wt02Dto){
-        String sql="select a.*,b.bbz002,b.bbz003,b.bbz004 from wt02 a,bz01 b where a.bbz001=b.bbz001 and a.wat001=?";
-        List<Wt02Dto> wt02Dtos= CommonJdbcUtils.queryList(sql,Wt02Dto.class,wt02Dto.getWat001());
+        StringBuffer sql=new StringBuffer("select a.*,b.bbz002,b.bbz003,b.bbz004 from wt02 a,bz01 b where a.bbz001=b.bbz001 ");
+        List<String> args=new ArrayList<String>();
+        if (wt02Dto.getWat001()!=null){
+            args.add(wt02Dto.getWat001().toString());
+            sql.append(" and a.wat001=? ");
+        }
+        if (wt02Dto.getWbt001()!=null){
+            args.add(wt02Dto.getWbt001().toString());
+            sql.append(" and a.wbt001=? ");
+        }
+        List<Wt02Dto> wt02Dtos= CommonJdbcUtils.queryList(sql.toString(),Wt02Dto.class,args.toArray());
         Wt03Dto wt03Dto=new Wt03Dto();
         for (Wt02Dto dto:wt02Dtos){
             wt03Dto.setWbt001(dto.getWbt001());

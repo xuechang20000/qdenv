@@ -110,6 +110,13 @@ public class WtContrallor {
         Wt01 wt01=this.qdenvService.saveWt(dto,wt02Dtos,wt03Dtos);
         return JSON.toJSONString(wt01);
     }
+    @RequestMapping(value="/f100201/saveWt02",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveWt02(Wt01Dto dto){
+        List<Wt02Dto> wt02Dtos=JSONObject.parseArray(dto.getJson1(),Wt02Dto.class);
+        this.qdenvService.saveWt02(wt02Dtos);
+        return JSON.toJSONString(wt02Dtos);
+    }
     @RequestMapping(value="/f100201/queryWt",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String queryWt(Page page,Wt01Dto wt01Dto){

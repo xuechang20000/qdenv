@@ -6,7 +6,9 @@
     <title>检测数据</title>
     <%@include file="/include/head.jsp"%>
     <style type="text/css">
+
         #collect_list table{width: 95%; text-align: center;margin-left: 10px}
+        #collect_list table textarea{width:100%}
         table.dataintable {
             margin-top:15px;
             border-collapse:collapse;
@@ -43,22 +45,31 @@
 <div id="collect_list">
     <table class="dataintable">
     <tr>
+        <th colspan="4">实验室环境条件</th>
+        <th colspan="3">实验室环境备注</th>
+    </tr>
+        <tr>
+            <td colspan="4"><textarea name="wct011" rows="" cols=""></textarea></td>
+            <td colspan="3"><textarea name="wct012" rows="" cols=""></textarea></td>
+        </tr>
+    <tr>
         <th>采样点</th>
-    <th>检测项目</th>
+    <th >检测项目</th>
     <th>检测值</th>
-    <th>检测仪器</th>
-    <th>检测仪器编号</th>
     <th>标准值</th>
     <th>是否合格</th>
+    <th>检测仪器</th>
+    <th>检测仪器编号</th>
+
     </tr>
 
 </table>
 </div>
-<br/>
+<div style="margin-top: 10px;padding: 0;text-align: center">
 <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
 &nbsp;&nbsp;
 <a class="mini-button" href="javascript:doCheck();" id="doCheck"  iconCls="icon-filter" >判定</a>
-
+</div>
 <script id="formTemplate" type="text/x-jquery-tmpl">
 
      {{each(i,wt04) wt04DtoList}}
@@ -69,11 +80,17 @@
          <td rowspan="{{= wt04size}}">采样点ID:{{= wct001}}<br>{{= wct002}}</td>
         {{/if}}
         <td>{{= bcz002}}{{= j}} <input type="hidden" value="{{= wxt001}}" name="wxt001"/></td>
-        <td><input name="wxt002" type="text" value="{{= wxt002 }}" />
+        <td align="left"><input name="wxt002" type="text" style="width:80px" value="{{= wxt002 }}" />{{= bcz006}}
                     <input name="wct001" type="hidden" value={{= wct001}}  />
                     <input name="bcz003" type="hidden" value={{= bcz003}}  />
                     <input name="bcz004" type="hidden" value={{= bcz004}}  />
                     <input name="bcz005" type="hidden" value={{= bcz005}}   /></td>
+         <td>{{if bcz003=='5'}}
+                    {{= bcz004}}~{{= bcz005}}{{= bcz006}}
+                    {{else}}
+                     {{= bcz004}}
+                    {{/if}}</td>
+        <td><input name="wxt003"  type="checkbox" {{if typeof wxt003!='undefined'&&(wxt003=='1')}} checked=true {{/if}} /></td>
        <td>{{= bmz002}}</td>
         <td>
             <select name="wxt012" >
@@ -82,12 +99,6 @@
              {{/each}}
             <select>
         </td>
-        <td>{{if bcz003=='5'}}
-                    {{= bcz004}}~{{= bcz005}}{{= bcz006}}
-                    {{else}}
-                     {{= bcz004}}
-                    {{/if}}</td>
-        <td><input name="wxt003"  type="checkbox" {{if typeof wxt003!='undefined'&&(wxt003=='1')}} checked=true {{/if}} /></td>
     </tr>
 
       {{/each}}
@@ -97,7 +108,7 @@
 
     mini.parse();
 
-    var wat001=${param.wat001}
+    var wbt001=${param.wbt001}
         loadWt();
     function bindKeyDown() {
         $(function () {
@@ -118,16 +129,18 @@
     }
 
     function loadWt() {
-        var url="${pageContext.request.contextPath}/work/f100201/queryWtList";
+        /*var url="${pageContext.request.contextPath}/work/f100201/queryWtList";
         Web.util.request(url,'post',{wat001:wat001},function (data) {
             $("#wat002").html(data[0].wat002);
 
-        })
+        })*/
         var url="${pageContext.request.contextPath}/work/f100201/queryWt02"
-        Web.util.request(url,'post',{wat001:wat001},function (data) {
+        Web.util.request(url,'post',{wbt001:wbt001},function (data) {
             var i=0;
             var renderData= new Array();
             for(var d;d=data[i++];){
+                $("#collect_list").find("textarea[name='wct011']").val(d.wct011)
+                $("#collect_list").find("textarea[name='wct012']").val(d.wct012)
                 var j=0;
                 for (var c;c=d.wt03DtoList[j++];){
                     c.wt04size=c.wt04DtoList.length;
@@ -146,6 +159,11 @@
 
     }
     function doSubmit() {
+        /**是否全部录入**/
+        if(!doValidate()){
+            Web.util.showTipsWanring("检测值不允许有空值！")
+            return;
+        }
         var wt03Array=new Array()
         $("#collect_list .dataintable tr").each(function(i){
             var wt03={}
@@ -168,11 +186,32 @@
             wt03Array.push(wt03);
         });
         //alert(JSON.stringify(wt03Array));
-        var url="${pageContext.request.contextPath}/work/f100201/updateWt03"
-        Web.util.request(url,"post",{wt03s:JSON.stringify(wt03Array)},function () {
-            Web.util.showTips("保存成功")
-            mini.get('doSubmit').disable()
+        var wct011=$("#collect_list").find("textarea[name='wct011']").val();
+        var wct012=$("#collect_list").find("textarea[name='wct012']").val();
+        var wt02=[{wbt001:wbt001,wct011:wct011,wct012:wct012}]
+        var url="${pageContext.request.contextPath}/work/f100201/saveWt02"
+        Web.util.request(url,"post",{json1:JSON.stringify(wt02)},function () {
+            url="${pageContext.request.contextPath}/work/f100201/updateWt03"
+            Web.util.request(url,"post",{wt03s:JSON.stringify(wt03Array)},function () {
+                Web.util.showTips("保存成功")
+                mini.get('doSubmit').disable()
+            })
         })
+
+    }
+
+    function doValidate() {
+        var isAllset=true;
+        $("#collect_list .dataintable tr").each(function (i) {
+            var wxt001=$(this).find("input[name='wxt001']").val();
+            if(!wxt001) return true;
+            var wxt002=$(this).find("input[name='wxt002']").val();
+            if(!wxt002){
+                isAllset=false;
+                return false;
+            }
+        });
+        return isAllset;
     }
     function doCheck() {
         $("#collect_list .dataintable tr").each(function () {
