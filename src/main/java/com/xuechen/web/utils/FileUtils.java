@@ -48,7 +48,6 @@ public class FileUtils {
      */
     public static Map uploadFiles(HttpServletRequest request, String filePath){
         ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) request;
-
         Map map =new HashMap();
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver=

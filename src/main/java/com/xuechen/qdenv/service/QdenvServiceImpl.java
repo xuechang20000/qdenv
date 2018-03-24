@@ -583,6 +583,11 @@ public class QdenvServiceImpl implements QdenvService {
             deleteWt03(wt03Dto.getWct001());
             return wt03;
         }
+        if(wt03.getWct014()==null){
+            wt03.setWct014(new Date());
+            AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+            wt03.setWct013(appUserDTO.getUserId());
+        }
         //保存采样点
         CommonJdbcUtils.saveOrUpdateObject(wt03,false);
         List<Wt04> wt04s=getWt04List(wt03Dto.getBcz001s(),wt03.getWct001(),wt03.getWbt001());
@@ -657,6 +662,7 @@ public class QdenvServiceImpl implements QdenvService {
             sb.append(" and wtp003=? ");
             args.add(wp01Dto.getWtp003());
         }
+        if (args.size()==0) return null;
         return CommonJdbcUtils.queryList(sb.toString(),Wp01Dto.class,args.toArray());
     }
     public void deleteWt03(Integer wct001){
@@ -988,5 +994,27 @@ public class QdenvServiceImpl implements QdenvService {
             throw new BusinessException("上一步无步骤");
         }
         return dto;
+    }
+
+    /**
+     * 查询报告显示信息
+     * @param wt02Dto
+     * @return
+     */
+    public Wt02Dto queryWt02Report(Wt02Dto wt02Dto){
+        String sql="select a.wat001,a.wat002,(select dict_name from app_dict_detail where dict_code='WAT003' and dict_val=a.wat003 ) as wat003" +
+                ",a.daw001,a.daw002,a.daw005,b.wbt001,b.wbt005,b.wbt006,b.wbt012, " +
+                "b.aae013,b.wbt008,b.wbt010,b.wbt011,c.bbz002,c.bbz004 from wt01 a,wt02 b,bz01 c where " +
+                "b.bbz001=c.bbz001 and a.wat001=b.wat001 and b.wbt001=? ";
+        Wt02Dto wt02Dto1=CommonJdbcUtils.queryFirst(sql,Wt02Dto.class,wt02Dto.getWbt001());
+            sql="select GROUP_CONCAT(DISTINCT bcz002) from wt04 where wbt001=? GROUP BY wbt001";
+            String bcz002s=CommonJdbcUtils.queryObject(sql,String.class,wt02Dto1.getWbt001());
+        wt02Dto1.setBcz002s(bcz002s);//检测项目列表
+        sql="select MIN(wct014) as wct014min,SUM(wbt007) as wbt017sum,MAX(wct016) as wct016max from wt03 where wbt001=?";
+        Wt02Dto wt02Dto2=CommonJdbcUtils.queryFirst(sql,Wt02Dto.class,wt02Dto.getWbt001());
+        wt02Dto1.setWbt007sum(wt02Dto2.getWbt007sum());//样品数量
+        wt02Dto1.setWct014min(wt02Dto2.getWct014min());//采样时间
+        wt02Dto1.setWct016max(wt02Dto2.getWct016max());//封闭时间
+        return  wt02Dto1;
     }
 }

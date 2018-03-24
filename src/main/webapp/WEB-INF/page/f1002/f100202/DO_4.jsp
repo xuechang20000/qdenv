@@ -9,6 +9,8 @@
 
         #collect_list table{width: 95%; text-align: center;margin-left: 10px}
         #collect_list table textarea{width:100%}
+        #collect_list2 table{width: 95%; text-align: left;margin-left: 10px;margin-top: 0px;border-top: 0px}
+        #collect_list2 table textarea{width:100%}
         table.dataintable {
             margin-top:15px;
             border-collapse:collapse;
@@ -43,7 +45,7 @@
 <body>
 <h4 id="wat002"></h4>
 <div id="collect_list">
-    <table class="dataintable">
+    <table class="dataintable" id="data1">
     <tr>
         <th colspan="4">实验室环境条件</th>
         <th colspan="3">实验室环境备注</th>
@@ -64,6 +66,15 @@
     </tr>
 
 </table>
+    <div id="collect_list2">
+        <table class="dataintable">
+        <tr>
+            <td>检测日期</td>
+            <td colspan="6"><input id="wbt005" name="wbt005" class="mini-datepicker" format="yyyy-MM-dd" />~
+                <input id="wbt006" name="wbt006" class="mini-datepicker" format="yyyy-MM-dd" /></td>
+        </tr>
+    </table>
+    </div>
 </div>
 <div style="margin-top: 10px;padding: 0;text-align: center">
 <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
@@ -141,6 +152,8 @@
             for(var d;d=data[i++];){
                 $("#collect_list").find("textarea[name='wct011']").val(d.wct011)
                 $("#collect_list").find("textarea[name='wct012']").val(d.wct012)
+                mini.get("wbt005").setValue(d.wbt005)
+                mini.get("wbt006").setValue(d.wbt006)
                 var j=0;
                 for (var c;c=d.wt03DtoList[j++];){
                     c.wt04size=c.wt04DtoList.length;
@@ -153,7 +166,7 @@
                     renderData.push(c);
                 }
             }
-            $("#formTemplate").tmpl(renderData).appendTo($("#collect_list .dataintable"));
+            $("#formTemplate").tmpl(renderData).appendTo($("#data1"));
             bindKeyDown();
         });
 
@@ -162,6 +175,12 @@
         /**是否全部录入**/
         if(!doValidate()){
             Web.util.showTipsWanring("检测值不允许有空值！")
+            return;
+        }
+        var wbt005=mini.get("wbt005").getFormValue();
+        var wbt006=mini.get("wbt006").getFormValue();
+        if (!wbt005||!wbt006){
+            Web.util.showTipsWanring("检测日期不允许有空值！")
             return;
         }
         var wt03Array=new Array()
@@ -188,7 +207,7 @@
         //alert(JSON.stringify(wt03Array));
         var wct011=$("#collect_list").find("textarea[name='wct011']").val();
         var wct012=$("#collect_list").find("textarea[name='wct012']").val();
-        var wt02=[{wbt001:wbt001,wct011:wct011,wct012:wct012}]
+        var wt02=[{wbt001:wbt001,wct011:wct011,wct012:wct012,wbt005:wbt005,wbt006:wbt006}]
         var url="${pageContext.request.contextPath}/work/f100201/saveWt02"
         Web.util.request(url,"post",{json1:JSON.stringify(wt02)},function () {
             url="${pageContext.request.contextPath}/work/f100201/updateWt03"

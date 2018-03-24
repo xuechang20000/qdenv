@@ -33,6 +33,14 @@
             </tr>
             <tr>
                 <td align="right">
+                    <label for="wbt007">样品数量：</label>
+                </td>
+                <td align="left">
+                    <input id="wbt007"  name="wbt007" style="width:100px" class="mini-textbox" required="true" vtype="int"  />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
                     <label for="wct003">温度：</label>
                 </td>
                 <td align="left">
@@ -87,6 +95,14 @@
                 <td align="left">
                     <input id="wct009"  name="wct009" class="mini-datepicker" style="width: 200px;"
                            format="yyyy-MM-dd"  showOkButton="true"  />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <label for="wct016">封闭时间：</label>
+                </td>
+                <td align="left">
+                    <input id="wct016"  name="wct016" style="width:200px" class="mini-textbox" required="true" vtype="int" />(小时)
                 </td>
             </tr>
             <tr>

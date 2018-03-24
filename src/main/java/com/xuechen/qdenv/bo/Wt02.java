@@ -31,7 +31,7 @@ public class Wt02 {
 
     private Integer wbt010;
 
-    private Date wbt011;
+    private String wbt011;
 
     private String wbt012;
 
@@ -141,11 +141,11 @@ public class Wt02 {
         this.wbt010 = wbt010;
     }
 
-    public Date getWbt011() {
+    public String getWbt011() {
         return wbt011;
     }
 
-    public void setWbt011(Date wbt011) {
+    public void setWbt011(String wbt011) {
         this.wbt011 = wbt011;
     }
 

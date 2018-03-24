@@ -41,6 +41,10 @@ public class Wt03 {
     private Date wct014;
 
     private String wct015;
+    private String wbt007;
+    private  String aae016;
+    private String wct016;
+    private Integer wtp001;
     @Id
     public Integer getWct001() {
         return wct001;
@@ -184,5 +188,37 @@ public class Wt03 {
 
     public void setWct015(String wct015) {
         this.wct015 = wct015;
+    }
+
+    public String  getWbt007() {
+        return wbt007;
+    }
+
+    public void setWbt007(String wbt007) {
+        this.wbt007 = wbt007;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
+    }
+
+    public String getWct016() {
+        return wct016;
+    }
+
+    public void setWct016(String wct016) {
+        this.wct016 = wct016;
+    }
+
+    public Integer getWtp001() {
+        return wtp001;
+    }
+
+    public void setWtp001(Integer wtp001) {
+        this.wtp001 = wtp001;
     }
 }

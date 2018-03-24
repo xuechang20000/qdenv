@@ -17,4 +17,6 @@ public interface UserService {
      public List<AppResource> selectResourceByUser(AppUser appUser);
      public void saveAppLogLogin(AppLogLogin appLogLogin);
      public void updatePassword(AppUser appUser);
+     public void updateSignature(AppUser appUser);
+     public AppUser querySignature(AppUser appUser);
 }

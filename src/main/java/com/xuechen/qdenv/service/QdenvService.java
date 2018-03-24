@@ -48,4 +48,5 @@ public interface QdenvService {
     public void saveWt08List(Wt01Dto wt01Dto,List<Wt08> wt08s);
     public Wt01Dto saveNextProcess(Wt01Dto wt01Dto);
     public Wt01Dto savePreProcess(Wt01Dto wt01Dto);
+    public Wt02Dto queryWt02Report(Wt02Dto wt02Dto);
 }

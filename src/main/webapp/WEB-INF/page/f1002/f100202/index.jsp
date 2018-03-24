@@ -139,7 +139,7 @@ function onEditWt03(v) {
 function onAddWt03(v) {
     alert(v);
 }
-    //编写报告
+    //检测数据录入
 function onEditWt02(v) {
     var row = grid.getSelected();
     var url="${pageContext.request.contextPath}/work/f100202/loadDO_4?wbt001="+v;
@@ -149,7 +149,11 @@ function onEditWt02(v) {
 }
 //签发报告
 function onPreviewWt02(v) {
-    alert(v);
+    var row = grid.getSelected();
+    var url="${pageContext.request.contextPath}/work/f100202/loadDO_7?wbt001="+v;
+    Web.util.openMiniWindow('报告编写', url, 1000, 500, function () {
+        grid.reload();
+    })
 }
     //输出报告
 function onOutWt02(v) {

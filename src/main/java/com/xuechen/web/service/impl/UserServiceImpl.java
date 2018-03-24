@@ -1,5 +1,6 @@
 package com.xuechen.web.service.impl;
 
+import com.xuechen.web.bo.AppUserExample;
 import com.xuechen.web.dao.AppAdminMapper;
 import com.xuechen.web.dao.AppLogLoginMapper;
 import com.xuechen.web.dao.AppUserMapper;
@@ -61,5 +62,17 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(AppUser appUser){
 
         this.appUserMapper.updateByPrimaryKeySelective(appUser);
+    }
+    public void updateSignature(AppUser appUser){
+        AppUser appUser1=this.appUserMapper.selectByPrimaryKey(appUser.getUserId());
+        appUser1.setSignature(appUser.getSignature());
+        this.appUserMapper.updateByPrimaryKeyWithBLOBs(appUser1);
+    }
+    public AppUser querySignature(AppUser appUser){
+        AppUserExample appUserExample=new AppUserExample();
+        AppUserExample.Criteria criteria= appUserExample.createCriteria();
+        criteria.andUserIdEqualTo(appUser.getUserId());
+        List<AppUser> appUser1=this.appUserMapper.selectByExampleWithBLOBs(appUserExample);
+        return appUser1.get(0);
     }
 }

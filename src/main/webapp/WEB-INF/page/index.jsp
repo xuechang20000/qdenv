@@ -87,7 +87,7 @@
 						<div class="log-arrow-up"></div>
 						<li><a href="javascript:showUserInfo()"><i class=" icon-suitcase"></i>个人信息</a></li>
 						<li><a href="javascript:changePW()"><i class="icon-cog"></i> 密码修改</a></li>
-						<li><a href="javascript:addAltTab()"><i class="icon-bell-alt"></i> 公告</a></li>
+						<li><a href="javascript:addAltTab()"><i class="icon-edit"></i>电子签名</a></li>
 						<li><a href="logout"><i class="icon-key"></i> 退&nbsp;&nbsp;出</a></li>
 					</ul>
 				</li>
@@ -220,7 +220,7 @@ function addEnvelopeTab() {
 	addTab('站内信','1005','/admin/f1005/index');
 }
 function addAltTab() {
-	addTab('公告','100401','/admin/f100401/index');
+	addTab('电子签名','100401','/admin/loadUpdateSignature');
 }
 function onQuery(noticeId) {
         var title=name?"查看信件(来自"+name+")":"查看信件";

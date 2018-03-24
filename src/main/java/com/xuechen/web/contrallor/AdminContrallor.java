@@ -19,11 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,9 +152,53 @@ public class AdminContrallor {
         this.userService.updatePassword(appUser);
         return "";
     }
+    @RequestMapping("/updateSignature")
+    @ResponseBody
+    public String updateSignature(String ext1, MultipartFile signature, HttpServletRequest request){
+        AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        AppUser appUser=new AppUser();
+        appUser.setUserId(appUserDTO.getUserId());
+        appUser.setExt1(ext1);
+        byte[] sibyte=new byte[40*1024];
+        try {
+            sibyte=signature.getBytes();
+            if (sibyte.length>10*1024) throw new BusinessException("上传图片不能超过10KB");
+        } catch (BusinessException e) {
+           throw new BusinessException(e.getMessage());
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        appUser.setSignature(sibyte);
+        this.userService.updateSignature(appUser);
+        return "";
+    }
+    @RequestMapping("/querySignature")
+    public void updateSignature(HttpServletResponse response,AppUserDTO appUserDTO){
+        AppUserDTO appUserDTO1=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        if (appUserDTO.getUserId()==null) appUserDTO.setUserId(appUserDTO1.getUserId());
+        AppUser appUser=this.userService.querySignature(appUserDTO);
+        OutputStream outputStream=null;
+        try {
+             outputStream=response.getOutputStream();
+            outputStream.write(appUser.getSignature());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
     @RequestMapping("/loadUpdatePassword")
     public String loadUpdatePassword(){
         return "/WEB-INF/page/f1001/f100101/userUpdatePassword";
+    }
+    @RequestMapping("/loadUpdateSignature")
+    public String loadUpdateSignature(){
+        return "/WEB-INF/page/f1001/f100101/userUpdateSignature";
     }
         @RequestMapping(value = "/queryAllRoleList",produces = "application/json; charset=utf-8")
         @ResponseBody

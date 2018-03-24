@@ -11,6 +11,15 @@ public class Wt02Dto extends Wt02 {
     private String bbz003;
     private String bbz004;
     private String _state;
+    private String wat002;
+    private String wat003;
+    private Integer daw001;
+    private String daw002;
+    private String daw005;
+    private String bcz002s;
+    private String wct014min;
+    private String wbt007sum;
+    private String wct016max;
     public String getIdx() {
         return idx;
     }
@@ -57,5 +66,78 @@ public class Wt02Dto extends Wt02 {
 
     public void set_state(String _state) {
         this._state = _state;
+    }
+
+
+    public String getWat002() {
+        return wat002;
+    }
+
+    public void setWat002(String wat002) {
+        this.wat002 = wat002;
+    }
+
+    public String getWat003() {
+        return wat003;
+    }
+
+    public void setWat003(String wat003) {
+        this.wat003 = wat003;
+    }
+
+    public Integer getDaw001() {
+        return daw001;
+    }
+
+    public void setDaw001(Integer daw001) {
+        this.daw001 = daw001;
+    }
+
+    public String getDaw002() {
+        return daw002;
+    }
+
+    public void setDaw002(String daw002) {
+        this.daw002 = daw002;
+    }
+
+    public String getDaw005() {
+        return daw005;
+    }
+
+    public void setDaw005(String daw005) {
+        this.daw005 = daw005;
+    }
+
+    public String getBcz002s() {
+        return bcz002s;
+    }
+
+    public void setBcz002s(String bcz002s) {
+        this.bcz002s = bcz002s;
+    }
+
+    public String getWct014min() {
+        return wct014min;
+    }
+
+    public void setWct014min(String wct014min) {
+        this.wct014min = wct014min;
+    }
+
+    public String getWbt007sum() {
+        return wbt007sum;
+    }
+
+    public void setWbt007sum(String wbt007sum) {
+        this.wbt007sum = wbt007sum;
+    }
+
+    public String getWct016max() {
+        return wct016max;
+    }
+
+    public void setWct016max(String wct016max) {
+        this.wct016max = wct016max;
     }
 }
