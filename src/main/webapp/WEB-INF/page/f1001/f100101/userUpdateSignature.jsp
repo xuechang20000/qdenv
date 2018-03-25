@@ -71,12 +71,13 @@
         $.ajaxFileUpload({
             url: '${pageContext.request.contextPath}/admin/updateSignature',      //用于文件上传的服务器端请求地址
             fileElementId: inputFile,               //文件上传域的ID
-            data: { ext1:mini.get("ext1").getValue() },            //附加的额外参数
+            data: { "ext1":ext1 },            //附加的额外参数
             dataType: 'text',                   //返回值类型 一般设置为json
             success: function (data, status)    //服务器成功响应处理函数
             {
                 if (data) alert(data);
-                else alert("上传成功！")
+                else Web.util.showTips("上传成功！")
+                mini.get("doSubmit").disable();
             },
             error: function (data, status, e)   //服务器响应失败处理函数
             {

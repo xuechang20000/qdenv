@@ -38,13 +38,14 @@ public class Wt03 {
 
     private Integer wct013;
 
-    private Date wct014;
+    private String wct014;
 
     private String wct015;
     private String wbt007;
     private  String aae016;
     private String wct016;
     private Integer wtp001;
+    private Date wct018;
     @Id
     public Integer getWct001() {
         return wct001;
@@ -174,11 +175,11 @@ public class Wt03 {
         this.wct013 = wct013;
     }
 
-    public Date getWct014() {
+    public String getWct014() {
         return wct014;
     }
 
-    public void setWct014(Date wct014) {
+    public void setWct014(String wct014) {
         this.wct014 = wct014;
     }
 
@@ -220,5 +221,13 @@ public class Wt03 {
 
     public void setWtp001(Integer wtp001) {
         this.wtp001 = wtp001;
+    }
+
+    public Date getWct018() {
+        return wct018;
+    }
+
+    public void setWct018(Date wct018) {
+        this.wct018 = wct018;
     }
 }

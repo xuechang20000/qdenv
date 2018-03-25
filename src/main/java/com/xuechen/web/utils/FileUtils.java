@@ -1,8 +1,12 @@
 package com.xuechen.web.utils;
 
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,17 +51,18 @@ public class FileUtils {
      * @return
      */
     public static Map uploadFiles(HttpServletRequest request, String filePath){
-        ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) request;
+        //ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) request;
         Map map =new HashMap();
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver=
                 new CommonsMultipartResolver(request.getSession().getServletContext());
+
         //当前时间文件名
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmssSSS");
         if(multipartResolver.isMultipart(request))
         {
             //将request变成多部分request
-            MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart((HttpServletRequest) shiroRequest.getRequest());
+            MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
             //获取multiRequest 中所有的文件名
             Iterator iter=multipartRequest.getFileNames();
 
@@ -86,7 +91,30 @@ public class FileUtils {
         }
         return map;
     }
+    public static List<MultipartFile> getMutipartFileFromRequest(HttpServletRequest request){
+        List<MultipartFile> multipartFiles =new ArrayList<MultipartFile>();
+        //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+        CommonsMultipartResolver multipartResolver=
+                new CommonsMultipartResolver(request.getSession().getServletContext());
 
+        //当前时间文件名
+        if(multipartResolver.isMultipart(request))
+        {
+            //将request变成多部分request
+            MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
+            //获取multiRequest 中所有的文件名
+            Iterator iter=multipartRequest.getFileNames();
+
+            while(iter.hasNext())
+            {
+                //一次遍历所有文件
+                MultipartFile file=multipartRequest.getFile(iter.next().toString());
+                multipartFiles.add(file);
+            }
+
+        }
+        return multipartFiles;
+    }
     public static void downLoadFile(HttpServletRequest request,HttpServletResponse response,String filePath){
         File file=new File(filePath);
         InputStream inputStream;
@@ -144,4 +172,5 @@ public class FileUtils {
     public static void setFilePath_collect(String filePath_collect) {
         FileUtils.filePath_collect = filePath_collect;
     }
+
 }

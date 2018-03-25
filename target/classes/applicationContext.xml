@@ -60,6 +60,7 @@
        <constructor-arg value="${ftp.head.attachment}"/>
        <constructor-arg value="${ftp.mail.attachment}"/>
     </bean>
+
     <tx:annotation-driven transaction-manager="txManager"/>
     <!--
         <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">

@@ -154,21 +154,25 @@ public class AdminContrallor {
     }
     @RequestMapping("/updateSignature")
     @ResponseBody
-    public String updateSignature(String ext1, MultipartFile signature, HttpServletRequest request){
+    public String updateSignature(String ext1, HttpServletRequest request){
         AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
         AppUser appUser=new AppUser();
         appUser.setUserId(appUserDTO.getUserId());
         appUser.setExt1(ext1);
-        byte[] sibyte=new byte[40*1024];
-        try {
-            sibyte=signature.getBytes();
-            if (sibyte.length>10*1024) throw new BusinessException("上传图片不能超过10KB");
-        } catch (BusinessException e) {
-           throw new BusinessException(e.getMessage());
-        }catch (IOException e) {
-            e.printStackTrace();
+        List<MultipartFile> multipartFiles=FileUtils.getMutipartFileFromRequest(request);
+        if(multipartFiles.size()>0) {
+            MultipartFile signature=multipartFiles.get(0);
+            byte[] sibyte = new byte[40 * 1024];
+            try {
+                sibyte = signature.getBytes();
+                if (sibyte.length > 10 * 1024) throw new BusinessException("上传图片不能超过10KB");
+            } catch (BusinessException e) {
+                throw new BusinessException(e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            appUser.setSignature(sibyte);
         }
-        appUser.setSignature(sibyte);
         this.userService.updateSignature(appUser);
         return "";
     }

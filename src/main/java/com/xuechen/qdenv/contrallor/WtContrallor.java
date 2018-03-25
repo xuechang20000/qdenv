@@ -87,6 +87,12 @@ public class WtContrallor {
         request.setAttribute("dto",wt02Dto1);
         return "/WEB-INF/page/f1002/f100202/DO_7";
     }
+    @RequestMapping("/f100202/loadDO_8")
+    public String index_load_do_8(Wt02Dto wt02Dto,HttpServletRequest request){
+        Wt02Dto wt02Dto1=this.qdenvService.queryWt02Report(wt02Dto);
+        request.setAttribute("dto",wt02Dto1);
+        return "/WEB-INF/page/f1002/f100202/DO_8";
+    }
     @RequestMapping("/f100202/loadDO_6")
     public String index_load_do_6(){
         return "/WEB-INF/page/f1002/f100202/DO_6";
@@ -241,6 +247,10 @@ public class WtContrallor {
         wp01.setUserid(user.getUserId());
         wp01.setWtp003(wct001);
         CommonJdbcUtils.insert(wp01);
+        Wt03 wt03=new Wt03();
+        wt03.setWct001(Integer.valueOf(wct001));
+        wt03.setWtp001(wp01.getWtp001());
+        CommonJdbcUtils.updateSelect(wt03);
         return map.get("filePath").toString();
     }
     /**

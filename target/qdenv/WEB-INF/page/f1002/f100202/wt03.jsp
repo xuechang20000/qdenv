@@ -41,6 +41,16 @@
             </tr>
             <tr>
                 <td align="right">
+                    <label for="wct014">采样时间：</label>
+                </td>
+                <td align="left">
+                    <input id="wct014" name="wct014" class="mini-datepicker" style="width: 200px;" required="true"
+                           format="yyyy-MM-dd H:mm" timeFormat="H:mm" showTime="true" showOkButton="true" />
+                </td>
+            </tr>
+
+            <tr>
+                <td align="right">
                     <label for="wct003">温度：</label>
                 </td>
                 <td align="left">
@@ -215,6 +225,7 @@
           data.wct015=mini.get("wct015").getValue();
           data.wct006=mini.get("wct006").getValue();
           data.wct007=mini.get("wct007").getValue();
+          //data.wct018=mini.get("wct018").getFormValue();
           data.wt04DtoList=grid.getSelecteds();
           var wt03s=new Array();
           wt03s.push(data);

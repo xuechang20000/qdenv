@@ -584,7 +584,7 @@ public class QdenvServiceImpl implements QdenvService {
             return wt03;
         }
         if(wt03.getWct014()==null){
-            wt03.setWct014(new Date());
+            wt03.setWct018(new Date());
             AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
             wt03.setWct013(appUserDTO.getUserId());
         }
@@ -621,6 +621,9 @@ public class QdenvServiceImpl implements QdenvService {
         for (Wt03Dto wt03Dto:wt03Dtos){
             wt03=new Wt03();
             BeanUtils.copyProperties(wt03Dto,wt03);
+            if (wt03Dto.getWt04DtoList()!=null) {
+                wt03.setWct018(new Date());
+            }
             CommonJdbcUtils.updateSelect(wt03);
             Wt04 wt04=null;
             if (wt03Dto.getWt04DtoList()!=null) {
@@ -1010,11 +1013,15 @@ public class QdenvServiceImpl implements QdenvService {
             sql="select GROUP_CONCAT(DISTINCT bcz002) from wt04 where wbt001=? GROUP BY wbt001";
             String bcz002s=CommonJdbcUtils.queryObject(sql,String.class,wt02Dto1.getWbt001());
         wt02Dto1.setBcz002s(bcz002s);//检测项目列表
-        sql="select MIN(wct014) as wct014min,SUM(wbt007) as wbt017sum,MAX(wct016) as wct016max from wt03 where wbt001=?";
+        sql="select MIN(wct014) as wct014min,SUM(wbt007) as wbt007sum,MAX(wct016) as wct016max from wt03 where wbt001=?";
         Wt02Dto wt02Dto2=CommonJdbcUtils.queryFirst(sql,Wt02Dto.class,wt02Dto.getWbt001());
         wt02Dto1.setWbt007sum(wt02Dto2.getWbt007sum());//样品数量
         wt02Dto1.setWct014min(wt02Dto2.getWct014min());//采样时间
         wt02Dto1.setWct016max(wt02Dto2.getWct016max());//封闭时间
+        //获取采样点信息
+        Wt03Dto wt03Dto=new Wt03Dto();
+        wt03Dto.setWbt001(wt02Dto.getWbt001());
+        wt02Dto1.setWt03DtoList(queryWt03(wt03Dto));
         return  wt02Dto1;
     }
 }

@@ -144,20 +144,22 @@ function onEditWt02(v) {
     var row = grid.getSelected();
     var url="${pageContext.request.contextPath}/work/f100202/loadDO_4?wbt001="+v;
     Web.util.openMiniWindow('检测数据录入', url, 1000, 500, function () {
-        grid.reload();
+        //grid.reload();
     })
 }
-//签发报告
+//报告编写
 function onPreviewWt02(v) {
-    var row = grid.getSelected();
     var url="${pageContext.request.contextPath}/work/f100202/loadDO_7?wbt001="+v;
     Web.util.openMiniWindow('报告编写', url, 1000, 500, function () {
-        grid.reload();
+        //grid.reload();
     })
 }
-    //输出报告
+    //签发报告
 function onOutWt02(v) {
-    alert(v);
+    var url="${pageContext.request.contextPath}/work/f100202/loadDO_8?wbt001="+v;
+    Web.util.openMiniWindow('签发报告', url, 1000, 500, function () {
+        //grid.reload();
+    })
 }
     //审核报告
 function onCheckWt02(v) {

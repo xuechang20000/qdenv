@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
     public void updateSignature(AppUser appUser){
         AppUser appUser1=this.appUserMapper.selectByPrimaryKey(appUser.getUserId());
         appUser1.setSignature(appUser.getSignature());
+        appUser1.setExt1(appUser.getExt1());
         this.appUserMapper.updateByPrimaryKeyWithBLOBs(appUser1);
     }
     public AppUser querySignature(AppUser appUser){

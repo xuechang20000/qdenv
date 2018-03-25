@@ -130,8 +130,8 @@
             <td>检测日期</td>
             <td colspan="3"> <input id="wbt005" name="wbt005" class="mini-datepicker" value="${dto.wbt005}" format="yyyy-MM-dd" />~
                 <input id="wbt006" name="wbt006" class="mini-datepicker" value="${dto.wbt006}" format="yyyy-MM-dd" /></td>
-            <td>签发日期</td>
-            <td colspan="2"><input id="wbt011" name="wbt011" class="mini-datepicker" value="${dto.wbt011}" /></td>
+           <!-- <td>签发日期</td>
+            <td colspan="2"><input id="wbt011" name="wbt011" class="mini-datepicker" value="${dto.wbt011}" /></td>-->
         </tr>
         <tr>
             <td>报告备注</td>
@@ -306,10 +306,10 @@
         var wct012=$("#collect_list").find("textarea[name='wct012']").val();
         var wbt005=mini.get("wbt005").getFormValue();
         var wbt006=mini.get("wbt006").getFormValue();
-        var wbt011=mini.get("wbt011").getFormValue();
+        //var wbt011=mini.get("wbt011").getFormValue();
         var aae013=mini.get("aae013").getValue();
         var wbt012=UM.getEditor('myEditor').getContent();
-        var wt02=[{wbt001:wbt001,wct011:wct011,wct012:wct012,wbt005:wbt005,wbt006:wbt006,wbt011:wbt011,aae013:aae013,wbt012:wbt012}]
+        var wt02=[{wbt001:wbt001,wct011:wct011,wct012:wct012,wbt005:wbt005,wbt006:wbt006,aae013:aae013,wbt012:wbt012}]
         var url="${pageContext.request.contextPath}/work/f100201/saveWt02"
         Web.util.request(url,"post",{json1:JSON.stringify(wt02)},function () {
             url="${pageContext.request.contextPath}/work/f100201/updateWt03"
