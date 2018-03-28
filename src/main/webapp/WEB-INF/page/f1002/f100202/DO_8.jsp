@@ -24,8 +24,11 @@
     </style>
 </head>
 <body>
-<input type="button" value="打印预览" onClick="dopreview()">&nbsp;&nbsp;
-<input type="button" value="打印" onClick="doprint()">
+<input type="button" id="check" value="审核" onClick="docheck()">&nbsp;&nbsp;
+<input type="button" id="sign" value="签发" onClick="dosign()">&nbsp;&nbsp;
+<input type="button" id="preview" value="打印预览" onClick="dopreview()">&nbsp;&nbsp;
+<input type="button" id="print" value="打印" onClick="doprint()">&nbsp;&nbsp; <span style="color:#C00000;">已经打印${dto.wbt014}次</span>
+
 <div id="display1">
     <div class="display_title">检  测  报  告<br/>
         TEST  REPORT
@@ -177,7 +180,7 @@
         </c:forEach>
     </div>
 </div>
-<div id="display4">
+<div id="display4" style="clear: both">
     <div class="display_title">检  测  说  明<br/>
         TEST DESCRIPTION
     </div>
@@ -197,6 +200,7 @@
 </div>
 </body>
 <script language="javascript" type="text/javascript">
+    var wbt001=${dto.wbt001};
     var LODOP; //声明为全局变量
     function init() {
         LODOP=getLodop();
@@ -224,7 +228,30 @@
     };
     function doprint() {
         init();
-       LODOP.PRINT();
+       var isSuccess=LODOP.PRINT();
+       if(isSuccess){
+           var url="${pageContext.request.contextPath}/work/f100201/updateWt02"
+               Web.util.request(url,"post",{wbt001:wbt001,flag:"1"},function () {
+                   Web.util.showTips("已成功打印");
+                   $("#print").hide();
+               })
+       };
+    }
+    function docheck() {
+     var url="${pageContext.request.contextPath}/work/f100201/updateWt02"
+        Web.util.confirm("是否确定审核通过？",function () {
+            Web.util.request(url,"post",{wbt001:wbt001,flag:"2"},function () {
+                Web.util.showTips("已审核通过");
+                $("#check").hide();
+            })
+        })
+
+    }
+    var htmlContent = document.getElementById("htmlContent");
+    function dosign() {
+        Web.util.openMiniWindow("签发","${pageContext.request.contextPath}/work/f100202/loadSign?wbt001="+wbt001,500,300,function () {
+            $("#sign").hide();
+        })
     }
 </script>
 </html>

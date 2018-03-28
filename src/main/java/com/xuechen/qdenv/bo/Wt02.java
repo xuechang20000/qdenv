@@ -44,6 +44,7 @@ public class Wt02 {
     private byte[] wbt013;
     private String wct011;
     private String wct012;
+    private String wbt016;
 @Id
     public Integer getWbt001() {
         return wbt001;
@@ -203,5 +204,13 @@ public class Wt02 {
 
     public void setWct012(String wct012) {
         this.wct012 = wct012;
+    }
+
+    public String getWbt016() {
+        return wbt016;
+    }
+
+    public void setWbt016(String wbt016) {
+        this.wbt016 = wbt016;
     }
 }

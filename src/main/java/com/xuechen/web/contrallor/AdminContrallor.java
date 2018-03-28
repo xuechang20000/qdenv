@@ -15,6 +15,7 @@ import com.xuechen.web.service.AdminService;
 import com.xuechen.web.service.UserService;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -154,11 +155,12 @@ public class AdminContrallor {
     }
     @RequestMapping("/updateSignature")
     @ResponseBody
-    public String updateSignature(String ext1, HttpServletRequest request){
+    public String updateSignature(HttpServletRequest request,String ext1){
         AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
         AppUser appUser=new AppUser();
         appUser.setUserId(appUserDTO.getUserId());
-        appUser.setExt1(ext1);
+        //String ext1r=request.getParameter("ext1");
+        //appUser.setExt1(ext1r);
         List<MultipartFile> multipartFiles=FileUtils.getMutipartFileFromRequest(request);
         if(multipartFiles.size()>0) {
             MultipartFile signature=multipartFiles.get(0);
@@ -176,8 +178,18 @@ public class AdminContrallor {
         this.userService.updateSignature(appUser);
         return "";
     }
+    @RequestMapping("/updateAppUserExt")
+    @ResponseBody
+    public String updateAppUserExt(AppUserDTO appUserDTO){
+        AppUserDTO appUserDTO1=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        AppUser appUser=new AppUser();
+        BeanUtils.copyProperties(appUserDTO,appUser);
+        appUser.setUserId(appUserDTO1.getUserId());
+        this.userService.updatePassword(appUser);
+        return "";
+    }
     @RequestMapping("/querySignature")
-    public void updateSignature(HttpServletResponse response,AppUserDTO appUserDTO){
+    public void querySignature(HttpServletResponse response,AppUserDTO appUserDTO){
         AppUserDTO appUserDTO1=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
         if (appUserDTO.getUserId()==null) appUserDTO.setUserId(appUserDTO1.getUserId());
         AppUser appUser=this.userService.querySignature(appUserDTO);

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -567,6 +568,34 @@ public class QdenvServiceImpl implements QdenvService {
         }
     }
 
+    /**
+     *打印审核签发
+     * @param wt02Dto
+     * @param flag 1：打印，2：审核，3：签发
+     */
+    public void updateWt02(Wt02Dto wt02Dto,String flag){
+
+        AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+            Wt02 wt02=CommonJdbcUtils.queryFirst("select * from wt02 where wbt001=?",Wt02.class,wt02Dto.getWbt001());
+            Wt02 wt021=new Wt02();
+            BeanUtils.copyProperties(wt02Dto,wt021);
+            if("1".equals(flag)){
+                wt021.setWbt015(new Date());
+                wt021.setWbt014(wt02.getWbt014()==null?1:wt02.getWbt014()+1);
+            }
+            if("2".equals(flag)){
+                wt021.setWbt008(appUserDTO.getUserId());
+                wt021.setWbt009(new Date());
+            }
+            if("3".equals(flag)){
+                if ("1".equals(wt02Dto.getWbt016())&&!wt02Dto.getExt1().equals(appUserDTO.getExt1()))
+                    throw new BusinessException("电子签名授权码不正确！");
+                wt021.setWbt010(wt02Dto.getWbt010());
+                wt021.setWbt011(StringTools.formatNowDate(null));
+            }
+            CommonJdbcUtils.updateSelect(wt021);
+    }
+
     public void deleteWt02(Integer wbt001){
         CommonJdbcUtils.execute("delete from wt02 where wbt001=?",wbt001);
     }
@@ -1006,7 +1035,7 @@ public class QdenvServiceImpl implements QdenvService {
      */
     public Wt02Dto queryWt02Report(Wt02Dto wt02Dto){
         String sql="select a.wat001,a.wat002,(select dict_name from app_dict_detail where dict_code='WAT003' and dict_val=a.wat003 ) as wat003" +
-                ",a.daw001,a.daw002,a.daw005,b.wbt001,b.wbt005,b.wbt006,b.wbt012, " +
+                ",a.daw001,a.daw002,a.daw005,b.wbt001,b.wbt005,b.wbt006,b.wbt012,b.wbt014, " +
                 "b.aae013,b.wbt008,b.wbt010,b.wbt011,c.bbz002,c.bbz004 from wt01 a,wt02 b,bz01 c where " +
                 "b.bbz001=c.bbz001 and a.wat001=b.wat001 and b.wbt001=? ";
         Wt02Dto wt02Dto1=CommonJdbcUtils.queryFirst(sql,Wt02Dto.class,wt02Dto.getWbt001());

@@ -20,6 +20,7 @@ public class Wt02Dto extends Wt02 {
     private String wct014min;
     private String wbt007sum;
     private String wct016max;
+    private String ext1;
     public String getIdx() {
         return idx;
     }
@@ -139,5 +140,13 @@ public class Wt02Dto extends Wt02 {
 
     public void setWct016max(String wct016max) {
         this.wct016max = wct016max;
+    }
+
+    public String getExt1() {
+        return ext1;
+    }
+
+    public void setExt1(String ext1) {
+        this.ext1 = ext1;
     }
 }

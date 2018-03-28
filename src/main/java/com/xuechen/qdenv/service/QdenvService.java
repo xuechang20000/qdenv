@@ -33,6 +33,7 @@ public interface QdenvService {
     public Wt01 saveWt(Wt01Dto wt01Dto, List<Wt02Dto> wt02Dtos, List<Wt03Dto> wt03Dtos);
     public Wt05 saveWt05(Wt05 wt05);
     public void saveWt02(List<Wt02Dto> wt02Dtos);
+    public void updateWt02(Wt02Dto wt02Dto,String flag);
     public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto);
     public void updateWt03(List<Wt03Dto> wt03Dtos);
     public List<Wp01Dto> queryWp01List(Wp01Dto wp01Dto);

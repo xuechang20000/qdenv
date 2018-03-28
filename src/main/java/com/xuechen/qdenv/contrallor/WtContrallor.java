@@ -97,6 +97,10 @@ public class WtContrallor {
     public String index_load_do_6(){
         return "/WEB-INF/page/f1002/f100202/DO_6";
     }
+    @RequestMapping("/f100202/loadSign")
+    public String index_loadSign(){
+        return "/WEB-INF/page/f1002/f100202/sign";
+    }
     @RequestMapping("/f100202/loadWt03")
     public String index_loadWt03(){
         return "/WEB-INF/page/f1002/f100202/wt03";
@@ -132,6 +136,19 @@ public class WtContrallor {
         List<Wt02Dto> wt02Dtos=JSONObject.parseArray(dto.getJson1(),Wt02Dto.class);
         this.qdenvService.saveWt02(wt02Dtos);
         return JSON.toJSONString(wt02Dtos);
+    }
+
+    /**
+     *
+     * @param wt02Dto
+     * @param flag 1：打印，2：审核，3：签发
+     * @return
+     */
+    @RequestMapping(value="/f100201/updateWt02",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String updateWt02(Wt02Dto wt02Dto,String flag){
+        this.qdenvService.updateWt02(wt02Dto,flag);
+        return JSON.toJSONString(wt02Dto);
     }
     @RequestMapping(value="/f100201/queryWt",produces = "application/json; charset=utf-8")
     @ResponseBody

@@ -45,7 +45,7 @@
         <tr>
             <td></td>
             <td class="form-td-odd">
-                <a class="mini-button" iconCls="icon-save" id="doSubmit" onclick="ajaxFileUpload()">保存</a>
+                <a class="mini-button" iconCls="icon-save" id="doSubmit" onclick="dosubmit()">保存</a>
             </td>
 
         </tr>
@@ -54,8 +54,7 @@
 </body>
 <script type="text/javascript">
     mini.parse();
-    function ajaxFileUpload() {
-        var inputFile = $("#signature > input:file")[0];
+    function dosubmit() {
         var form = new mini.Form("#form1");
         form.validate();
         if (form.isValid() == false) {
@@ -68,16 +67,27 @@
             Web.util.showTipsWanring('授权码与授权码确认不一致，请修正！');
             return;
         }
+        var url="${pageContext.request.contextPath}/admin/updateAppUserExt"
+        Web.util.request(url,"post",{"ext1":ext1},function () {
+            ajaxFileUpload();
+        });
+    }
+    function ajaxFileUpload() {
+        var inputFile = $("#signature > input:file")[0];
         $.ajaxFileUpload({
             url: '${pageContext.request.contextPath}/admin/updateSignature',      //用于文件上传的服务器端请求地址
             fileElementId: inputFile,               //文件上传域的ID
-            data: { "ext1":ext1 },            //附加的额外参数
+            //data: {"ext1":ext1},            //附加的额外参数
             dataType: 'text',                   //返回值类型 一般设置为json
             success: function (data, status)    //服务器成功响应处理函数
             {
                 if (data) alert(data);
-                else Web.util.showTips("上传成功！")
-                mini.get("doSubmit").disable();
+                else{
+                        Web.util.showTips("上传成功！");
+                        mini.get("doSubmit").disable();
+
+                }
+
             },
             error: function (data, status, e)   //服务器响应失败处理函数
             {
