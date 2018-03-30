@@ -1036,7 +1036,7 @@ public class QdenvServiceImpl implements QdenvService {
     public Wt02Dto queryWt02Report(Wt02Dto wt02Dto){
         String sql="select a.wat001,a.wat002,(select dict_name from app_dict_detail where dict_code='WAT003' and dict_val=a.wat003 ) as wat003" +
                 ",a.daw001,a.daw002,a.daw005,b.wbt001,b.wbt005,b.wbt006,b.wbt012,b.wbt014, " +
-                "b.aae013,b.wbt008,b.wbt010,b.wbt011,c.bbz002,c.bbz004 from wt01 a,wt02 b,bz01 c where " +
+                "b.aae013,b.wbt008,b.wbt010,b.wbt011,c.bbz002,c.bbz004,b.wbt009 from wt01 a,wt02 b,bz01 c where " +
                 "b.bbz001=c.bbz001 and a.wat001=b.wat001 and b.wbt001=? ";
         Wt02Dto wt02Dto1=CommonJdbcUtils.queryFirst(sql,Wt02Dto.class,wt02Dto.getWbt001());
             sql="select GROUP_CONCAT(DISTINCT bcz002) from wt04 where wbt001=? GROUP BY wbt001";

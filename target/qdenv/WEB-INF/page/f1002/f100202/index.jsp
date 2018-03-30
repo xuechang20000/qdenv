@@ -71,18 +71,18 @@
 <div class="temp_report">
 
 <span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
- <img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">
- <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})">
- <img src="${pageContext.request.contextPath}/resources/image/preview.png"/ onclick="onPreviewWt02({{= wbt001}})">
- <img src="${pageContext.request.contextPath}/resources/image/out.png"/ onclick="onOutWt02({{= wbt001}})">
+  <!--<img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">-->
+ <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" alt="检测录入">
+ <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})">
+ <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})">
  <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})">
 </span>
 
 {{each(i,wt03) wt03DtoList}}
 <div class="temp_select">
     <span class="temp_select_title">
-    <img src="${pageContext.request.contextPath}/resources/image/delete.png" onclick="onDeleteWt03({{= wt03.wct001}})"/>
-    <img src="${pageContext.request.contextPath}/resources/image/edit.png" onclick="onEditWt03({{= wt03.wct001}})"/>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/delete.png" onclick="onDeleteWt03({{= wt03.wct001}})"/>-->
+    <!--<img src="${pageContext.request.contextPath}/resources/image/edit.png" onclick="onEditWt03({{= wt03.wct001}})"/>-->
     (ID:{{= wt03.wct001}}){{= wt03.wct002}}</span>
     项目：
     <span>
@@ -163,7 +163,7 @@ function onOutWt02(v) {
 }
     //审核报告
 function onCheckWt02(v) {
-    alert(v);
+    onOutWt02(v);
 }
 function onWt01DO(v,t) {
     var row = grid.getSelected();
@@ -180,7 +180,7 @@ function onWt01DO(v,t) {
         })
     }else {//打印界面
         Web.util.openMiniWindow(t, url, 1000, 500, function () {
-            grid.reload();
+            //grid.reload();
         })
     }
 }

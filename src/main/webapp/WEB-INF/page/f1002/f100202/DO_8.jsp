@@ -24,10 +24,25 @@
     </style>
 </head>
 <body>
+<c:if test="${dto.wbt009==null}">
 <input type="button" id="check" value="审核" onClick="docheck()">&nbsp;&nbsp;
+</c:if>
+<c:if test="${dto.wbt011==null||dto.wbt011==''}">
 <input type="button" id="sign" value="签发" onClick="dosign()">&nbsp;&nbsp;
+</c:if>
 <input type="button" id="preview" value="打印预览" onClick="dopreview()">&nbsp;&nbsp;
-<input type="button" id="print" value="打印" onClick="doprint()">&nbsp;&nbsp; <span style="color:#C00000;">已经打印${dto.wbt014}次</span>
+<input type="button" id="print" value="打印" onClick="doprint()">&nbsp;&nbsp;
+<span style="color:#C00000;">
+<c:if test="${dto.wbt009!=null}">
+    审核日期： <fmt:formatDate value="${dto.wbt009}"  type="date"/> &nbsp;&nbsp;
+</c:if>
+<c:if test="${dto.wbt011!=null&&dto.wbt011!=''}">
+    签发日期：${dto.wbt011}&nbsp;&nbsp;
+</c:if>
+<c:if test="${dto.wbt014!=null}">
+    已经打印${dto.wbt014}次
+</c:if>
+</span>
 
 <div id="display1">
     <div class="display_title">检  测  报  告<br/>
@@ -88,11 +103,30 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <span style="float: left;margin-left: 10px">审核：<br/> Verified By: </span>
-                    <span style="float: left;margin-left: 10px">签发：<br/>Approved By: </span>
-                    <span style="float: right;margin-right: 10px">${dto.wbt011} </span>
-                    <span style="float: right;margin-right: 10px">签发日期：<br/>Approved Date: </span>
 
+                    <table>
+                        <tr>
+                            <td>审核：</td>
+                            <td rowspan="2">
+                                <c:if test="${dto.wbt008!=null}">
+                                    <img src="${pageContext.request.contextPath}/admin/querySignature?userid=${dto.wbt008}"></img>
+                                </c:if>
+                            </td>
+                            <td>签发：</td>
+                            <td rowspan="2">
+                                <c:if test="${dto.wbt010!=null}">
+                                    <img src="${pageContext.request.contextPath}/admin/querySignature?userid=${dto.wbt010}"></img>
+                                </c:if>
+                            </td>
+                            <td>签发日期：</td>
+                            <td rowspan="2">${dto.wbt011}</td>
+                        </tr>
+                        <tr>
+                            <td>Verified By:</td>
+                            <td>Approved By:</td>
+                            <td>Approved Date:</td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>
@@ -154,7 +188,12 @@
                                 ${wt04.wxt002}
                         </td>
                         <td align="center">
-                                ${wt04.wxt003}
+                                <c:if test="${wt04.wxt003=='1'}">
+                                    合格
+                                </c:if>
+                            <c:if test="${wt04.wxt003!='1'}">
+                                不合格
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -242,15 +281,14 @@
         Web.util.confirm("是否确定审核通过？",function () {
             Web.util.request(url,"post",{wbt001:wbt001,flag:"2"},function () {
                 Web.util.showTips("已审核通过");
-                $("#check").hide();
+                location.reload();
             })
         })
 
     }
-    var htmlContent = document.getElementById("htmlContent");
     function dosign() {
         Web.util.openMiniWindow("签发","${pageContext.request.contextPath}/work/f100202/loadSign?wbt001="+wbt001,500,300,function () {
-            $("#sign").hide();
+            location.reload();
         })
     }
 </script>
