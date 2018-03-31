@@ -1053,4 +1053,43 @@ public class QdenvServiceImpl implements QdenvService {
         wt02Dto1.setWt03DtoList(queryWt03(wt03Dto));
         return  wt02Dto1;
     }
+
+    /**
+     * 查询发票信息
+     * @param wt07Dto
+     * @return
+     */
+    public List<Wt07Dto> queryWt07list(Wt07Dto wt07Dto){
+        String sql="select * from wt07 where 1=1 ";
+        List<String> args=new ArrayList<String>();
+        if (wt07Dto.getWft001()!=null){
+            sql=sql+" and wft001=? ";
+            args.add(wt07Dto.getWft001().toString());
+        }
+        if (StringTools.hasText(wt07Dto.getAae016())){
+            sql=sql+" and aae016 =? ";
+            args.add(wt07Dto.getAae016());
+        }
+        if (args.size()==0) return null;
+        List<Wt07Dto> wt07Dtos=CommonJdbcUtils.queryList(sql,Wt07Dto.class,args.toArray());
+            return  wt07Dtos;
+    }
+
+    /**
+     * 保存发票信息
+     * @param wt07Dto
+     * @return
+     */
+    public Wt07 saveWt07(Wt07Dto wt07Dto){
+        Wt07 wt07=new Wt07();
+        BeanUtils.copyProperties(wt07Dto,wt07);
+        if(wt07Dto.getWft020()==null){
+            wt07.setWft021(new Date());
+            wt07.setAae016("1");
+            wt07.setWft015("1");
+        }
+
+        CommonJdbcUtils.saveOrUpdateObject(wt07,false);
+        return  wt07;
+    }
 }

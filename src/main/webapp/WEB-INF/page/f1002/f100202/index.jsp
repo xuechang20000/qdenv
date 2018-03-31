@@ -73,9 +73,9 @@
 <span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
   <!--<img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">-->
  <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" alt="检测录入">
- <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})">
- <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})">
- <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})">
+ <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" alt="报告编写">
+ <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" alt="报告签发">
+ <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" alt="报告审核">
 </span>
 
 {{each(i,wt03) wt03DtoList}}

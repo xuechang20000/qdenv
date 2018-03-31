@@ -17,18 +17,18 @@ public class Wt07 {
 
     private String wft015;
 
-    private Date wft016;
+    private String wft016;
 
     private String wft017;
 
     private String aae013;
-
+    private String aae016;
     private String aae005;
     private String aae006;
     private String wft018;
     private String wft019;
     private String aac147;
-
+    private Date wft021;
     @Id
     public Integer getWft020() {
         return wft020;
@@ -78,11 +78,11 @@ public class Wt07 {
         this.wft015 = wft015;
     }
 
-    public Date getWft016() {
+    public String getWft016() {
         return wft016;
     }
 
-    public void setWft016(Date wft016) {
+    public void setWft016(String wft016) {
         this.wft016 = wft016;
     }
 
@@ -140,5 +140,21 @@ public class Wt07 {
 
     public void setAac147(String aac147) {
         this.aac147 = aac147;
+    }
+
+    public Date getWft021() {
+        return wft021;
+    }
+
+    public void setWft021(Date wft021) {
+        this.wft021 = wft021;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
     }
 }

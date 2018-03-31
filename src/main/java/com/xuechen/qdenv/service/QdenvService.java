@@ -50,4 +50,6 @@ public interface QdenvService {
     public Wt01Dto saveNextProcess(Wt01Dto wt01Dto);
     public Wt01Dto savePreProcess(Wt01Dto wt01Dto);
     public Wt02Dto queryWt02Report(Wt02Dto wt02Dto);
+    public List<Wt07Dto> queryWt07list(Wt07Dto wt07Dto);
+    public Wt07 saveWt07(Wt07Dto wt07Dto);
 }

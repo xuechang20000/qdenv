@@ -200,6 +200,7 @@
             </div>
         </div>
     </div>
+    <div title="发票信息" class="mini-fit" style="height:100%;"></div>
 </div>
 
 <span id="grid_buttons" style="display: none"  >
@@ -487,5 +488,13 @@
         $("#span_wat002").html('');
         mini.get("doSubmit").enable();
     }
+    var tabs=mini.get("tabs1");
+    tabs.on("activechanged", function (e) {
+        if (e.tab.title == "发票信息") {
+            var tab = tabs.getActiveTab();
+            tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadInvoice?wat001="+wat001, tab);
+            e.cancel = true;
+        }
+    });
 </script>
 </html>

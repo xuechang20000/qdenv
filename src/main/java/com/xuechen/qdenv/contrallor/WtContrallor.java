@@ -49,6 +49,10 @@ public class WtContrallor {
     public String index_f100202(){
         return "/WEB-INF/page/f1002/f100202/index";
     }
+    @RequestMapping("/f100301/index")
+    public String index_f100301(){
+        return "/WEB-INF/page/f1003/f100301/index";
+    }
     @RequestMapping("/f100204/index")
     public String index_f100204(){
         return "/WEB-INF/page/f1002/f100204/index";
@@ -108,6 +112,14 @@ public class WtContrallor {
     @RequestMapping("/f100202/loadPhotos")
     public String index_loadPhotos(){
         return "/WEB-INF/page/f1002/f100202/photos";
+    }
+    @RequestMapping("/f100202/loadInvoice")
+    public String index_loadInvoice(){
+        return "/WEB-INF/page/f1002/f100202/invoice";
+    }
+    @RequestMapping("/f100301/loadCwInvoice")
+    public String index_loadCwInvoice(){
+        return "/WEB-INF/page/f1003/f100301/invoice";
     }
     @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
     @ResponseBody
@@ -293,4 +305,26 @@ public class WtContrallor {
         return JSON.toJSONStringWithDateFormat(wp01Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
 
+    /**
+     * 查询发票信息
+     * @param wt07Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/queryWt07List",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt07List(Wt07Dto wt07Dto){
+        List<Wt07Dto> wt07Dtos=this.qdenvService.queryWt07list(wt07Dto);
+        return JSON.toJSONStringWithDateFormat(wt07Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    /**
+     * 保存发票信息
+     * @param wt07Dto
+     * @return
+     */
+    @RequestMapping(value="/f100201/saveWt07",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveWt07(Wt07Dto wt07Dto){
+        Wt07 wt07=this.qdenvService.saveWt07(wt07Dto);
+        return JSON.toJSONStringWithDateFormat(wt07, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
 }
