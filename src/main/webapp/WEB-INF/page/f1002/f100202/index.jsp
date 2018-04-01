@@ -181,6 +181,9 @@ function onWt01DO(v,t) {
     }else {//打印界面
         Web.util.openMiniWindow(t, url, 1000, 500, function () {
             //grid.reload();
+            if ('DO_3'==v){
+                grid.reload()
+            }
         })
     }
 }

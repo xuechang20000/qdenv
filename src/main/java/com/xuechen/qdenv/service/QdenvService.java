@@ -52,4 +52,7 @@ public interface QdenvService {
     public Wt02Dto queryWt02Report(Wt02Dto wt02Dto);
     public List<Wt07Dto> queryWt07list(Wt07Dto wt07Dto);
     public Wt07 saveWt07(Wt07Dto wt07Dto);
+    public List<Wt02Dto> queryWt02Disables(Page page,Wt02Dto wt02Dto);
+    public Wt02 updateWt02Simple(Wt02Dto wt02Dto);
+    public Wt03 updateWt03Simple(Wt03Dto wt03Dto);
 }

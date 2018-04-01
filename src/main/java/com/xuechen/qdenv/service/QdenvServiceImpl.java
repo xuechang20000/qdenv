@@ -546,12 +546,13 @@ public class QdenvServiceImpl implements QdenvService {
      * 保存报告（标准）
      * @param wt02Dtos
      */
-
+@Transactional
     public void saveWt02(List<Wt02Dto> wt02Dtos){
         Wt02 wt02=null;
         for (Wt02Dto wt02Dto:wt02Dtos){
             if ("removed".equals(wt02Dto.get_state())){
-                deleteWt02(wt02Dto.getWbt001());
+                //deleteWt02(wt02Dto.getWbt001());
+                CommonJdbcUtils.execute("update wt02 set aae016='0' where wbt001=? ",wt02Dto.getWbt001());
                 continue;
             }
             wt02=new Wt02();
@@ -609,7 +610,8 @@ public class QdenvServiceImpl implements QdenvService {
         Wt03 wt03=new Wt03();
         BeanUtils.copyProperties(wt03Dto,wt03);
         if ("removed".equals(wt03Dto.get_state())){
-            deleteWt03(wt03Dto.getWct001());
+           // deleteWt03(wt03Dto.getWct001());
+            CommonJdbcUtils.execute("update wt03 set aae016='0' where wct001=? ",wt03Dto.getWct001());
             return wt03;
         }
         if(wt03.getWct014()==null){
@@ -620,6 +622,7 @@ public class QdenvServiceImpl implements QdenvService {
         //保存采样点
         CommonJdbcUtils.saveOrUpdateObject(wt03,false);
         List<Wt04> wt04s=getWt04List(wt03Dto.getBcz001s(),wt03.getWct001(),wt03.getWbt001());
+        CommonJdbcUtils.execute("delete from wt04 where wct001=?",wt03.getWct001());
         saveWt04List(wt04s);
 
         /**
@@ -813,10 +816,15 @@ public class QdenvServiceImpl implements QdenvService {
             args.add(wt02Dto.getWbt001().toString());
             sql.append(" and a.wbt001=? ");
         }
+        if (StringTools.hasText(wt02Dto.getAae016())){
+            args.add(wt02Dto.getAae016());
+            sql.append(" and a.aae016=? ");
+        }
         List<Wt02Dto> wt02Dtos= CommonJdbcUtils.queryList(sql.toString(),Wt02Dto.class,args.toArray());
         Wt03Dto wt03Dto=new Wt03Dto();
         for (Wt02Dto dto:wt02Dtos){
             wt03Dto.setWbt001(dto.getWbt001());
+            wt03Dto.setAae016("1");//查询有效
             dto.setWt03DtoList(queryWt03(wt03Dto));
         }
         return  wt02Dtos;
@@ -837,6 +845,10 @@ public class QdenvServiceImpl implements QdenvService {
         if (wt03Dto.getWct001()!=null){
             sb.append(" and wct001=? ");
             args.add(wt03Dto.getWct001().toString());
+        }
+        if (StringTools.hasText(wt03Dto.getAae016())){
+            sb.append(" and aae016=? ");
+            args.add(wt03Dto.getAae016());
         }
         List<Wt03Dto> wt03Dtos= CommonJdbcUtils.queryList(sb.toString(),Wt03Dto.class,args.toArray());
         Wt04Dto wt04Dto=new Wt04Dto();
@@ -1091,5 +1103,73 @@ public class QdenvServiceImpl implements QdenvService {
 
         CommonJdbcUtils.saveOrUpdateObject(wt07,false);
         return  wt07;
+    }
+
+    /**
+     * 查询报告
+     * @param page
+     * @param wt02Dto
+     * @return
+     */
+    public List<Wt02Dto> queryWt02Disables(Page page,Wt02Dto wt02Dto){
+        StringBuffer sql=new StringBuffer("select a.wat001,a.wat002,a.daw001,a.daw002,a.daw003,a.daw004," +
+                "a.daw005,b.bbz001,b.wbt001,b.wbt002,b.wbt003,b.aae016 " +
+                ",c.bbz002,c.bbz003,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s " +
+                " from wt01 a,wt02 b,bz01 c where a.wat001=b.wat001 and b.bbz001=c.bbz001 ");
+        List<String> args=new ArrayList<String>();
+        if (wt02Dto.getWat001()!=null){
+            args.add(wt02Dto.getWat001().toString());
+            sql.append(" and a.wat001=? ");
+        }
+        if (wt02Dto.getWbt001()!=null){
+            args.add(wt02Dto.getWbt001().toString());
+            sql.append(" and b.wbt001=? ");
+        }
+        if ("0".equals(wt02Dto.getAae016())){
+            sql.append(" and(b.aae016='0' or EXISTS(select 1 from wt03 d where b.wbt001=d.wbt001 and d.aae016='0') )  ");
+        }
+        if (StringTools.hasText(wt02Dto.getWat002())){
+            args.add(wt02Dto.getWat002());
+            sql.append(" and a.wat002=? ");
+        }
+        CommonJdbcUtils.queryPageList(page,sql.toString(),Wt02Dto.class,args.toArray());
+        return  page.getData();
+    }
+
+    /**
+     * update wt02
+     * @param wt02Dto
+     * @return
+     */
+    @Transactional
+    public Wt02 updateWt02Simple(Wt02Dto wt02Dto){
+        Wt02 wt02=new Wt02();
+        BeanUtils.copyProperties(wt02Dto,wt02);
+        CommonJdbcUtils.saveOrUpdateObject(wt02,false);
+        wt02=CommonJdbcUtils.queryFirst("select wat001 from wt02 where wbt001=?",Wt02.class,wt02Dto.getWbt001());
+        udpateCacleFee(wt02.getWat001());
+        return  wt02;
+    }
+
+    /**
+     * update wt03
+     * @param wt03Dto
+     * @return
+     */
+    @Transactional
+    public Wt03 updateWt03Simple(Wt03Dto wt03Dto){
+        Wt03 wt03=new Wt03();
+        BeanUtils.copyProperties(wt03Dto,wt03);
+        CommonJdbcUtils.saveOrUpdateObject(wt03,false);
+        Wt02 wt02=CommonJdbcUtils.queryFirst("select wat001 from wt02 where wbt001=?",Wt02.class,wt03Dto.getWbt001());
+        udpateCacleFee(wt02.getWat001());
+        return  wt03;
+    }
+    public void udpateCacleFee(Integer wat001){
+        String sql="select SUM(a.wxt004) from wt04 a,wt03 b ,wt02 c where a.wct001=b.wct001 and c.wbt001=b.wbt001 and " +
+                " c.wat001=? and c.aae016='1' and b.aae016='1'";
+        Double testFee=CommonJdbcUtils.queryObject(sql,Double.class,wat001);
+        sql="update wt05 set wft004=?,wft007=(wft002+wft004)*wft006 where wat001=?";
+        CommonJdbcUtils.execute(sql,testFee,wat001);
     }
 }

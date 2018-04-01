@@ -15,12 +15,15 @@ public class Wt02Dto extends Wt02 {
     private String wat003;
     private Integer daw001;
     private String daw002;
+    private String daw003;
+    private String daw004;
     private String daw005;
     private String bcz002s;
     private String wct014min;
     private String wbt007sum;
     private String wct016max;
     private String ext1;
+    private String wat018s;
     public String getIdx() {
         return idx;
     }
@@ -148,5 +151,29 @@ public class Wt02Dto extends Wt02 {
 
     public void setExt1(String ext1) {
         this.ext1 = ext1;
+    }
+
+    public String getDaw003() {
+        return daw003;
+    }
+
+    public void setDaw003(String daw003) {
+        this.daw003 = daw003;
+    }
+
+    public String getDaw004() {
+        return daw004;
+    }
+
+    public void setDaw004(String daw004) {
+        this.daw004 = daw004;
+    }
+
+    public String getWat018s() {
+        return wat018s;
+    }
+
+    public void setWat018s(String wat018s) {
+        this.wat018s = wat018s;
     }
 }

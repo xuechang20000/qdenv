@@ -45,6 +45,7 @@ public class Wt02 {
     private String wct011;
     private String wct012;
     private String wbt016;
+    private  String aae016;
 @Id
     public Integer getWbt001() {
         return wbt001;
@@ -212,5 +213,13 @@ public class Wt02 {
 
     public void setWbt016(String wbt016) {
         this.wbt016 = wbt016;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
     }
 }

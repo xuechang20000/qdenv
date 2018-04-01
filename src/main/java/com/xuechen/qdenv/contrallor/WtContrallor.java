@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
+import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
@@ -56,6 +57,14 @@ public class WtContrallor {
     @RequestMapping("/f100204/index")
     public String index_f100204(){
         return "/WEB-INF/page/f1002/f100204/index";
+    }
+    @RequestMapping("/f100206/index")
+    public String index_f100206(){
+        return "/WEB-INF/page/f1002/f100206/index";
+    }
+    @RequestMapping("/f100205/index")
+    public String index_f100205(){
+        return "/WEB-INF/page/f1002/f100205/index";
     }
     @RequestMapping("/f100203/index")
     public String index_f100203(){
@@ -177,6 +186,8 @@ public class WtContrallor {
     @RequestMapping(value="/f100201/queryWt02",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String queryWt02(Wt02Dto wt02Dto){
+        if(!StringTools.hasText(wt02Dto.getAae016()))
+            wt02Dto.setAae016("1");
         List<Wt02Dto> wt02Dtos=this.qdenvService.queryWt02(wt02Dto);
         return JSON.toJSONStringWithDateFormat(wt02Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
@@ -326,5 +337,25 @@ public class WtContrallor {
     public String saveWt07(Wt07Dto wt07Dto){
         Wt07 wt07=this.qdenvService.saveWt07(wt07Dto);
         return JSON.toJSONStringWithDateFormat(wt07, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100206/queryWt02Disables",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt(Page page,Wt02Dto wt02Dto){
+        if (!StringTools.hasText(wt02Dto.getAae016()))
+            wt02Dto.setAae016("0");
+        this.qdenvService.queryWt02Disables(page,wt02Dto);
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100206/updateWt02Simple",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String updateWt02Simple(Wt02Dto wt02Dto){
+        Wt02 wt02=this.qdenvService.updateWt02Simple(wt02Dto);
+        return JSON.toJSONStringWithDateFormat(wt02, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100206/updateWt03Simple",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String updateWt03Simple(Wt03Dto wt03Dto){
+        Wt03 wt03=this.qdenvService.updateWt03Simple(wt03Dto);
+        return JSON.toJSONStringWithDateFormat(wt03, "yyyy-MM-dd HH:mm:ss.SSS");
     }
 }

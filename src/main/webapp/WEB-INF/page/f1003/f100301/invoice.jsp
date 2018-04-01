@@ -15,7 +15,7 @@
 <div id="datagrid" class="mini-datagrid" style="width: 100%;height: 150px;" allowResize="true" pageSize="10"
      onrowclick="onrowclick" idField="wft020">
     <div property="columns">
-        <div field="wft020" width="20" headerAlign="center" visible="false" >ID</div>
+        <div field="wft020" width="20" headerAlign="center" >ID</div>
         <div field="wft012" width="100" headerAlign="center" >发票抬头</div>
         <div field="wft013" width="70" headerAlign="center" >税号</div>
         <div field="wft018" width="80" headerAlign="center" >开户行</div>
@@ -26,7 +26,7 @@
         <div field="wft017" width="60" headerAlign="center" >发票号</div>
         <div field="aae006" width="80" visible="false" headerAlign="center" >地址</div>
         <div field="aae005" width="80" visible="false" headerAlign="center" >电话</div>
-        <div field="aae016" width="40" headerAlign="center" >有效标志</div>
+        <div field="aae016" width="40" headerAlign="center" renderer='oncodeRender' >有效标志</div>
         <div field="aae013" width="80" visible="false"headerAlign="center" >备注</div>
         <div headerAlign="center" width="40" renderer="renderUser">操作</div>
     </div>
@@ -41,6 +41,12 @@
             <td align="left">
                 <span id="span_wat002" style="color: red;font-size: 16px"></span>
             </td>
+            <td align="right">
+                <label for="wft020">发票ID：</label>
+            </td>
+            <td align="left">
+                <input id="wft020"  name="wft020" enabled="false" class="mini-textbox"  />
+            </td>
         </tr>
         <tr>
             <td align="right">
@@ -48,7 +54,7 @@
             </td>
             <td align="left">
                 <input id="wft012"  name="wft012" style="width:300px" class="mini-textbox"  />
-                <input id="wft020"  name="wft020"  visible="false" class="mini-textbox"  />
+
                 <input id="wft001"  name="wft001"  visible="false" class="mini-textbox"  />
             </td>
             <td align="right">
