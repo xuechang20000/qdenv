@@ -130,6 +130,10 @@ public class WtContrallor {
     public String index_loadCwInvoice(){
         return "/WEB-INF/page/f1003/f100301/invoice";
     }
+    @RequestMapping("/f100301/loadFee")
+    public String index_loadFee(){
+        return "/WEB-INF/page/f1003/f100301/fee";
+    }
     @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String getWat016(String wat015){
@@ -357,5 +361,11 @@ public class WtContrallor {
     public String updateWt03Simple(Wt03Dto wt03Dto){
         Wt03 wt03=this.qdenvService.updateWt03Simple(wt03Dto);
         return JSON.toJSONStringWithDateFormat(wt03, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100301/updateWt05",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String updateWt05(Wt05Dto wt05Dto){
+        Wt05 wt05=this.qdenvService.updateWt05(wt05Dto);
+        return JSON.toJSONStringWithDateFormat(wt05, "yyyy-MM-dd HH:mm:ss.SSS");
     }
 }

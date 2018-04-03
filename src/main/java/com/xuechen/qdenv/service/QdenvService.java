@@ -55,4 +55,5 @@ public interface QdenvService {
     public List<Wt02Dto> queryWt02Disables(Page page,Wt02Dto wt02Dto);
     public Wt02 updateWt02Simple(Wt02Dto wt02Dto);
     public Wt03 updateWt03Simple(Wt03Dto wt03Dto);
+    public Wt05 updateWt05(Wt05Dto wt05Dto);
 }

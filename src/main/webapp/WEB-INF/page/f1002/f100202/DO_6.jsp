@@ -126,6 +126,7 @@
         var url="${pageContext.request.contextPath}/work/f100201/saveWtAttach"
         var data = form.getData(true);
         data.wat019=mini.get("wat019").getValue();
+        data.wat013=mini.get("wat013").getFormValue();
         Web.util.request(url,"post",data,function () {
             Web.util.showTips("保存成功")
             mini.get('doSubmit').disable()

@@ -2,6 +2,7 @@ package com.xuechen.qdenv.dto;
 
 import com.xuechen.qdenv.bo.Wt01;
 
+import java.util.Date;
 import java.util.List;
 
 public class Wt01Dto extends Wt01 {
@@ -17,7 +18,11 @@ public class Wt01Dto extends Wt01 {
     private String wft005;
     private String wft006;
     private String wft007;
+    private String wft008;
+    private String wft009;
     private String wft010;
+    private Date wft011;
+    private String wftaae013;
     private String s_date;
     private String e_date;
     private String username;
@@ -167,5 +172,37 @@ public class Wt01Dto extends Wt01 {
 
     public void setFnames(String fnames) {
         this.fnames = fnames;
+    }
+
+    public String getWft008() {
+        return wft008;
+    }
+
+    public void setWft008(String wft008) {
+        this.wft008 = wft008;
+    }
+
+    public String getWft009() {
+        return wft009;
+    }
+
+    public void setWft009(String wft009) {
+        this.wft009 = wft009;
+    }
+
+    public Date getWft011() {
+        return wft011;
+    }
+
+    public void setWft011(Date wft011) {
+        this.wft011 = wft011;
+    }
+
+    public String getWftaae013() {
+        return wftaae013;
+    }
+
+    public void setWftaae013(String wftaae013) {
+        this.wftaae013 = wftaae013;
     }
 }

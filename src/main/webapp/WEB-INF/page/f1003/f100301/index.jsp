@@ -13,6 +13,7 @@
         .temp_report_title{font-weight: bold;color: #1296db}
         .temp_select_title{color:#1296db}
         .temp_select{padding-bottom: 4px}
+        .wft010_1{color: #78CD51;}
     </style>
 
 </head>
@@ -39,7 +40,7 @@
      url="<%=request.getContextPath()%>/work/f100201/queryWt"
      idField="wat001"  pageSize='100'  sortMode="client">
     <div property="columns">
-        <div headerAlign="center" align="center" width="40" renderer="renderDO">操作</div>
+        <div headerAlign="center" align="center" width="80" renderer="renderDO">操作</div>
         <div field="wat001" width="40" headerAlign="center" align="center" visible="false" allowSort="true">委托id</div>
         <div field="wat002" width="60" headerAlign="center" align="center" allowSort="true">编号</div>
         <div field="wat018" width="40" headerAlign="center" align="center"  visible="false" allowSort="true">状态</div>
@@ -58,14 +59,15 @@
     </div>
 </div>
 <span id="grid_buttons" style="display: none"  >
-        <a class="mini-button" href="javascript:onUpdate()" plain="true" iconCls="icon-edit" >维护</a>
+        <a class="mini-button" href="javascript:onUpdate2()" plain="true" iconCls="icon-edit" >收费</a>
+    <a class="mini-button" href="javascript:onUpdate()" plain="true" iconCls="icon-edit" >开票</a>
     </span>
 </body>
 
 <script type="text/javascript">
     mini.parse();
     var grid=mini.get("datagrid1");
-    grid.load();
+    onSerach();
     function onSerach() {
         var form = new mini.Form("#form1");
         var data = form.getData(true);
@@ -84,6 +86,20 @@
 
         })
     }
+    function onUpdate2() {
+        var wat001=mini.get("datagrid1").getSelected().wat001;
+        var url="${pageContext.request.contextPath}/work/f100301/loadFee?wat001="+wat001
+        Web.util.openMiniWindow("收费",url,800,400,function () {
+
+        })
+    }
+
+    grid.on("drawcell", function (e) {
+        var record = e.record
+        if (record.wft010 == "1") {
+            e.rowCls = "wft010_1";
+        }
+    });
 </script>
 
 </html>

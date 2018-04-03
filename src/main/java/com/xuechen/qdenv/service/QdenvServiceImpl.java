@@ -455,6 +455,9 @@ public class QdenvServiceImpl implements QdenvService {
         wt01.setWat017(new Date());
         //保存状态
     if(wt01.getWat001()==null) {
+        wt01.setWat010(wt01.getDaw005());//邮寄地址
+        wt01.setWat011(wt01.getDaw003());//邮寄人
+        wt01.setWat012(wt01.getDaw004());//邮寄电话
         if (wt01.getWat004() != null) {
             wt01.setWat018("LC_ORD");//预约状态
         } else {
@@ -727,7 +730,8 @@ public class QdenvServiceImpl implements QdenvService {
 
     public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
         StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append("select a.*,b.wft001,b.wft002,b.wft004,b.wft006,b.wft007,b.wft010,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s, " +
+        stringBuffer.append("select a.*,b.wft001,b.wft002,b.wft003,b.wft004,b.wft005,b.wft006,b.wft007," +
+                " b.wft008,b.wft009,b.wft010,b.wft011,b.aae013 as wftaae013,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s, " +
                 " (select GROUP_CONCAT(d.wdt001) from wt08 d WHERE a.wat001=d.wat001) wdt001s, " +
                 "(select GROUP_CONCAT(d.userid) from wt08 d WHERE a.wat001=d.wat001) fuserids, " +
                 "(select GROUP_CONCAT(d.name) from wt08 d WHERE a.wat001=d.wat001) fnames from " +
@@ -1165,6 +1169,11 @@ public class QdenvServiceImpl implements QdenvService {
         udpateCacleFee(wt02.getWat001());
         return  wt03;
     }
+
+    /**
+     * 更新费用
+     * @param wat001
+     */
     public void udpateCacleFee(Integer wat001){
         String sql="select SUM(a.wxt004) from wt04 a,wt03 b ,wt02 c where a.wct001=b.wct001 and c.wbt001=b.wbt001 and " +
                 " c.wat001=? and c.aae016='1' and b.aae016='1'";
@@ -1172,4 +1181,19 @@ public class QdenvServiceImpl implements QdenvService {
         sql="update wt05 set wft004=?,wft007=(wft002+wft004)*wft006 where wat001=?";
         CommonJdbcUtils.execute(sql,testFee,wat001);
     }
+
+    /**
+     * 更新实收信息
+     * @param wt05Dto
+     * @return
+     */
+    public Wt05 updateWt05(Wt05Dto wt05Dto){
+        Wt05 wt05=new Wt05();
+        BeanUtils.copyProperties(wt05Dto,wt05);
+        if ("1".equals(wt05.getWft010()))
+            wt05.setWft011(new Date());
+        CommonJdbcUtils.updateSelect(wt05);
+        return  wt05;
+    }
+
 }
