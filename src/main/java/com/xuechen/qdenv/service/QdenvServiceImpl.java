@@ -5,6 +5,7 @@ import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
+import com.xuechen.web.bo.AppResource;
 import com.xuechen.web.dto.AppUserDTO;
 import com.xuechen.web.exception.BusinessException;
 import org.apache.log4j.Logger;
@@ -40,9 +41,53 @@ public class QdenvServiceImpl implements QdenvService {
         AppUserDTO user=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
         wt09.setWgt002(user.getUserId());
         wt09.setWgt003(user.getName());
+        if (wt09.getWgt005()!=null){
+            AppResource appResource
+                    =CommonJdbcUtils.queryFirst("select resource_code as resourceCode,resource_name as resourceName from app_resource where resource_code=? ",
+                    AppResource.class,wt09.getWgt005());
+            if (appResource!=null) wt09.setWgt006(appResource.getResourceName());
+        }
+
         CommonJdbcUtils.insert(wt09);
         return wt09;
     }
+
+    /**
+     * 保存操作日志
+     * @param wat001
+     * @param wgt005
+     * @param aae013
+     * @return
+     */
+    public Wt09 saveWt09(Integer wat001,String wgt005,String aae013 ){
+        Wt09Dto wt09Dto=new Wt09Dto();
+        wt09Dto.setWat001(wat001);
+        wt09Dto.setWgt005(wgt005);
+        wt09Dto.setAae013(aae013);
+        return saveWt09(wt09Dto);
+    }
+    /**
+     *
+     * 查询日志
+     * @param wt09Dto
+     * @return
+     */
+    public  List<Wt09Dto> queryWt09List(Page page,Wt09Dto wt09Dto){
+        StringBuffer sb=new StringBuffer("select * from wt09 where 1=1 " );
+        List<String> args=new ArrayList<String>();
+        if (wt09Dto.getWat001()!=null){
+            sb.append(" and wat001=? ");
+            args.add(wt09Dto.getWat001().toString());
+        }
+        if (wt09Dto.getWgt001()!=null){
+            sb.append(" and wgt001=? ");
+            args.add(wt09Dto.getWgt001().toString());
+        }
+        sb.append(" order by wgt004 desc");
+        CommonJdbcUtils.queryPageList(page,sb.toString(),Wt09Dto.class,args.toArray());
+        return page.getData();
+    }
+
     /**
      * 保存行业
      */
@@ -431,13 +476,8 @@ public class QdenvServiceImpl implements QdenvService {
             /**
              * 保存日志
              */
-            Wt09Dto wt09Dto=new Wt09Dto();
-            wt09Dto.setWat001(wt01.getWat001());
-            wt09Dto.setWgt005("DO_6");
-            wt09Dto.setWgt006("保存快递信息");
-            String aae013=String.format("快递单号：%s",wt01.getWat014());
-            wt09Dto.setAae013(aae013);
-            saveWt09(wt09Dto);
+            String aae013=String.format("附属信息-快递单号：%s",wt01.getWat014());
+            saveWt09(wt01Dto.getWat001(),"DO_6",aae013);
         }
         return  wt01;
     }
@@ -513,13 +553,8 @@ public class QdenvServiceImpl implements QdenvService {
         /**
          * 保存日志
          */
-        Wt09Dto wt09Dto=new Wt09Dto();
-        wt09Dto.setWat001(wt01.getWat001());
-        wt09Dto.setWgt005("LC_INI");
-        wt09Dto.setWgt006("新建");
         String aae013=(wt01Dto.getWat001()!=null?"修改委托信息":"新增加委托信息");
-        wt09Dto.setAae013(aae013);
-        saveWt09(wt09Dto);
+        saveWt09(wt01.getWat001(),wt01.getWat018(),aae013);
 
         return wt01;
 
@@ -535,14 +570,9 @@ public class QdenvServiceImpl implements QdenvService {
         /**
          * 保存日志
          */
-        Wt09Dto wt09Dto=new Wt09Dto();
-        wt09Dto.setWat001(wt05.getWat001());
-        wt09Dto.setWgt005("LC_INI");
-        wt09Dto.setWgt006("新建");
-        String aae013=String.format("财务信息,应收总费用%s，其中采样费用%s、检测费用%s、折扣率%s."
+        String aae013=String.format("财务信息:应收总费用%s，其中采样费用%s、检测费用%s、折扣率%s。"
         ,wt05.getWft007(),wt05.getWft002(),wt05.getWft004(), wt05.getWft006());
-        wt09Dto.setAae013(aae013);
-        saveWt09(wt09Dto);
+        saveWt09(wt05.getWat001(),"DO_3",aae013);
         return wt05;
     }
     /**
@@ -556,12 +586,18 @@ public class QdenvServiceImpl implements QdenvService {
             if ("removed".equals(wt02Dto.get_state())){
                 //deleteWt02(wt02Dto.getWbt001());
                 CommonJdbcUtils.execute("update wt02 set aae016='0' where wbt001=? ",wt02Dto.getWbt001());
+                saveWt09(wt02Dto.getWat001(),"DO_3","删除报告:"+wt02.getWbt001());
                 continue;
             }
             wt02=new Wt02();
             BeanUtils.copyProperties(wt02Dto,wt02);
             if (wt02.getWbt001()==null) wt02.setWbt002(new Date());
             CommonJdbcUtils.saveOrUpdateObject(wt02,false);
+            if (wt02Dto.getWbt001()==null) {
+                saveWt09(wt02.getWat001(),"DO_3","新增报告:"+wt02.getWbt001());
+            }else {
+                saveWt09(wt02.getWat001(),"DO_3","修改报告:"+wt02.getWbt001());
+            }
             if (wt02Dto.getWt03DtoList()!=null) {
                 for (Wt03Dto wt03Dto : wt02Dto.getWt03DtoList()) {
                     wt03Dto.setWbt001(wt02.getWbt001());
@@ -586,16 +622,19 @@ public class QdenvServiceImpl implements QdenvService {
             if("1".equals(flag)){
                 wt021.setWbt015(new Date());
                 wt021.setWbt014(wt02.getWbt014()==null?1:wt02.getWbt014()+1);
+                saveWt09(wt02.getWat001(),"DO_10","打印报告");
             }
             if("2".equals(flag)){
                 wt021.setWbt008(appUserDTO.getUserId());
                 wt021.setWbt009(new Date());
+                saveWt09(wt02.getWat001(),"DO_9","审核报告");
             }
             if("3".equals(flag)){
                 if ("1".equals(wt02Dto.getWbt016())&&!wt02Dto.getExt1().equals(appUserDTO.getExt1()))
                     throw new BusinessException("电子签名授权码不正确！");
                 wt021.setWbt010(wt02Dto.getWbt010());
                 wt021.setWbt011(StringTools.formatNowDate(null));
+                saveWt09(wt02.getWat001(),"DO_8","签发报告");
             }
             CommonJdbcUtils.updateSelect(wt021);
     }
@@ -608,6 +647,7 @@ public class QdenvServiceImpl implements QdenvService {
      * @param wt03Dto
      * @return
      */
+    @Transactional
     public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto){
 
         Wt03 wt03=new Wt03();
@@ -615,6 +655,7 @@ public class QdenvServiceImpl implements QdenvService {
         if ("removed".equals(wt03Dto.get_state())){
            // deleteWt03(wt03Dto.getWct001());
             CommonJdbcUtils.execute("update wt03 set aae016='0' where wct001=? ",wt03Dto.getWct001());
+            saveWt09(wt03.getWat001(),"DO_3","删除采样点："+wt03.getWct002());
             return wt03;
         }
         if(wt03.getWct014()==null){
@@ -631,15 +672,8 @@ public class QdenvServiceImpl implements QdenvService {
         /**
          * 保存日志
          */
-        Wt09Dto wt09Dto=new Wt09Dto();
-        wt09Dto.setWat001(wt03.getWat001());
-        wt09Dto.setWct001(wt03.getWct001());
-        wt09Dto.setWbt001(wt03.getWbt001());
-        wt09Dto.setWgt005("DO_11");
-        wt09Dto.setWgt006("添加采样点");
-        String aae013=String.format("采样点%s",wt03.getWct002());
-        wt09Dto.setAae013(aae013);
-        saveWt09(wt09Dto);
+        String aae013=String.format("采样点%s:",wt03.getWct002());
+        saveWt09(wt03.getWat001(),"DO_11",aae013);
 
         return wt03;
     }
@@ -674,15 +708,8 @@ public class QdenvServiceImpl implements QdenvService {
         /**
          * 保存日志
          */
-        Wt09Dto wt09Dto=new Wt09Dto();
-        wt09Dto.setWat001(wt03.getWat001());
-        wt09Dto.setWct001(wt03.getWct001());
-        wt09Dto.setWbt001(wt03.getWbt001());
-        wt09Dto.setWgt005("DO_4");
-        wt09Dto.setWgt006("检测数据");
         String aae013=String.format("采样点%s",wt03.getWct002());
-        wt09Dto.setAae013(aae013);
-        saveWt09(wt09Dto);
+        saveWt09(wt03.getWat001(),"DO_4",aae013);
 
     }
     public List<Wp01Dto> queryWp01List(Wp01Dto wp01Dto){
@@ -740,9 +767,9 @@ public class QdenvServiceImpl implements QdenvService {
             stringBuffer.append(" and a.wat001=? ");
             args.add(wt01Dto.getWat001());
         }
-        if(wt01Dto.getWat002()!=null){
+        if(StringTools.hasText(wt01Dto.getWat002())){
             stringBuffer.append(" and a.wat002=? ");
-            args.add(wt01Dto.getWat002());
+            args.add(wt01Dto.getWat002().toUpperCase());
         }
         if(StringTools.hasText(wt01Dto.getWat018())){
             stringBuffer.append(" and a.wat018=? ");
@@ -760,13 +787,25 @@ public class QdenvServiceImpl implements QdenvService {
             stringBuffer.append(" and a.bhz003=? ");
             args.add(wt01Dto.getBhz003());
         }
-        if(wt01Dto.getDaw002()!=null){
+        if(StringTools.hasText(wt01Dto.getDaw002())){
             stringBuffer.append(" and a.daw002 like ? ");
             args.add("%"+wt01Dto.getDaw002()+"%");
+        }
+        if(StringTools.hasText(wt01Dto.getWft010())){
+            stringBuffer.append(" and b.wft010=? ");
+            args.add(wt01Dto.getWft010());
         }
         if(StringTools.hasText(wt01Dto.getAab301())){
             stringBuffer.append(" and a.aab301=? ");
             args.add(wt01Dto.getAab301());
+        }
+        if(StringTools.hasText(wt01Dto.getWft015())&&"1".equals(wt01Dto.getWft015())){
+            stringBuffer.append(" and exists(select 1 from wt07 e where b.wft001=e.wft001 and e.wft015=? ) ");
+            args.add(wt01Dto.getWft015());
+        }
+        if(StringTools.hasText(wt01Dto.getWft015())&&"2".equals(wt01Dto.getWft015())){
+            stringBuffer.append(" and not exists(select 1 from wt07 e where b.wft001=e.wft001 and e.wft015=? ) ");
+            args.add(wt01Dto.getWft015());
         }
         if(wt01Dto.getS_date()!=null&&!wt01Dto.getS_date().trim().equals("")){
             stringBuffer.append(" AND a.wat017>=str_to_date('"+wt01Dto.getS_date()+"','%Y-%m-%d')  ");
@@ -940,13 +979,8 @@ public class QdenvServiceImpl implements QdenvService {
         /**
          * 保存日志
          */
-        Wt09Dto wt09Dto=new Wt09Dto();
-        wt09Dto.setWat001(wt01.getWat001());
-        wt09Dto.setWgt005("DO_14");
-        wt09Dto.setWgt006("安排采样");
         String aae013=String.format("预约时间：%s",wt01.getWat004());
-        wt09Dto.setAae013(aae013);
-        saveWt09(wt09Dto);
+        saveWt09(wt01.getWat001(),"DO_14",aae013);
     }
 
     /**
@@ -964,6 +998,7 @@ public class QdenvServiceImpl implements QdenvService {
      * @param wt01Dto
      * @return
      */
+    @Transactional
     public Wt01Dto saveNextStep(Wt01Dto wt01Dto,Integer step){
         Wt06 wt06=getNextWt06(wt01Dto.getWat018(),step);
         if (wt06==null) return  null;
@@ -982,7 +1017,7 @@ public class QdenvServiceImpl implements QdenvService {
             wt09Dto.setWgt005("DO_13");
             wt09Dto.setWgt006("退回");
         }
-        String aae013=String.format("跳转频数：%s",step);
+        String aae013=String.format("跳转步数：%s，%s",step,wt06.getWlt002());
         wt09Dto.setAae013(aae013);
         saveWt09(wt09Dto);
         return wt01Dto;
@@ -1096,6 +1131,7 @@ public class QdenvServiceImpl implements QdenvService {
      * @param wt07Dto
      * @return
      */
+    @Transactional
     public Wt07 saveWt07(Wt07Dto wt07Dto){
         Wt07 wt07=new Wt07();
         BeanUtils.copyProperties(wt07Dto,wt07);
@@ -1106,6 +1142,9 @@ public class QdenvServiceImpl implements QdenvService {
         }
 
         CommonJdbcUtils.saveOrUpdateObject(wt07,false);
+
+        Wt01 wt01=CommonJdbcUtils.queryFirst("select wat001 from wt05 where wft001=? ",Wt01.class,wt07.getWft001());
+        saveWt09(wt01.getWat001(),"DO_3","保存发票信息：开票金额"+wt07.getWft014());
         return  wt07;
     }
 
@@ -1180,6 +1219,10 @@ public class QdenvServiceImpl implements QdenvService {
         Double testFee=CommonJdbcUtils.queryObject(sql,Double.class,wat001);
         sql="update wt05 set wft004=?,wft007=(wft002+wft004)*wft006 where wat001=?";
         CommonJdbcUtils.execute(sql,testFee,wat001);
+        Wt05 wt05=CommonJdbcUtils.queryFirst("select * from wt05 where wat001=?",Wt05.class,wat001);
+        String aae013=String.format("费用重新计算:应收总费用%s，其中采样费用%s、检测费用%s、折扣率%s。"
+                ,wt05.getWft007(),wt05.getWft002(),wt05.getWft004(), wt05.getWft006());
+        saveWt09(wat001,"DO_3",aae013);
     }
 
     /**
@@ -1193,7 +1236,11 @@ public class QdenvServiceImpl implements QdenvService {
         if ("1".equals(wt05.getWft010()))
             wt05.setWft011(new Date());
         CommonJdbcUtils.updateSelect(wt05);
+        String isFee="1".equals(wt05.getWft010())?"实收":"未实收";
+        saveWt09(wt05Dto.getWat001(),"DO_3","收费维护："+isFee);
         return  wt05;
+
     }
+
 
 }

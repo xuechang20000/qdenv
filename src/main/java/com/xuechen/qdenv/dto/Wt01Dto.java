@@ -21,6 +21,7 @@ public class Wt01Dto extends Wt01 {
     private String wft008;
     private String wft009;
     private String wft010;
+    private String wft015;
     private Date wft011;
     private String wftaae013;
     private String s_date;
@@ -204,5 +205,13 @@ public class Wt01Dto extends Wt01 {
 
     public void setWftaae013(String wftaae013) {
         this.wftaae013 = wftaae013;
+    }
+
+    public String getWft015() {
+        return wft015;
+    }
+
+    public void setWft015(String wft015) {
+        this.wft015 = wft015;
     }
 }

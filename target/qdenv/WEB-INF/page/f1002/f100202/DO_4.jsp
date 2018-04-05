@@ -119,7 +119,8 @@
 
     mini.parse();
 
-    var wbt001=${param.wbt001}
+    var wbt001=${param.wbt001};
+    var wat001;
         loadWt();
     function bindKeyDown() {
         $(function () {
@@ -154,6 +155,7 @@
                 $("#collect_list").find("textarea[name='wct012']").val(d.wct012)
                 mini.get("wbt005").setValue(d.wbt005)
                 mini.get("wbt006").setValue(d.wbt006)
+                if(!wat001) wat001=d.wat001;
                 var j=0;
                 for (var c;c=d.wt03DtoList[j++];){
                     c.wt04size=c.wt04DtoList.length;
@@ -188,6 +190,7 @@
             var wt03={}
             var wct001=$(this).find("input[name='wct001']").val();
             wt03.wct001=wct001;
+            wt03.wat001=wat001;
             wt03.wct011=""
             wt03.wt04DtoList=new Array();
                 var wt04={}
@@ -207,7 +210,7 @@
         //alert(JSON.stringify(wt03Array));
         var wct011=$("#collect_list").find("textarea[name='wct011']").val();
         var wct012=$("#collect_list").find("textarea[name='wct012']").val();
-        var wt02=[{wbt001:wbt001,wct011:wct011,wct012:wct012,wbt005:wbt005,wbt006:wbt006}]
+        var wt02=[{wat001:wat001,wbt001:wbt001,wct011:wct011,wct012:wct012,wbt005:wbt005,wbt006:wbt006}]
         var url="${pageContext.request.contextPath}/work/f100201/saveWt02"
         Web.util.request(url,"post",{json1:JSON.stringify(wt02)},function () {
             url="${pageContext.request.contextPath}/work/f100201/updateWt03"

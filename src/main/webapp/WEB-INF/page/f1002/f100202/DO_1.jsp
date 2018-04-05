@@ -160,6 +160,7 @@
             </div>
         </div>
     </div>
+    <div title="操作日志" class="mini-fit"  style="height:100%;"></div>
 </div>
 </body>
 <script type="text/javascript">
@@ -195,5 +196,13 @@
           }
       }
     })
+    var tabs=mini.get("tabs1");
+    tabs.on("activechanged", function (e) {
+        if (e.tab.title == "操作日志") {
+            var tab = tabs.getActiveTab();
+            tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadLog?wat001="+wat001, tab);
+            e.cancel = true;
+        }
+    });
 </script>
 </html>

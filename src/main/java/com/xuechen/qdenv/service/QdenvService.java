@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface QdenvService {
     public Wt09 saveWt09(Wt09Dto wt09Dto);
+    public  List<Wt09Dto> queryWt09List(Page page,Wt09Dto wt09Dto);
     public void saveBz04(Bz04 bz04);
     public void updateBz04(Bz04 bz04);
     public List<Bz04Dto> queryBz04(Page page, Bz04Dto bz04Dto);
