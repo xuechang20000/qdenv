@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -200,7 +201,11 @@
             </div>
         </div>
     </div>
+    <shiro:hasPermission name="DO_14">
+    <div title="安排采样" class="mini-fit" style="height: 100%;"></div>
+    </shiro:hasPermission>
     <div title="发票信息" class="mini-fit" style="height:100%;"></div>
+    <div title="快递信息" class="mini-fit" style="height: 100%"></div>
 </div>
 
 <span id="grid_buttons" style="display: none"  >
@@ -211,8 +216,10 @@
          <a class="mini-button" href="javascript:onEdit2()" plain="true" iconCls="icon-edit"></a>
     </span>
 <div id="buttons">
-    <span class="separator"></span>
-    <a class="mini-button" iconCls="icon-add" plain="true" onclick="addGrid2Row()"></a>
+    <shiro:hasPermission name="DO_11">
+        <span class="separator"></span>
+        <a class="mini-button" iconCls="icon-add" plain="true" onclick="addGrid2Row()"></a>
+    </shiro:hasPermission>
     <span class="separator"></span>
     <a class="mini-button" href="javascript:onGrid2Save()" plain="true" iconCls="icon-save">保存</a>
 </div>
@@ -492,7 +499,20 @@
     tabs.on("activechanged", function (e) {
         if (e.tab.title == "发票信息") {
             var tab = tabs.getActiveTab();
+            if(!tabs.getTabBodyEl(tab).innerHTML)
             tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadInvoice?wat001="+wat001, tab);
+            e.cancel = true;
+        }
+        if (e.tab.title == "安排采样") {
+            var tab = tabs.getActiveTab();
+            if(!tabs.getTabBodyEl(tab).innerHTML)
+            tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadDO_14?wat001="+wat001, tab);
+            e.cancel = true;
+        }
+        if (e.tab.title == "快递信息") {
+            var tab = tabs.getActiveTab();
+            if(!tabs.getTabBodyEl(tab).innerHTML)
+            tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadDO_6?wat001="+wat001, tab);
             e.cancel = true;
         }
     });

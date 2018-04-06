@@ -1017,7 +1017,7 @@ public class QdenvServiceImpl implements QdenvService {
             wt09Dto.setWgt005("DO_13");
             wt09Dto.setWgt006("退回");
         }
-        String aae013=String.format("跳转步数：%s，%s",step,wt06.getWlt002());
+        String aae013=String.format("跳转步数：%s，-->%s。原因：%s",step,wt06.getWlt002(),wt01Dto.getJson1()==null?"":wt01Dto.getJson1());
         wt09Dto.setAae013(aae013);
         saveWt09(wt09Dto);
         return wt01Dto;
@@ -1073,6 +1073,7 @@ public class QdenvServiceImpl implements QdenvService {
             throw new BusinessException("未找到此委托信息");
         }
         Wt01Dto dto=wt01Dtos.get(0);
+        dto.setJson1(wt01Dto.getJson1());
         if (saveNextStep(dto,-1)==null){
             throw new BusinessException("上一步无步骤");
         }

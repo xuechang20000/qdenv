@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,13 +26,19 @@
 </head>
 <body>
 <c:if test="${dto.wbt009==null}">
+    <shiro:hasPermission name="DO_8">
 <input type="button" id="check" value="审核" onClick="docheck()">&nbsp;&nbsp;
+    </shiro:hasPermission>
 </c:if>
 <c:if test="${dto.wbt011==null||dto.wbt011==''}">
+    <shiro:hasPermission name="DO_9">
 <input type="button" id="sign" value="签发" onClick="dosign()">&nbsp;&nbsp;
+    </shiro:hasPermission>
 </c:if>
-<input type="button" id="preview" value="打印预览" onClick="dopreview()">&nbsp;&nbsp;
+<!--<input type="button" id="preview" value="打印预览" onClick="dopreview()">&nbsp;&nbsp;-->
+<shiro:hasPermission name="DO_10">
 <input type="button" id="print" value="打印" onClick="doprint()">&nbsp;&nbsp;
+</shiro:hasPermission>
 <span style="color:#C00000;">
 <c:if test="${dto.wbt009!=null}">
     审核日期： <fmt:formatDate value="${dto.wbt009}"  type="date"/> &nbsp;&nbsp;

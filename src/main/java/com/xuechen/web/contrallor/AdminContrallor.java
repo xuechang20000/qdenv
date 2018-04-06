@@ -98,6 +98,11 @@ public class AdminContrallor {
         public String loadDictDetailAdd(){
             return "/WEB-INF/page/f1001/f100103/dictDetailAdd";
         }
+        @RequestMapping("/loadWelcome")
+        public String loadWelcome(){
+        return "/WEB-INF/page/welcome";
+    }
+
         @RequestMapping(value="/queryAllUser",produces = "application/json; charset=utf-8")
         @ResponseBody
         public String queryAllUser(Page page, AppUser appUser){

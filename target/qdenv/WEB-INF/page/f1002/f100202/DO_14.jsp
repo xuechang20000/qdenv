@@ -6,7 +6,7 @@
     <title>字典管理</title>
     <%@include file="/include/head.jsp"%>
     <style type="text/css">
-    #form1{position: relative; top: 40%;  transform: translateY(-50%); }
+
     #form1 table {margin:0px auto}
     #form1 table td{padding: 3px}
     </style>

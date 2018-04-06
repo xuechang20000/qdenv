@@ -226,7 +226,7 @@
           data.wct006=mini.get("wct006").getValue();
           data.wct007=mini.get("wct007").getValue();
           //data.wct018=mini.get("wct018").getFormValue();
-          data.wt04DtoList=grid.getSelecteds();
+          data.wt04DtoList = grid.findRows(function(row){return true;});
           var wt03s=new Array();
           wt03s.push(data);
           var url="${pageContext.request.contextPath}/work/f100201/updateWt03";

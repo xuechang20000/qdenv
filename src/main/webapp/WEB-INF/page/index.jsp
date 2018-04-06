@@ -113,7 +113,7 @@
 			<div class="mini-fit" style="height:100%;">
 			<div class="mini-tabs"  id="tabs1" activeIndex="0" style="width:100%;height:100%;" plain='false'>
 				<div title="首页" name="init" >
-					<iframe id="mainframe" src="<%=request.getContextPath()%>/index_bckd.jsp" frameborder="0"  style="width:100%;height:100%;" border="0"></iframe>
+					<iframe id="mainframe" src="<%=request.getContextPath()%>/admin/loadWelcome" frameborder="0"  style="width:100%;height:100%;" border="0"></iframe>
 				</div>
 			</div>
 			</div>

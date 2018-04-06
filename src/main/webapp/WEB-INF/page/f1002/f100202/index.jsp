@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -62,15 +63,25 @@
     </div>
 </div>
 <ul id="gridMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
+    <shiro:hasPermission name="DO_1">
     <li name="DO_1" iconCls="icon-node" onclick="onWt01DO('DO_1','相关信息')">相关信息</li>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="DO_2">
     <li name="DO_2" iconCls="icon-node" onclick="onWt01DO('DO_2','委托协议')">委托协议</li>
+    </shiro:hasPermission>
+        <shiro:hasPermission name="DO_3">
     <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
+        </shiro:hasPermission>
     <!--<li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>-->
    <!-- <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5','重新检测')">重新检测</li>-->
-    <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6','快递信息')">快递信息</li>
-    <li name="DO_14" iconCls="icon-node" onclick="onWt01DO('DO_14','安排采样')">安排采样人员</li>
+    <!-- <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6','快递信息')">快递信息</li>-->
+    <!-- <li name="DO_14" iconCls="icon-node" onclick="onWt01DO('DO_14','安排采样')">安排采样人员</li>-->
+    <shiro:hasPermission name="DO_12">
     <li name="DO_12" iconCls="icon-downgrade" onclick="onWt01DO('DO_12')">提交(下一环节)</li>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="DO_13">
     <li name="DO_13" iconCls="icon-upgrade" onclick="onWt01DO('DO_13')">退回(上一环节)</li>
+    </shiro:hasPermission>
 </ul>
 </body>
 <script id="formTemplate" type="text/x-jquery-tmpl">
@@ -78,10 +89,18 @@
 
 <span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
   <!--<img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">-->
+<shiro:hasPermission name="DO_4">
  <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" alt="检测录入">
+</shiro:hasPermission>
+<shiro:hasPermission name="DO_7">
  <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" alt="报告编写">
+</shiro:hasPermission>
+<shiro:hasPermission name="DO_8">
  <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" alt="报告签发">
+</shiro:hasPermission>
+<shiro:hasPermission name="DO_9">
  <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" alt="报告审核">
+ </shiro:hasPermission>
 </span>
 
 {{each(i,wt03) wt03DtoList}}
@@ -113,6 +132,7 @@ function onSerach() {
     data.aab301=mini.get("aab301").getValue();
     data.wft010=mini.get("wft010").getValue();
     data.wft015=mini.get("wft015").getValue();
+    data.wat018=mini.get("wat018").getValue();
     grid.load(data);
 }
 function onShowRowDetail(e) {
@@ -183,9 +203,12 @@ function onWt01DO(v,t) {
         })
     }else if ('DO_13'==v){//回退
         url="${pageContext.request.contextPath}/work/f100201/savePreStep?wat001="+row.wat001;
-        Web.util.request(url,"post",{},function (data) {
-            grid.reload();
-        })
+        Web.util.prompt("请输入","请输入退回原因:",function (value) {
+            Web.util.request(url,"post",{wat001:row.wat001,json1:value},function (data) {
+                grid.reload();
+            })
+        });
+
     }else {//打印界面
         Web.util.openMiniWindow(t, url, 1000, 500, function () {
             //grid.reload();

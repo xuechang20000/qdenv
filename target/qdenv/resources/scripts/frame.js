@@ -180,6 +180,14 @@ Web.util.tip = function(eid,text,postion,state,time){
         timeout: time__
     });
 }
+Web.util.prompt=function (title,message,successFunc) {
+    mini.prompt(message, title,function (action, value) {
+            if (action == "ok") {
+              successFunc(value);
+            }
+        }
+    );
+}
 Web.util.showTips=function(content,state,x,y,timeout) {
     if(!x) x='center';
     if(!y) y='center';

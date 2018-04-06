@@ -165,6 +165,7 @@
 </body>
 <script type="text/javascript">
     mini.parse();
+    var wat018;
     var wat001=${param.wat001}
     var grid=mini.get("datagrid");
     var grid2=mini.get("datagrid2");
@@ -178,6 +179,7 @@
         mini.get("userid").setValue(data.userid);
         mini.get("aae003").setValue(""+data.aae003);
         form.setEnabled(false);
+        wat018=data.wat018;
     })
     var url="${pageContext.request.contextPath}/work/f100201/queryWt02"
     Web.util.request(url,'post',{wat001:wat001},function (data) {
@@ -200,7 +202,7 @@
     tabs.on("activechanged", function (e) {
         if (e.tab.title == "操作日志") {
             var tab = tabs.getActiveTab();
-            tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadLog?wat001="+wat001, tab);
+            tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadLog?wat001="+wat001+"&wat018="+wat018, tab);
             e.cancel = true;
         }
     });

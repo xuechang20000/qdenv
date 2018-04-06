@@ -72,6 +72,7 @@
         data.wat003=mini.get("wat003").getValue();
         data.bhz003=mini.get("bhz003").getValue();
         data.aab301=mini.get("aab301").getValue();
+        data.wat018=mini.get("wat018").getValue();
         grid.load(data);
     }
     function renderDO(e) {

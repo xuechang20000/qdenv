@@ -208,7 +208,8 @@ public class WtContrallor {
     @RequestMapping(value="/f100201/queryWt06",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String queryWt06(String isPermission){
-        List<Wt06Dto> wt06Dtos=this.qdenvService.queryWt06(true);
+        boolean isper=(isPermission!=null&&isPermission.equals("0"))?false:true;
+        List<Wt06Dto> wt06Dtos=this.qdenvService.queryWt06(isper);
         return JSON.toJSONStringWithDateFormat(wt06Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @RequestMapping(value="/f100201/updateWt03",produces = "application/json; charset=utf-8")
