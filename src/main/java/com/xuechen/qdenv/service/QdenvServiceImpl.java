@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Service
 public class QdenvServiceImpl implements QdenvService {
-    private static Logger logger= org.apache.log4j.Logger.getLogger(QdenvServiceImpl.class);
+    private static Logger logger= Logger.getLogger(QdenvServiceImpl.class);
 
     /**
      * 保存操作日志

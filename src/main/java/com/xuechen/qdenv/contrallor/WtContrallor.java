@@ -8,12 +8,13 @@ import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
-import com.xuechen.web.bo.AppNoticeAttachment;
+import com.xuechen.qdenv.service.QdenvServiceImpl;
 import com.xuechen.web.dto.AppUserDTO;
 import com.xuechen.web.utils.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/work")
 public class WtContrallor {
+    private static Logger logger= Logger.getLogger(QdenvServiceImpl.class);
     public QdenvService getQdenvService() {
         return qdenvService;
     }
@@ -378,5 +380,9 @@ public class WtContrallor {
     public String queryWt09List(Page page,Wt09Dto wt09Dto){
         this.qdenvService.queryWt09List(page,wt09Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @Scheduled(cron = "0 0/10 * * * ?")
+    public void warnningSlect(){
+        logger.info("任务调度！");
     }
 }

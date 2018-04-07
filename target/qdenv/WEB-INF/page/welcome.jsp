@@ -15,26 +15,29 @@
     <script src="<%=request.getContextPath()%>/resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">@</span>
-    <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-</div>
+<div class="container">
+    <form class="form-inline">
+     <div class="row">
+         <div class="col-md-5">
+                <div class="form-group">
+                    <label for="exampleInputEmail1" >Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
 
-<div class="input-group">
-    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-    <span class="input-group-addon" id="basic-addon2">@example.com</span>
-</div>
+                <div class="form-group">
+                    <label for="userName">userName</label>
+                    <input type="text" class="form-control" id="userName" placeholder="Username">
+                </div>
+         </div>
+         <div class="col-md-5">
 
-<div class="input-group">
-    <span class="input-group-addon">$</span>
-    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-    <span class="input-group-addon">.00</span>
-</div>
-
-<label for="basic-url">Your vanity URL</label>
-<div class="input-group">
-    <span class="input-group-addon" id="basic-addon3">https://example.com/users/</span>
-    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+         </div>
+     </div>
+    </form>
 </div>
 </body>
 </html>
