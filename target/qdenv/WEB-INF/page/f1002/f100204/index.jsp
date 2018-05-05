@@ -19,7 +19,7 @@
 <body>
 <fieldset id="fd2">
     <legend><span>查询条件</span></legend>
-    <div id="form1" >
+    <div id="form1" style="line-height: 28px">
         <input id="wat018" class="mini-combobox" style="width: 100px;"  textField="wlt002" valueField="wlt003"
                url="<%=request.getContextPath()%>/work/f100201/queryWt06"   allowInput="true" showNullItem="true" emptyText="全部状态" />
         自：
@@ -32,6 +32,10 @@
                url="<%=request.getContextPath()%>/work/f100601/queryHangyeList"    allowInput="true" showNullItem="true" emptyText="请选择行业类别..."/>
         <input id="aab301" class="mini-combobox" style="width: 100px;"  textField="dictName" valueField="dictVal"
                url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=AAB301"    showNullItem="true" emptyText="请选择区市..."/>
+        <br/>
+        委托单位： <input class="mini-textbox" style="width:200px;" id="daw002" name="daw002" onenter="onSerach()"/>
+        地址： <input class="mini-textbox" style="width:120px;" id="daw005" name="daw002" onenter="onSerach()"/>
+        电话： <input class="mini-textbox" style="width:100px;" id="daw004" name="daw002" onenter="onSerach()"/>
         <a class="mini-button" id="id_onSerach" iconCls="icon-search" onclick="onSerach">查询</a>
     </div>
 </fieldset>
@@ -73,6 +77,9 @@
         data.bhz003=mini.get("bhz003").getValue();
         data.aab301=mini.get("aab301").getValue();
         data.wat018=mini.get("wat018").getValue();
+        data.daw005=mini.get("daw005").getValue();
+        data.daw004=mini.get("daw004").getValue();
+        data.daw002=mini.get("daw002").getValue();
         grid.load(data);
     }
     function renderDO(e) {

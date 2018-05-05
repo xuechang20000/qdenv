@@ -28,6 +28,8 @@
     <input class="mini-datepicker" style="width:100px;" id="e_date" name="e_date" />&nbsp;&nbsp;
     委托编号： <input class="mini-textbox" style="width:100px;" id="wat002" name="wat002" onenter="onSerach()"/>
     委托单位： <input class="mini-textbox" style="width:200px;" id="daw002" name="daw002" onenter="onSerach()"/>
+    地址： <input class="mini-textbox" style="width:120px;" id="daw005" name="daw002" onenter="onSerach()"/>
+    电话： <input class="mini-textbox" style="width:100px;" id="daw004" name="daw002" onenter="onSerach()"/>
     <br/>
     <input id="wat003" class="mini-combobox" style="width: 150px;"  textField="dictName" valueField="dictVal"
            url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=WAT003"   allowInput="true" showNullItem="true" emptyText="请选择检测类别..." />
@@ -72,6 +74,7 @@
         <shiro:hasPermission name="DO_3">
     <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
         </shiro:hasPermission>
+    <shiro:lacksRole name=""></shiro:lacksRole>
     <!--<li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>-->
    <!-- <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5','重新检测')">重新检测</li>-->
     <!-- <li name="DO_6" iconCls="icon-node" onclick="onWt01DO('DO_6','快递信息')">快递信息</li>-->
@@ -133,6 +136,9 @@ function onSerach() {
     data.wft010=mini.get("wft010").getValue();
     data.wft015=mini.get("wft015").getValue();
     data.wat018=mini.get("wat018").getValue();
+    data.daw005=mini.get("daw005").getValue();
+    data.daw004=mini.get("daw004").getValue();
+    data.daw002=mini.get("daw002").getValue();
     grid.load(data);
 }
 function onShowRowDetail(e) {

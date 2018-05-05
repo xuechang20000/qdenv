@@ -110,26 +110,29 @@
                     <input id="wft002" name="wft002" onblur="getSumFee" style="width:70px" class="mini-textbox" vtype="int" value="0"/>
                     <label for="wft004">检测费</label> <input id="wft004" onblur="getSumFee" style="width:70px" name="wft004" value="0" class="mini-textbox" vtype="int"/>
                     <label for="wft006">折扣率</label> <input id="wft006" onblur="getSumFee" style="width:40px" name="wft006" value="1"  class="mini-textbox" vtype="float;range:0,1"/>
-                    <label for="wft007">合计：</label> <input id="wft007" style="width:70px" name="wft007"  class="mini-textbox" vtype="int"/>
                 </td>
-            </tr>
+                </tr>
+            <tr>
+                <td align="right">
+                    <label for="wft007">应收合计：</label>
+                </td>
+                <td><input id="wft007" style="width:70px" name="wft007"  class="mini-textbox" vtype="int"/>
+                    <label for="wft031">&nbsp;&nbsp;合计是否可以更改</label>
+                    <input id="wft031" class="mini-combobox" style="width: 50px;"  textField="dictName" valueField="dictVal"
+                           url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=IS"   required="true" value="1"/>
+
+                </td>
+            <tr/>
             <tr>
                 <td align="right">
                     <label for="wat004">预约时间：</label>
                 </td>
                 <td>
-                    <input id="wat004" name="wat004" class="mini-datepicker" style="width: 200px;"
+                    <input id="wat004" name="wat004" class="mini-datepicker" style="width: 140px;"
                            format="yyyy-MM-dd H:mm" timeFormat="H:mm" showTime="true" showOkButton="true" />
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
                     <label for="userid">业务人员：</label>
-                </td>
-                <td>
                     <input id="userid" class="mini-combobox"  textField="name" valueField="userId"
                            url="<%=request.getContextPath()%>/admin/queryAllUser" value="${user.userId}"  required="true" allowInput="true" nullItemText="请选择..."/>
-
                 </td>
             </tr>
             <tr>
@@ -151,6 +154,7 @@
             <tr><td colspan="2" align="center">
                 <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
                 <a class="mini-button" href="javascript:doReset();"  iconCls="icon-redo" >重置</a>
+                <a class="mini-button" href="javascript:doReAdd();"  iconCls="icon-add" >再建一号</a>
             </td></tr>
         </table>
     </div>
@@ -246,6 +250,7 @@
     mini.parse();
     var grid=mini.get("datagrid");
     var grid2=mini.get("datagrid2");
+    mini.get("aae003").setValue(new Date());
     var bbz001;
     function renderUser(e) {
         return $("#grid_buttons").clone().css("display","inline").html();
@@ -408,6 +413,7 @@ function doSubmit() {
         data.bhz003=mini.get("bhz003").getValue();
         data.aab301=mini.get("aab301").getValue();
         data.userid=mini.get("userid").getValue();
+        data.wft031=mini.get("wft031").getValue();
         var jsonGrid1= grid.findRows(function(row){ return true;});
         var jsonGrid2= grid2.findRows(function(row){ return true;});
         jsonGrid1=JSON.stringify(jsonGrid1);
@@ -429,6 +435,10 @@ function doReset() {
     $("#span_wat002").html('');
     grid.clearRows();
     grid2.clearRows();
+    mini.get("doSubmit").enable();
+}
+function doReAdd() {
+    setWat002();
     mini.get("doSubmit").enable();
 }
 </script>

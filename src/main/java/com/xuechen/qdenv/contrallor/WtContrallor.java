@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -191,6 +192,10 @@ public class WtContrallor {
     @ResponseBody
     public String queryWtList(Wt01Dto wt01Dto){
         List<Wt01Dto> wt01Dtos=this.qdenvService.queryWtList(wt01Dto);
+        if(SecurityUtils.getSubject().hasRole("BD")||SecurityUtils.getSubject().hasRole("BE"))
+            wt01Dtos.get(0).setRoleCode("B");//业务人员标记
+        else
+            wt01Dtos.get(0).setRoleCode("NB");
         return JSON.toJSONStringWithDateFormat(wt01Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @RequestMapping(value="/f100201/queryWt02",produces = "application/json; charset=utf-8")

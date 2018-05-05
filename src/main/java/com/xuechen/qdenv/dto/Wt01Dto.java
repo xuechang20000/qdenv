@@ -22,6 +22,7 @@ public class Wt01Dto extends Wt01 {
     private String wft009;
     private String wft010;
     private String wft015;
+    private String wft031;
     private Date wft011;
     private String wftaae013;
     private String s_date;
@@ -31,6 +32,7 @@ public class Wt01Dto extends Wt01 {
     private String wdt001s;
     private String fuserids;
     private String fnames;
+    private String roleCode;
     public String getJson1() {
         return json1;
     }
@@ -213,5 +215,21 @@ public class Wt01Dto extends Wt01 {
 
     public void setWft015(String wft015) {
         this.wft015 = wft015;
+    }
+
+    public String getWft031() {
+        return wft031;
+    }
+
+    public void setWft031(String wft031) {
+        this.wft031 = wft031;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
     }
 }

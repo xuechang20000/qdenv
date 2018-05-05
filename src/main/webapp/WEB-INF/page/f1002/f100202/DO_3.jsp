@@ -254,6 +254,7 @@
     var grid=mini.get("datagrid");
     var grid2=mini.get("datagrid2");
     var form=new mini.Form("#form1");
+    var wft031;//合计费用是否可改
     loadWt();
     function loadWt() {
         var url="${pageContext.request.contextPath}/work/f100201/queryWtList";
@@ -264,6 +265,15 @@
             mini.get("bhz003").setValue(data.bhz003);
             mini.get("userid").setValue(data.userid);
             mini.get("aae003").setValue(""+data.aae003);
+            wft031=data.wft031;
+            if("2"==wft031&&data.roleCode!="B"){
+                mini.get("wft007").set({enabled:false})
+            }
+            if(data.roleCode=="B"){
+                mini.get("aab301").enable();
+                mini.get("wat003").enable();
+                mini.get("bhz003").enable();
+            }
         });
         var url="${pageContext.request.contextPath}/work/f100201/queryWt02"
         Web.util.request(url,'post',{wat001:wat001},function (data) {
@@ -431,6 +441,7 @@
         getSumFee();
     }
     function getSumFee() {
+        if(mini.get(wft007).enabled==false) return;
         var wft002=mini.get('wft002').getValue();
         var wft004=mini.get('wft004').getValue();
         var wft006=mini.get('wft006').getValue();

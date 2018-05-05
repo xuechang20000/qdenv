@@ -28,6 +28,7 @@
         <div field="aae005" width="80" visible="false" headerAlign="center" >电话</div>
         <div field="aae016" width="40" headerAlign="center" renderer='oncodeRender'>有效标志</div>
         <div field="aae013" width="80" visible="false"headerAlign="center" >备注</div>
+        <div field="wft022" width="80" visible="false"headerAlign="center" >发票类型</div>
         <div headerAlign="center" width="40" visible="false" renderer="renderUser">操作</div>
     </div>
 </div>
@@ -123,6 +124,13 @@
         </tr>
         <tr>
             <td align="right">
+                <label for="wft022">发票类型：</label>
+            </td>
+            <td align="left">
+                <input id="wft022" class="mini-combobox" style="width: 150px;"  textField="dictName" valueField="dictVal"
+                       url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=WFT022"   required="true" allowInput="true" nullItemText="请选择..."/>
+            </td>
+            <td align="right">
                 <label for="aae013">备注：</label>
             </td>
             <td>
@@ -165,7 +173,7 @@
                     for (var d;d=data1[i++];){
                         grid.addRow({wft020:d.wft020,wft012:d.wft012,wft013:d.wft013,wft014:d.wft014,wft018:d.wft018,
                             wft019:d.wft019,aac147:d.aac147,aae016:d.aae016,aae006:d.aae006,wft016:d.wft016,
-                            aae005:d.aae005,wft017:d.wft017,aae013:d.aae013})
+                            aae005:d.aae005,wft017:d.wft017,wft022:d.wft022,aae013:d.aae013})
                     }
                 }
 
@@ -197,6 +205,7 @@
         mini.get("aae005").setValue(e.record.aae005) ;
         mini.get("aac147").setValue(e.record.aac147) ;
         mini.get("aae013").setValue(e.record.aae013) ;
+        mini.get("wft022").setValue(e.record.wft022) ;
         mini.get("doSubmit").enable();
     }
     function doSubmit() {
@@ -207,6 +216,7 @@
         }
         var url="${pageContext.request.contextPath}/work/f100201/saveWt07"
         var data = form.getData(true);
+        data.wft022=mini.get("wft022").getValue();
         Web.util.request(url,"post",data,function () {
             Web.util.showTips("保存成功");
             mini.get('doSubmit').disable()

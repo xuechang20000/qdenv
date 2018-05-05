@@ -29,6 +29,7 @@ public class Wt07 {
     private String wft019;
     private String aac147;
     private Date wft021;
+    private String wft022;
     @Id
     public Integer getWft020() {
         return wft020;
@@ -156,5 +157,13 @@ public class Wt07 {
 
     public void setAae016(String aae016) {
         this.aae016 = aae016;
+    }
+
+    public String getWft022() {
+        return wft022;
+    }
+
+    public void setWft022(String wft022) {
+        this.wft022 = wft022;
     }
 }

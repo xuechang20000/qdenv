@@ -526,6 +526,8 @@ public class QdenvServiceImpl implements QdenvService {
         wt05.setWft006(Double.valueOf(wt01Dto.getWft006()));
     if (wt01Dto.getWft007()!=null&&!wt01Dto.getWft007().trim().equals(""))
         wt05.setWft007(Double.valueOf(wt01Dto.getWft007()));
+    if (wt01Dto.getWft031()!=null&&!wt01Dto.getWft031().trim().equals(""))
+        wt05.setWft031(wt01Dto.getWft031());
 
         wt05.setWat001(wt01.getWat001());
         wt05.setAae013("");
@@ -758,7 +760,7 @@ public class QdenvServiceImpl implements QdenvService {
     public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
         StringBuffer stringBuffer=new StringBuffer();
         stringBuffer.append("select a.*,b.wft001,b.wft002,b.wft003,b.wft004,b.wft005,b.wft006,b.wft007," +
-                " b.wft008,b.wft009,b.wft010,b.wft011,b.aae013 as wftaae013,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s, " +
+                " b.wft008,b.wft009,b.wft010,b.wft011,b.wft031,b.aae013 as wftaae013,c.name as username,(select wlt002 from wt06 where wlt003=a.wat018) as wat018s, " +
                 " (select GROUP_CONCAT(d.wdt001) from wt08 d WHERE a.wat001=d.wat001) wdt001s, " +
                 "(select GROUP_CONCAT(d.userid) from wt08 d WHERE a.wat001=d.wat001) fuserids, " +
                 "(select GROUP_CONCAT(d.name) from wt08 d WHERE a.wat001=d.wat001) fnames from " +
@@ -790,6 +792,14 @@ public class QdenvServiceImpl implements QdenvService {
         if(StringTools.hasText(wt01Dto.getDaw002())){
             stringBuffer.append(" and a.daw002 like ? ");
             args.add("%"+wt01Dto.getDaw002()+"%");
+        }
+        if(StringTools.hasText(wt01Dto.getDaw005())){
+            stringBuffer.append(" and a.daw005 like ? ");
+            args.add("%"+wt01Dto.getDaw005()+"%");
+        }
+        if(StringTools.hasText(wt01Dto.getDaw004())){
+            stringBuffer.append(" and a.daw004 like ? ");
+            args.add(wt01Dto.getDaw004()+"%");
         }
         if(StringTools.hasText(wt01Dto.getWft010())){
             stringBuffer.append(" and b.wft010=? ");
@@ -1218,7 +1228,13 @@ public class QdenvServiceImpl implements QdenvService {
         String sql="select SUM(a.wxt004) from wt04 a,wt03 b ,wt02 c where a.wct001=b.wct001 and c.wbt001=b.wbt001 and " +
                 " c.wat001=? and c.aae016='1' and b.aae016='1'";
         Double testFee=CommonJdbcUtils.queryObject(sql,Double.class,wat001);
-        sql="update wt05 set wft004=?,wft007=(wft002+wft004)*wft006 where wat001=?";
+        Subject user=SecurityUtils.getSubject();
+        if(user.hasRole("BD")||user.hasRole("BE")){//如果是业务才可以修改总计
+            sql="update wt05 set wft004=?,wft007=(wft002+wft004)*wft006 where wat001=?";
+        }else{
+            sql="update wt05 set wft004=? where wat001=?";
+        }
+
         CommonJdbcUtils.execute(sql,testFee,wat001);
         Wt05 wt05=CommonJdbcUtils.queryFirst("select * from wt05 where wat001=?",Wt05.class,wat001);
         String aae013=String.format("费用重新计算:应收总费用%s，其中采样费用%s、检测费用%s、折扣率%s。"

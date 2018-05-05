@@ -32,6 +32,7 @@ public class Wt05 {
     private Date wft011;
 
     private String aae013;
+    private String wft031;
 
     @Id
     public Integer getWft001() {
@@ -136,5 +137,13 @@ public class Wt05 {
 
     public void setAae013(String aae013) {
         this.aae013 = aae013 == null ? null : aae013.trim();
+    }
+
+    public String getWft031() {
+        return wft031;
+    }
+
+    public void setWft031(String wft031) {
+        this.wft031 = wft031;
     }
 }
