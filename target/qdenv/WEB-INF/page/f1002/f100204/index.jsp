@@ -40,7 +40,7 @@
     </div>
 </fieldset>
 <div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"
-     url="<%=request.getContextPath()%>/work/f100201/queryWt"
+     url="<%=request.getContextPath()%>/work/f100201/queryWt" pagerButtons="#exportExcel"
      idField="wat001"  pageSize='100'  sortMode="client">
     <div property="columns">
         <div headerAlign="center" align="center" width="40" renderer="renderDO">操作</div>
