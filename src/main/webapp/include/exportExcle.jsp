@@ -4,7 +4,7 @@
 <div>
 	<div id="exportExcel">
 		<span class="separator"></span>
-		<a class="mini-button" iconCls="icon-add" plain="true" id="add" onclick="exprotExcel(this)">导出全部</a>
+		<a class="mini-button" iconCls="icon-add" plain="true" id="add" onclick="exprotExcel(this)">导出</a>
 	</div>
 </div>
 <div id="exprotIfreamDiv__">
@@ -23,9 +23,9 @@
         if(!params){
             return;
         }
-        console.info('ddddd'+JSON.stringify(columns))
+
         var columns = getColumns(columns);
-        console.info('eeeee'+JSON.stringify(columns))
+
         var header = mini.encode(columns);
         params.exp_url = grid.url.substr(projectName.length);
         params.exp_header = header;

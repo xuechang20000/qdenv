@@ -35,6 +35,7 @@ public class Wt01 {
 
     private Date wat017;
     private String wat018;
+    private String wat028;
     private Integer userid;
     private String aae016;
     private String wat009;
@@ -298,5 +299,13 @@ public class Wt01 {
 
     public void setWat019(String wat019) {
         this.wat019 = wat019;
+    }
+
+    public String getWat028() {
+        return wat028;
+    }
+
+    public void setWat028(String wat028) {
+        this.wat028 = wat028;
     }
 }

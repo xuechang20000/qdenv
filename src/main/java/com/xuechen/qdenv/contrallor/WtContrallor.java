@@ -133,6 +133,10 @@ public class WtContrallor {
     public String index_loadInvoice(){
         return "/WEB-INF/page/f1002/f100202/invoice";
     }
+    @RequestMapping("/f100202/loadBackto")
+    public String index_loadBackto(){
+        return "/WEB-INF/page/f1002/f100202/backto";
+    }
     @RequestMapping("/f100301/loadCwInvoice")
     public String index_loadCwInvoice(){
         return "/WEB-INF/page/f1003/f100301/invoice";
@@ -217,6 +221,13 @@ public class WtContrallor {
     public String queryWt06(String isPermission){
         boolean isper=(isPermission!=null&&isPermission.equals("0"))?false:true;
         List<Wt06Dto> wt06Dtos=this.qdenvService.queryWt06(isper);
+        return JSON.toJSONStringWithDateFormat(wt06Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100201/queryWt06Bywlt004",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt06Bywlt004(String wat018){
+        Wt06 wt06=CommonJdbcUtils.queryFirst("select wlt004 from wt06 where wlt003=? ",Wt06.class,wat018);
+        List<Wt06Dto> wt06Dtos=this.qdenvService.queryWt06(wt06.getWlt004());
         return JSON.toJSONStringWithDateFormat(wt06Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @RequestMapping(value="/f100201/updateWt03",produces = "application/json; charset=utf-8")
@@ -385,6 +396,12 @@ public class WtContrallor {
     public String queryWt09List(Page page,Wt09Dto wt09Dto){
         this.qdenvService.queryWt09List(page,wt09Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100202/sorhwt01",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String sorhwt01(Wt01Dto wt01Dto,String type){
+        this.qdenvService.hideAndShow(wt01Dto,type);
+        return JSON.toJSONStringWithDateFormat(wt01Dto, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){

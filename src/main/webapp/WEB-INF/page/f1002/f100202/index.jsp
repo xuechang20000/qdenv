@@ -19,6 +19,7 @@
 
 </head>
 <body>
+<jsp:include page="/include/exportExcle.jsp"/>
 <div id="form1" style="line-height: 28px">
     <input id="wat018" class="mini-combobox" style="width: 100px;"  textField="wlt002" valueField="wlt003"
            url="<%=request.getContextPath()%>/work/f100201/queryWt06"   allowInput="true" showNullItem="true" emptyText="全部状态" />
@@ -44,7 +45,7 @@
 
     <a class="mini-button" id="id_onSerach" iconCls="icon-search" onclick="onSerach">查询</a>
 </div>
-<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"
+<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"  pagerButtons="#exportExcel"v
      url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail"
      idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu"  >
     <div property="columns">
@@ -74,6 +75,12 @@
         <shiro:hasPermission name="DO_3">
     <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
         </shiro:hasPermission>
+    <shiro:hasPermission name="DO_15">
+        <li name="DO_15" iconCls="icon-node" onclick="onWt01DO('DO_15','隐藏')">隐藏</li>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="DO_16">
+        <li name="DO_16" iconCls="icon-node" onclick="onWt01DO('DO_16','恢复显示')">恢复显示</li>
+    </shiro:hasPermission>
     <shiro:lacksRole name=""></shiro:lacksRole>
     <!--<li name="DO_4" iconCls="icon-node" onclick="onWt01DO('DO_4','检测数据')">检测数据</li>-->
    <!-- <li name="DO_5" iconCls="icon-node" onclick="onWt01DO('DO_5','重新检测')">重新检测</li>-->
@@ -83,7 +90,7 @@
     <li name="DO_12" iconCls="icon-downgrade" onclick="onWt01DO('DO_12')">提交(下一环节)</li>
     </shiro:hasPermission>
     <shiro:hasPermission name="DO_13">
-    <li name="DO_13" iconCls="icon-upgrade" onclick="onWt01DO('DO_13')">退回(上一环节)</li>
+    <li name="DO_13" iconCls="icon-upgrade" onclick="onWt01DO('DO_13')">退回</li>
     </shiro:hasPermission>
 </ul>
 </body>
@@ -208,12 +215,25 @@ function onWt01DO(v,t) {
             grid.reload();
         })
     }else if ('DO_13'==v){//回退
-        url="${pageContext.request.contextPath}/work/f100201/savePreStep?wat001="+row.wat001;
-        Web.util.prompt("请输入","请输入退回原因:",function (value) {
-            Web.util.request(url,"post",{wat001:row.wat001,json1:value},function (data) {
-                grid.reload();
-            })
-        });
+
+        url="${pageContext.request.contextPath}/work/f100202/loadBackto?wat001="+row.wat001+"&wat018="+row.wat018;
+        Web.util.openMiniWindow("回退",url,500,300,function () {
+            grid.reload()
+        })
+
+    }else if ('DO_15'==v){//隐藏
+
+        url="${pageContext.request.contextPath}/work/f100202/sorhwt01";
+        Web.util.request(url,"post",{wat001:row.wat001,type:"H"},function (data) {
+            grid.reload();
+        })
+
+    }else if ('DO_16'==v){//恢复显示
+
+        url="${pageContext.request.contextPath}/work/f100202/sorhwt01";
+        Web.util.request(url,"post",{wat001:row.wat001,type:"S"},function (data) {
+            grid.reload();
+        })
 
     }else {//打印界面
         Web.util.openMiniWindow(t, url, 1000, 500, function () {

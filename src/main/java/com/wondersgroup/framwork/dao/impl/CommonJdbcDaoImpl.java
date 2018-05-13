@@ -125,7 +125,7 @@ public class CommonJdbcDaoImpl implements CommonJdbcDao {
      */
     public  <T> T queryFirst(String sql, Class<T> clazz, Object ... arguments){
         Page page=new Page(0,1);
-        page.calculate();
+        //page.calculate();
         this.queryPageList(page,sql,clazz,arguments);
         List<T> list=page.getData();
         if(list!=null&&list.size()>0) return list.get(0);

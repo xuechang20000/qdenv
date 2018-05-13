@@ -46,6 +46,7 @@ public interface QdenvService {
     public List<Wt03Dto> queryWt03(Wt03Dto wt03Dto);
     public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto);
     public List<Wt06Dto> queryWt06(Boolean isPermission);
+    public List<Wt06Dto> queryWt06(Integer wlt004);
     public List<Wt08Dto> queryWt08ByWat001(Integer wat001);
     public void saveWt08List(Wt01Dto wt01Dto,List<Wt08> wt08s);
     public Wt01Dto saveNextProcess(Wt01Dto wt01Dto);
@@ -57,4 +58,5 @@ public interface QdenvService {
     public Wt02 updateWt02Simple(Wt02Dto wt02Dto);
     public Wt03 updateWt03Simple(Wt03Dto wt03Dto);
     public Wt05 updateWt05(Wt05Dto wt05Dto);
+    public void hideAndShow(Wt01Dto wt01Dto,String type);
 }

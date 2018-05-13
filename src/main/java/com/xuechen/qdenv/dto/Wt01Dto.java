@@ -33,6 +33,7 @@ public class Wt01Dto extends Wt01 {
     private String fuserids;
     private String fnames;
     private String roleCode;
+    private String wlt003;
     public String getJson1() {
         return json1;
     }
@@ -231,5 +232,13 @@ public class Wt01Dto extends Wt01 {
 
     public void setRoleCode(String roleCode) {
         this.roleCode = roleCode;
+    }
+
+    public String getWlt003() {
+        return wlt003;
+    }
+
+    public void setWlt003(String wlt003) {
+        this.wlt003 = wlt003;
     }
 }

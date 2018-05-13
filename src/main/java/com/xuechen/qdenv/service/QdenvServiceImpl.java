@@ -942,6 +942,23 @@ public class QdenvServiceImpl implements QdenvService {
            }
             return rlist;
         }
+        for (Wt06Dto wt06Dto:list){
+            if (!wt06Dto.getWlt003().equals("LC_0")){
+                rlist.add(wt06Dto);
+            }
+        }
+        return rlist;
+    }
+
+    /**
+     * 查询状态列表，小于wlt004
+     * @param wlt004
+     * @return
+     */
+    public List<Wt06Dto> queryWt06(Integer wlt004){
+        String sql="select * from wt06 where wlt004 < ? ";
+        List<Wt06Dto> list=null;
+        list =CommonJdbcUtils.queryList(sql,Wt06Dto.class,wlt004);
         return list;
     }
     /**
@@ -1000,7 +1017,16 @@ public class QdenvServiceImpl implements QdenvService {
     public Wt06 getNextWt06(String wat018,Integer step){
         String stringStep=step>=0?"+"+String.valueOf(step):String.valueOf(step);
         String sql="select * from wt06 where wlt004=(select wlt004"+stringStep+" from wt06 where wlt003=?)";
-        return CommonJdbcUtils.queryFirst(sql,Wt06.class,wat018);
+        Wt06 wt06=CommonJdbcUtils.queryFirst(sql,Wt06.class,wat018);
+        return wt06;
+    }
+    /**
+     * 获取下一步状态码
+     * @param wlt003
+     */
+    public Wt06 getNextWt06ByWlt003(String wlt003){
+        String sql="select * from wt06 where wlt003=?";
+        return CommonJdbcUtils.queryFirst(sql,Wt06.class,wlt003);
     }
 
     /**
@@ -1010,9 +1036,15 @@ public class QdenvServiceImpl implements QdenvService {
      */
     @Transactional
     public Wt01Dto saveNextStep(Wt01Dto wt01Dto,Integer step){
-        Wt06 wt06=getNextWt06(wt01Dto.getWat018(),step);
+        Wt06 wt06=null;
+        if(wt01Dto.getWlt003()!=null){
+            wt06=getNextWt06ByWlt003(wt01Dto.getWlt003());
+        }else{
+            wt06=getNextWt06(wt01Dto.getWat018(),step);
+        }
+
         if (wt06==null) return  null;
-        CommonJdbcUtils.execute("update wt01 set wat018=? where wat001=?",wt06.getWlt003(),wt01Dto.getWat001());
+        CommonJdbcUtils.execute("update wt01 set wat028=wat018,wat018=? where wat001=?",wt06.getWlt003(),wt01Dto.getWat001());
         wt01Dto.setWat018(wt06.getWlt003());
         /**
          * 保存日志
@@ -1027,7 +1059,7 @@ public class QdenvServiceImpl implements QdenvService {
             wt09Dto.setWgt005("DO_13");
             wt09Dto.setWgt006("退回");
         }
-        String aae013=String.format("跳转步数：%s，-->%s。原因：%s",step,wt06.getWlt002(),wt01Dto.getJson1()==null?"":wt01Dto.getJson1());
+        String aae013=String.format("跳转步骤：%s，-->%s。原因：%s",step,wt06.getWlt002(),wt01Dto.getJson1()==null?"":wt01Dto.getJson1());
         wt09Dto.setAae013(aae013);
         saveWt09(wt09Dto);
         return wt01Dto;
@@ -1084,6 +1116,7 @@ public class QdenvServiceImpl implements QdenvService {
         }
         Wt01Dto dto=wt01Dtos.get(0);
         dto.setJson1(wt01Dto.getJson1());
+        dto.setWlt003(wt01Dto.getWlt003());
         if (saveNextStep(dto,-1)==null){
             throw new BusinessException("上一步无步骤");
         }
@@ -1259,5 +1292,20 @@ public class QdenvServiceImpl implements QdenvService {
 
     }
 
+    /**
+     * 隐藏或者显示
+     * @param wt01Dto
+     * @param type
+     */
+    public void hideAndShow(Wt01Dto wt01Dto,String type){
+        String sql="";
+        if ("H".equals(type)){
+            sql="update wt01 set wat028=wat018,wat018='LC_0' where wat001=? and wat018!='LC_0' ";
+        }
+        if ("S".equals(type)){
+            sql="update wt01 set wat018=wat028 where wat001=? ";
+        }
+        CommonJdbcUtils.execute(sql,wt01Dto.getWat001());
+    }
 
 }

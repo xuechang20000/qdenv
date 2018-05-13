@@ -34,6 +34,7 @@ public class Page<T>{
         this.endNum = endNum;
     }
     public void calculate(){
+        this.pageIndex++;
         this.startNum=(this.pageIndex-1)*this.pageSize;
         this.startNum=this.startNum<=0?0:this.startNum;
         this.endNum=this.startNum+pageSize;

@@ -17,6 +17,7 @@
 
 </head>
 <body>
+<jsp:include page="/include/exportExcle.jsp"/>
 <fieldset id="fd2">
     <legend><span>查询条件</span></legend>
     <div id="form1" style="line-height: 28px">
