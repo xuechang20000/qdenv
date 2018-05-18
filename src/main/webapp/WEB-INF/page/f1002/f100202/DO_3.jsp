@@ -330,7 +330,7 @@
             return;
         }
         var url='${pageContext.request.contextPath}/work/f100202/loadWt03?wct001='+row.wct001;
-        Web.util.openMiniWindow("采样编辑",url,700,500,function () {
+        Web.util.openMiniWindow("采样编辑",url,900,500,function () {
             
         })
     }

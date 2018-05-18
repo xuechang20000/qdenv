@@ -170,5 +170,10 @@
             <artifactId>poi</artifactId>
             <version>3.15</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.0.0</version>
+        </dependency>
     </dependencies>
 </project>

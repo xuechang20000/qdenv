@@ -36,7 +36,7 @@
                     <label for="wbt007">样品数量：</label>
                 </td>
                 <td align="left">
-                    <input id="wbt007"  name="wbt007" style="width:100px" class="mini-textbox" required="true" vtype="int"  />
+                    <input id="wbt007"  name="wbt007" style="width:100px" class="mini-textbox"  vtype="int"  />
                 </td>
             </tr>
             <tr>
@@ -142,26 +142,43 @@
     </div>
 </div>
 <div title="采样信息">
-    <div id="datagrid" class="mini-datagrid" style="width: 100%;height: 400px;" allowResize="true"pageSize="100"
-         allowCellEdit="true" allowCellSelect="true" showGroupSummary="true" showSummaryRow="true" pagerButtons="#buttons"
+    <div id="datagrid2" class="mini-datagrid" style="width:63%;height:100%; float: left" allowResize="true" pageSize="100" title="样品"
+         idField="wst001" pagerButtons="buttons" url="${pageContext.request.contextPath}/work/f100202/queryWt10Page?wct001=${param.wct001}"
+         multiSelect="true" allowResize="true">
+        <div property="columns">
+            <div field="wst001"  headerAlign="center" visible="false">样品ID</div>
+            <div field="wct001"  headerAlign="center" visible="false">采样点ID</div>
+            <div field="wst002" type="comboboxcolumn" width="20" headerAlign="center" >容器类型
+                <input property="editor" class="mini-combobox" style="width:100%;" textField="dictName" valueField="dictVal"
+                       popupWidth="120"  url="/qdenv/admin/queryRenderedAppDictDetails?dictCode=WST002" /></div>
+            <div field="wst003" width="20" headerAlign="center" >样品编号
+                <input property="editor" class="mini-textbox" style="width:100%;" /></div>
+            <div field="wst004" width="15" dataType="date" dateFormat="HH:mm" headerAlign="center" >采样时间<br>起
+                <input property="editor" class="mini-datepicker" style="width: 200px;"
+                       format="H:mm" timeFormat="H:mm" showTime="true" minWidth="200" valueType="string"
+                       showOkButton="true" showTodayButton="false" showClearButton="false"/></div>
+           <div field="wst005" width="15" dataType="date" dateFormat="HH:mm" headerAlign="center" >采样时间<br>止
+            <input property="editor" class="mini-datepicker" style="width: 200px;"
+                   format="H:mm" timeFormat="H:mm" showTime="true" minWidth="200" valueType="string"
+                   showOkButton="true" showTodayButton="false" showClearButton="false" /></div>
+            <div field="wst006" type="comboboxcolumn" width="40" headerAlign="center" >采样设备
+                <input property="editor" class="mini-combobox" textField="bmz002" valueField="bmz001"
+                       popupWidth="220"  url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1&bmz003=1" /></div>
+            <div field="wst007"  width="40" headerAlign="center" >设备编号</div>
+        </div>
+    </div>
+    <div id="datagrid" class="mini-datagrid" style="width:35%;height:100%; float: left;margin-left: 8px" allowResize="true" pageSize="100" title="检测项目"
+         idField="wxt001"  allowCellEdit="true" allowCellSelect="true" showGroupSummary="true" showSummaryRow="true"
          editNextOnEnterKey="true"  editNextRowCell="true" navEditMode="true">
         <div property="columns">
             <div field="wxt001"  headerAlign="center" visible="false">检测项目ID</div>
             <div field="wct001"  headerAlign="center" visible="false">采样点ID</div>
             <div field="bcz002" width="40" headerAlign="center" >检测项目</div>
-            <div field="wxt009" width="20" headerAlign="center" >样品编号
+            <div field="wxt009" width="30" headerAlign="center" >样品编号
                 <input property="editor" class="mini-textbox" style="width:100%;" /></div>
-            <div field="wxt008" width="15" dataType="date" dateFormat="HH:mm" headerAlign="center" >采样时间起
-                <input property="editor" class="mini-datepicker" style="width: 200px;"
-                       format="H:mm" timeFormat="H:mm" showTime="true" minWidth="200" valueType="string"
-                       showOkButton="true" showTodayButton="false" showClearButton="false"/></div>
-           <div field="wxt010" width="15" dataType="date" dateFormat="HH:mm" headerAlign="center" >采样时间止
-            <input property="editor" class="mini-datepicker" style="width: 200px;"
-                   format="H:mm" timeFormat="H:mm" showTime="true" minWidth="200" valueType="string"
-                   showOkButton="true" showTodayButton="false" showClearButton="false" /></div>
-            <div field="wxt007" type="comboboxcolumn" width="40" headerAlign="center" >采样设备
-                <input property="editor" class="mini-combobox" textField="bmz002" valueField="bmz001"
-                       popupWidth="220"  url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1&bmz003=1" /></div>
+            <div field="wxt002" width="15" headerAlign="center" >检测值
+                <input property="editor" class="mini-textbox" style="width:100%;" /></div>
+            <div field="bcz006" width="10" headerAlign="center" >单位</div>
         </div>
     </div>
 </div>
@@ -172,13 +189,12 @@
         </div>
     </div>
 </div>
-
-
 <div id="buttons">
-    <span class="separator"></span>
-    <a class="mini-button" href="javascript:doSubmit()" plain="true" iconCls="icon-save">保存</a>
+        <span class="separator"></span>
+        <a class="mini-button" iconCls="icon-add" plain="true" onclick="addWt10()"></a>
+        <span class="separator"></span>
+        <a class="mini-button" iconCls="icon-remove" plain="true" onclick="deleteWt10()"></a>
 </div>
-
 </body>
 <script type="text/javascript">
     mini.parse();
@@ -186,6 +202,8 @@
     loadWt03();
     loadPhotos();
     var grid= mini.get("datagrid");
+    var grid2= mini.get("datagrid2");
+    grid2.reload();
     function loadWt03() {
         var url ='${pageContext.request.contextPath}/work/f100201/queryWt03'
         Web.util.formLoad("form1",url,"post",{wct001:wct001},function (data) {
@@ -195,8 +213,8 @@
             var wt04list=data.wt04DtoList,i=0;
             grid.clearRows();
             for(var wt04;wt04=wt04list[i++];){
-                var row={wxt001:wt04.wxt001,wct001:wt04.wct001,bcz002:wt04.bcz002,
-                    wxt009:wt04.wxt009,wxt008:wt04.wxt008,wxt010:wt04.wxt010,wxt007:wt04.wxt007}
+                var row={wxt001:wt04.wxt001,wct001:wt04.wct001,bcz002:wt04.bcz002,bcz006:wt04.bcz006,
+                    wxt009:wt04.wxt009,wxt008:wt04.wxt008,wxt010:wt04.wxt010,wxt007:wt04.wxt007,wxt002:wt04.wxt002}
                 grid.addRow(row);
             }
         });
@@ -212,6 +230,22 @@
             }
         })
         
+    }
+    function addWt10() {
+        var url="${pageContext.request.contextPath}/work/f100202/loadWt10add?wct001="+wct001;
+        Web.util.openMiniWindow("添加样品",url,1000,350,function () {
+            grid2.reload();
+            loadWt03();
+        })
+    }
+    function deleteWt10() {
+        var wst001=grid2.getSelected().wst001;
+        var wst003=grid2.getSelected().wst003;
+        var url="${pageContext.request.contextPath}/work/f100202/deleteWt10";
+        Web.util.request(url,"post",{wct001:wct001,wst001:wst001,wst003:wst003},function () {
+            grid2.reload();
+            loadWt03();
+        })
     }
   function doSubmit() {
       var form = new mini.Form("#form1");

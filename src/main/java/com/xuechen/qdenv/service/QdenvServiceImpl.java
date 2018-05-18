@@ -1,5 +1,6 @@
 package com.xuechen.qdenv.service;
 
+import cn.hutool.core.date.DateUtil;
 import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.core.utils.StringTools;
@@ -8,6 +9,7 @@ import com.xuechen.qdenv.dto.*;
 import com.xuechen.web.bo.AppResource;
 import com.xuechen.web.dto.AppUserDTO;
 import com.xuechen.web.exception.BusinessException;
+import com.xuechen.web.utils.ContextUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -1308,4 +1310,41 @@ public class QdenvServiceImpl implements QdenvService {
         CommonJdbcUtils.execute(sql,wt01Dto.getWat001());
     }
 
+    /**
+     * 保存样品
+     * @param wt10Dto
+     */
+    @Transactional
+    public void saveWt10(Wt10Dto wt10Dto){
+        Wt10 wt10=new Wt10();
+        BeanUtils.copyProperties(wt10Dto,wt10);
+        wt10.setWst008(DateUtil.now());
+        wt10.setWst009(ContextUtils.getUserId());
+        CommonJdbcUtils.insert(wt10);
+        String[] wxt001=wt10Dto.getWxt001s().split(",");
+        String sql="update wt04 set wxt009=CONCAT_WS(' ',IFNULL(wxt009,''),?) where wxt001= ? ";
+        if (wxt001.length>0){
+            for (int i=0;i<wxt001.length;i++){
+            CommonJdbcUtils.execute(sql,wt10.getWst003()+" ",wxt001[i]);
+            }
+        }
+    }
+
+    /**
+     * 删除样品
+     * @param wt10Dto
+     */
+    @Transactional
+    public void deleteWt10(Wt10Dto wt10Dto){
+        String sql="delete from wt10 where wst001= ? ";
+        CommonJdbcUtils.execute(sql,wt10Dto.getWst001());
+        sql="update wt04 set wxt009=replace(wxt009,?,'') where wct001=? ";
+        CommonJdbcUtils.execute(sql,wt10Dto.getWst003()+" ",wt10Dto.getWct001());
+    }
+    public List<Wt10Dto> queryWt10Page(Page page,Wt10Dto wt10Dto){
+        StringBuffer stringBuffer=new StringBuffer("select * from wt10 where wct001=? ");
+
+       CommonJdbcUtils.queryPageList(page,stringBuffer.toString(),Wt10Dto.class,wt10Dto.getWct001());
+       return page.getData();
+    }
 }

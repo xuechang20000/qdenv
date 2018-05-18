@@ -145,6 +145,10 @@ public class WtContrallor {
     public String index_loadFee(){
         return "/WEB-INF/page/f1003/f100301/fee";
     }
+    @RequestMapping("/f100202/loadWt10add")
+    public String index_loadWt10add(){
+        return "/WEB-INF/page/f1002/f100202/wt10add";
+    }
     @RequestMapping(value="/f100201/getWat016",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String getWat016(String wat015){
@@ -402,6 +406,24 @@ public class WtContrallor {
     public String sorhwt01(Wt01Dto wt01Dto,String type){
         this.qdenvService.hideAndShow(wt01Dto,type);
         return JSON.toJSONStringWithDateFormat(wt01Dto, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100202/saveWt10",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveWt10(Wt10Dto wt10Dto){
+        this.qdenvService.saveWt10(wt10Dto);
+        return JSON.toJSONStringWithDateFormat(wt10Dto, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100202/deleteWt10",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String deleteWt10(Wt10Dto wt10Dto){
+        this.qdenvService.deleteWt10(wt10Dto);
+        return JSON.toJSONStringWithDateFormat(wt10Dto, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100202/queryWt10Page",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt10Page(Page page,Wt10Dto wt10Dto){
+        this.qdenvService.queryWt10Page(page,wt10Dto);
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){

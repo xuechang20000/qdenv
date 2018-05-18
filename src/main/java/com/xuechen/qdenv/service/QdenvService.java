@@ -59,4 +59,7 @@ public interface QdenvService {
     public Wt03 updateWt03Simple(Wt03Dto wt03Dto);
     public Wt05 updateWt05(Wt05Dto wt05Dto);
     public void hideAndShow(Wt01Dto wt01Dto,String type);
+    public void saveWt10(Wt10Dto wt10Dto);
+    public void deleteWt10(Wt10Dto wt10Dto);
+    public List<Wt10Dto> queryWt10Page(Page page,Wt10Dto wt10Dto);
 }
