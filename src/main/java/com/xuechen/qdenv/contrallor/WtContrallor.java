@@ -16,6 +16,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,7 +45,10 @@ public class WtContrallor {
     @Autowired
     private QdenvService qdenvService;
 
-
+    @RequestMapping("/load/{func}/{menu}/{page}")
+    public String index_loadOraRecord(@PathVariable String func,@PathVariable String menu,@PathVariable String page){
+        return new StringBuffer("/WEB-INF/page/").append(func).append("/").append(menu).append("/").append(page).toString();
+    }
     @RequestMapping("/f100201/index")
     public String index_f100201(){
         return "/WEB-INF/page/f1002/f100201/index";
@@ -60,6 +64,10 @@ public class WtContrallor {
     @RequestMapping("/f100204/index")
     public String index_f100204(){
         return "/WEB-INF/page/f1002/f100204/index";
+    }
+    @RequestMapping("/f100207/index")
+    public String index_f100207(){
+        return "/WEB-INF/page/f1002/f100207/index";
     }
     @RequestMapping("/f100206/index")
     public String index_f100206(){
@@ -423,6 +431,30 @@ public class WtContrallor {
     @ResponseBody
     public String queryWt10Page(Page page,Wt10Dto wt10Dto){
         this.qdenvService.queryWt10Page(page,wt10Dto);
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100207/queryWt10PageForRecord",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt10PageForRecord(Page page,Wt10Dto wt10Dto){
+        this.qdenvService.queryWt10PageForRecord(page,wt10Dto);
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100207/saveWt11",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveWt11(Wt11Dto wt11Dto){
+        Wt11 wt11=this.qdenvService.saveWt11(wt11Dto);
+        return JSON.toJSONStringWithDateFormat(wt11, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100207/deleteWt11",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String deleteWt11(Wt11Dto wt11Dto){
+        this.qdenvService.deleteWt11(wt11Dto);
+        return JSON.toJSONStringWithDateFormat(wt11Dto, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100207/queryWt11Page",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt11Page(Page page,Wt11Dto wt11Dto){
+        this.qdenvService.queryWt11Page(page,wt11Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @Scheduled(cron = "0 0/10 * * * ?")

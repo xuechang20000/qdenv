@@ -62,4 +62,8 @@ public interface QdenvService {
     public void saveWt10(Wt10Dto wt10Dto);
     public void deleteWt10(Wt10Dto wt10Dto);
     public List<Wt10Dto> queryWt10Page(Page page,Wt10Dto wt10Dto);
+    public List<Wt10Dto> queryWt10PageForRecord(Page page,Wt10Dto wt10Dto);
+    public Wt11 saveWt11(Wt11Dto wt11Dto);
+    public void deleteWt11(Wt11Dto wt11Dto);
+    public List<Wt11Dto> queryWt11Page(Page page,Wt11Dto wt11Dto);
 }

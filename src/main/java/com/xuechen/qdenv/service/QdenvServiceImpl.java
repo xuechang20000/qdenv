@@ -1316,6 +1316,11 @@ public class QdenvServiceImpl implements QdenvService {
      */
     @Transactional
     public void saveWt10(Wt10Dto wt10Dto){
+        List<Wt10> wt10s=CommonJdbcUtils.queryList("select * from wt10 where wst003=? and wct001=? ",
+                Wt10.class,wt10Dto.getWst003(),wt10Dto.getWct001());
+        if (wt10s!=null&&wt10s.size()>0){
+            throw new BusinessException("此样品编号已经存在！");
+        }
         Wt10 wt10=new Wt10();
         BeanUtils.copyProperties(wt10Dto,wt10);
         wt10.setWst008(DateUtil.now());
@@ -1346,5 +1351,67 @@ public class QdenvServiceImpl implements QdenvService {
 
        CommonJdbcUtils.queryPageList(page,stringBuffer.toString(),Wt10Dto.class,wt10Dto.getWct001());
        return page.getData();
+    }
+
+    /**
+     * 检测原始录入时查询样品
+     * @param wt10Dto
+     * @return
+     */
+    public List<Wt10Dto> queryWt10PageForRecord(Page page,Wt10Dto wt10Dto){
+        StringBuffer stringBuffer=new StringBuffer("select a.wxt001,a.bcz002,a.bcz001,b.* from wt04 a,wt10 b where a.wct001=b.wct001");
+        List<String> args=new ArrayList<String>();
+        if (StringTools.hasText(wt10Dto.getWst003())){
+            stringBuffer.append(" and b.wst003=? ");
+            args.add(wt10Dto.getWst003());
+        }
+        if(wt10Dto.getWct001()!=null){
+            stringBuffer.append(" and b.wct001=? ");
+            args.add(wt10Dto.getWct001().toString());
+        }
+        if (args.size()==0) throw new  BusinessException("查询条件为空");
+        CommonJdbcUtils.queryPageList(page,stringBuffer.toString(),Wt10Dto.class,args.toArray());
+        return  page.getData();
+    }
+
+    /**
+     * 保存检测原始记录
+     * @param wt11Dto
+     */
+    public Wt11 saveWt11(Wt11Dto wt11Dto){
+        Wt11 wt11=new Wt11();
+        BeanUtils.copyProperties(wt11Dto,wt11);
+        String sql="select * from wt11 a where a.wst001=? and a.wxt001=? and a.wrt008=(select max(b.wrt008) from wt11 b where b.wst001=? and b.wxt001=?)";
+        List<Wt11Dto> wt11Dtos=CommonJdbcUtils.queryList(sql,Wt11Dto.class,wt11Dto.getWst001(),wt11Dto.getWxt001(),wt11Dto.getWst001(),wt11Dto.getWxt001());
+        if (wt11Dtos==null||wt11Dtos.size()==0){
+            wt11.setWrt008(1);
+        }else {
+            wt11.setWrt008(wt11Dtos.get(0).getWrt008()+1);
+        }
+        wt11.setWrt006(new Date());
+        wt11.setWrt007(ContextUtils.getUserId());
+        CommonJdbcUtils.insert(wt11);
+        return wt11;
+    }
+
+    /**
+     * 删除原始记录表
+     * @param wt11Dto
+     */
+    public void deleteWt11(Wt11Dto wt11Dto){
+        if (wt11Dto.getWrt001()!=null)
+            CommonJdbcUtils.execute("delete from wt11 where wrt001=? ",wt11Dto.getWrt001());
+    }
+
+    /**
+     * 查询原始记录表
+     * @param page
+     * @param wt11Dto
+     * @return
+     */
+    public List<Wt11Dto> queryWt11Page(Page page,Wt11Dto wt11Dto){
+        String sql="select b.bcz002,bcz001,a.* from wt11 a,wt04 b where a.wxt001=b.wxt001 and  a.wst001=? and a.wxt001=? order by a.wrt008 ";
+        CommonJdbcUtils.queryPageList(page,sql,Wt11Dto.class,wt11Dto.getWst001(),wt11Dto.getWxt001());
+        return page.getData();
     }
 }
