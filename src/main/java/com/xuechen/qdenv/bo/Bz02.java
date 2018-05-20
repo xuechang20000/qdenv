@@ -36,6 +36,7 @@ public class Bz02 {
     private Double bcz010;
     private String bcz011;
     private String bcz012;
+    private String bcz013;
     @Id
     public Integer getBcz001() {
         return bcz001;
@@ -131,5 +132,13 @@ public class Bz02 {
 
     public void setBcz012(String bcz012) {
         this.bcz012 = bcz012;
+    }
+
+    public String getBcz013() {
+        return bcz013;
+    }
+
+    public void setBcz013(String bcz013) {
+        this.bcz013 = bcz013;
     }
 }

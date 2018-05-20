@@ -6,6 +6,7 @@ import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.core.utils.StringTools;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
+import com.xuechen.web.bo.AppDictDetail;
 import com.xuechen.web.bo.AppResource;
 import com.xuechen.web.dto.AppUserDTO;
 import com.xuechen.web.exception.BusinessException;
@@ -1378,6 +1379,7 @@ public class QdenvServiceImpl implements QdenvService {
      * 保存检测原始记录
      * @param wt11Dto
      */
+    @Transactional
     public Wt11 saveWt11(Wt11Dto wt11Dto){
         Wt11 wt11=new Wt11();
         BeanUtils.copyProperties(wt11Dto,wt11);
@@ -1390,7 +1392,11 @@ public class QdenvServiceImpl implements QdenvService {
         }
         wt11.setWrt006(new Date());
         wt11.setWrt007(ContextUtils.getUserId());
+        if (!wt11.getWrt002().startsWith("["))
+            wt11.setWrt002("["+wt11.getWrt002()+"]");
         CommonJdbcUtils.insert(wt11);
+        //添加步骤字典
+        AddBcz013(wt11Dto.getWrt002(),wt11Dto.getBcz001());
         return wt11;
     }
 
@@ -1413,5 +1419,55 @@ public class QdenvServiceImpl implements QdenvService {
         String sql="select b.bcz002,bcz001,a.* from wt11 a,wt04 b where a.wxt001=b.wxt001 and  a.wst001=? and a.wxt001=? order by a.wrt008 ";
         CommonJdbcUtils.queryPageList(page,sql,Wt11Dto.class,wt11Dto.getWst001(),wt11Dto.getWxt001());
         return page.getData();
+    }
+
+    /**
+     * 保存检验步骤
+     * @param bcz013
+     * @param bcz001
+     */
+    public void AddBcz013(String bcz013,Integer bcz001){
+        Bz02 bz02exists=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? and bcz013 like ? ",
+                Bz02.class,bcz001,"%["+bcz013+"]%");
+        if (bz02exists!=null) return;
+        Bz02 bz02=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? ",Bz02.class,bcz001);
+        if (bz02==null) return;
+        String bcz013_in=!StringTools.hasText(bz02.getBcz013())?"["+bcz013+"]":bz02.getBcz013()+",["+bcz013+"]";
+        CommonJdbcUtils.execute("update bz02 set bcz013=? where bcz001=? ",bcz013_in,bcz001);
+    }
+    /**
+     * 保存检验步骤
+     * @param bcz013
+     * @param bcz001
+     */
+    @Transactional
+    public void deleteBcz013(String bcz013,Integer bcz001){
+        Bz02 bz02=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? ",Bz02.class,bcz001);
+        if (bz02==null) return;
+        String bcz013_in="";
+        if (bz02.getBcz013().startsWith("["+bcz013+"]")) {
+            bcz013_in=bz02.getBcz013().replace("["+bcz013+"]","");
+        }else{
+            bcz013_in=bz02.getBcz013().replace(",["+bcz013+"]","");
+        }
+        CommonJdbcUtils.execute("update bz02 set bcz013=? where bcz001=? ",bcz013_in,bcz001);
+    }
+
+    /**
+     * 查询步骤列表
+     * @param bcz001
+     * @return
+     */
+    public List<AppDictDetail> queryBcz013List(Integer bcz001){
+        Bz02 bz02=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? ",Bz02.class,bcz001);
+        String[] bcz013=bz02.getBcz013().split(",");
+        List<AppDictDetail> appDictDetails=new ArrayList<AppDictDetail>();
+        AppDictDetail appDictDetail=null;
+        for (int i=0;i<bcz013.length;i++){
+            appDictDetail=new AppDictDetail();
+            appDictDetail.setDictVal(bcz013[i]);
+            appDictDetails.add(appDictDetail);
+        }
+        return appDictDetails;
     }
 }

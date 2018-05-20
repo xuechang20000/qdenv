@@ -9,6 +9,7 @@ import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
 import com.xuechen.qdenv.service.QdenvServiceImpl;
+import com.xuechen.web.bo.AppDictDetail;
 import com.xuechen.web.dto.AppUserDTO;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.log4j.Logger;
@@ -451,11 +452,29 @@ public class WtContrallor {
         this.qdenvService.deleteWt11(wt11Dto);
         return JSON.toJSONStringWithDateFormat(wt11Dto, "yyyy-MM-dd HH:mm:ss.SSS");
     }
+    @RequestMapping(value="/f100207/AddBcz013",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String AddBcz013(String bcz013,Integer bcz001){
+        this.qdenvService.AddBcz013(bcz013,bcz001);
+        return "";
+    }
+    @RequestMapping(value="/f100207/deleteBcz013",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String deleteBcz013(String bcz013,Integer bcz001){
+        this.qdenvService.deleteBcz013(bcz013,bcz001);
+        return "";
+    }
     @RequestMapping(value="/f100207/queryWt11Page",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String queryWt11Page(Page page,Wt11Dto wt11Dto){
         this.qdenvService.queryWt11Page(page,wt11Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100207/queryBcz013List",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryBcz013List(Integer bcz001){
+        List<AppDictDetail> appDictDetails=this.qdenvService.queryBcz013List(bcz001);
+        return JSON.toJSONStringWithDateFormat(appDictDetails, "yyyy-MM-dd HH:mm:ss.SSS");
     }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){

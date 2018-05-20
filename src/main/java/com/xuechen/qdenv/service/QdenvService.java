@@ -4,6 +4,7 @@ import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.qdenv.bo.*;
 import com.xuechen.qdenv.dto.*;
+import com.xuechen.web.bo.AppDictDetail;
 
 import java.util.List;
 
@@ -66,4 +67,7 @@ public interface QdenvService {
     public Wt11 saveWt11(Wt11Dto wt11Dto);
     public void deleteWt11(Wt11Dto wt11Dto);
     public List<Wt11Dto> queryWt11Page(Page page,Wt11Dto wt11Dto);
+    public void AddBcz013(String bcz013,Integer bcz001);
+    public void deleteBcz013(String bcz013,Integer bcz001);
+    public List<AppDictDetail> queryBcz013List(Integer bcz001);
 }

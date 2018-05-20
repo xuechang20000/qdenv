@@ -39,8 +39,8 @@
             <tr>
                 <td class="form-label" style="width:180px;" align="right">步骤：</td>
                 <td style="width:350px" align="left">
-                    <input id="wrt002" class="mini-combobox" style="width:300px;" textField="text" valueField="id" emptyText="请选择..."
-                           url="" value="cn"  required="true" allowInput="true" showNullItem="true" nullItemText="请选择..."/>
+                    <input id="wrt002" class="mini-combobox" style="width:300px;" textField="dictVal" valueField="dictVal" emptyText=""
+                           url="${pageContext.request.contextPath}/work/f100207/queryBcz013List?bcz001=${param.bcz001}" value=""  required="true" allowInput="true" showNullItem="true" nullItemText="请选择..."/>
                 </td>
                 <td class="form-label" align="right">结果类别：</td>
                 <td align="left">
@@ -56,11 +56,11 @@
             <tr id="type2">
                 <td class="form-label" align="right">检测结果,以英文状态下","间隔：</td>
                 <td align="left">
-                    <input name="wrt004" id="wrt004" class="mini-textbox" style="width:300px;"/>
+                    <input name="wrt004" id="wrt004" class="mini-textbox" required="true" style="width:300px;"/>
                 </td>
                 <td>
                     <a class="mini-button" href="javascript:doAvg();" id="doAvg">求平均</a>
-                    <label for="wrt005">结果值</label><input name="wrt005" id="wrt005" class="mini-textbox" style="width:50px;"/>
+                    <label for="wrt005">结果值</label><input name="wrt005" id="wrt005" class="mini-textbox" required="true" style="width:50px;"/>
                 </td>
             </tr>
             <tr>
@@ -71,14 +71,13 @@
             </tr>
             <tr><td colspan="4" align="center">
                 <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
+                <a class="mini-button" href="javascript:doReset();"  iconCls="icon-redo" >重置</a>
             </td></tr>
         </table>
     </div>
     </div>
 </fieldset>
 <div id="buttons">
-    <span class="separator"></span>
-    <a class="mini-button" iconCls="icon-add" plain="true" onclick="addWt11()"></a>
     <span class="separator"></span>
     <a class="mini-button" iconCls="icon-remove" plain="true" onclick="deleteWt11()"></a>
 </div>
@@ -90,17 +89,19 @@
     var wxt001=${param.wxt001};
     var wst001=${param.wst001};
     var wct001=${param.wct001};
+    var bcz001=${param.bcz001};
     $("#type1").hide();
     $("#type2").hide();
     onSerach()
     function onSerach(){
         grid.load({wst001:wst001,wxt001:wxt001});
     }
-    function addWt11() {
-
-    }
     function deleteWt11() {
-
+        var row=grid.getSelected();
+        var url='${pageContext.request.contextPath}/work/f100207/deleteWt11';
+        Web.util.request(url,"post",{wrt001:row.wrt001},function (data) {
+            onSerach()
+        })
     }
     function selectType() {
         var type=mini.get("type").getValue();
@@ -139,11 +140,18 @@
         data.wst001=wst001;
         data.wxt001=wxt001;
         data.wct001=wct001;
+        data.bcz001=bcz001;
         data.wrt002=mini.get("wrt002").getValue();
         var url='${pageContext.request.contextPath}/work/f100207/saveWt11';
         Web.util.request(url,"post",data,function (data) {
-            onSerach()
+            onSerach();
+            mini.get("doSubmit").disable();
         })
+    }
+    function doReset() {
+        var form = new mini.Form("#form1");
+        form.reset();
+        mini.get("doSubmit").enable();
     }
 </script>
 </html>

@@ -55,7 +55,7 @@
     }
     function onInput() {
         var row = grid.getSelected();
-        var url="${pageContext.request.contextPath}/work/load/f1002/f100207/oraRecord?wst001="+row.wst001+"&wxt001="+row.wxt001+"&wct001="+row.wct001;
+        var url="${pageContext.request.contextPath}/work/load/f1002/f100207/oraRecord?wst001="+row.wst001+"&wxt001="+row.wxt001+"&wct001="+row.wct001+"&bcz001="+row.bcz001;
         Web.util.openMiniWindow('检测原始数据录入('+row.wst003+')', url, 1000, 550, function () {
             //grid.reload();
         })
