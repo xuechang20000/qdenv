@@ -59,6 +59,7 @@ public class Wt01 {
     private String aae013;
 
     private byte[] wat006;
+    private String wat020;
 
     @Id
     public Integer getWat001() {
@@ -307,5 +308,13 @@ public class Wt01 {
 
     public void setWat028(String wat028) {
         this.wat028 = wat028;
+    }
+
+    public String getWat020() {
+        return wat020;
+    }
+
+    public void setWat020(String wat020) {
+        this.wat020 = wat020;
     }
 }

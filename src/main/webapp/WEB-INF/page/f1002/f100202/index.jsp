@@ -46,7 +46,7 @@
     <a class="mini-button" id="id_onSerach" iconCls="icon-search" onclick="onSerach">查询</a>
 </div>
 <div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"  pagerButtons="#exportExcel"v
-     url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail"
+     url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail" showSummaryRow="true"
      idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu"  >
     <div property="columns">
         <div type="expandcolumn"></div>
@@ -54,13 +54,14 @@
         <div field="wat002" width="60" headerAlign="center" align="center" allowSort="true">编号</div>
         <div field="wat018" width="40" headerAlign="center" align="center" visible="false" allowSort="true">状态</div>
         <div field="wat018s" width="40" headerAlign="center" align="center"  allowSort="true">状态</div>
-        <div field="aab301" width="50" headerAlign="center"  align="center" renderer="oncodeRender" allowSort="true" >地区</div>
+        <div field="wat020" width="60" headerAlign="center" align="center" dateFormat="yyyy/MM/dd HH:mm" allowSort="true">上步提交时间</div>
+        <div field="aab301" width="40" headerAlign="center"  align="center" renderer="oncodeRender" allowSort="true" >地区</div>
         <div field="daw005" width="140" headerAlign="center"  align="center" allowSort="true" >地点</div>
-        <div field="daw002" width="140" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
+        <div field="daw002" width="120" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
         <div field="userid" width="60" headerAlign="center" visible="false" align="center" allowSort="true" >创建人</div>
-        <div field="username" width="60" headerAlign="center"  align="center" allowSort="true" >创建人</div>
-        <div field="wat017" width="40" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
-        <div field="wft007" width="40" headerAlign="center" align="center" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
+        <div field="username" width="40" headerAlign="center"  align="center" allowSort="true" >创建人</div>
+        <div field="wat017" width="60" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
+        <div field="wft007" width="40" headerAlign="center" align="center" summaryType="sum" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
         <div field="wft010" width="40" headerAlign="center" align="center" visible="false" allowSort="true" >是否实收</div>
         <div field="do" width="50" headerAlign="center" align="center" visible="false" allowSort="true" renderer='onrenderDO'>操作</div>
     </div>
@@ -100,16 +101,16 @@
 <span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
   <!--<img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">-->
 <shiro:hasPermission name="DO_4">
- <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" alt="检测录入">
+ <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" title="检测录入">
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_7">
- <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" alt="报告编写">
+ <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" title="报告编写">
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_8">
- <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" alt="报告签发">
+ <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" title="报告签发">
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_9">
- <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" alt="报告审核">
+ <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" title="报告审核">
  </shiro:hasPermission>
 </span>
 

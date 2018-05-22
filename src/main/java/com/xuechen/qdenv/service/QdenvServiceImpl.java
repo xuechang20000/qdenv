@@ -671,7 +671,7 @@ public class QdenvServiceImpl implements QdenvService {
         //保存采样点
         CommonJdbcUtils.saveOrUpdateObject(wt03,false);
         List<Wt04> wt04s=getWt04List(wt03Dto.getBcz001s(),wt03.getWct001(),wt03.getWbt001());
-        CommonJdbcUtils.execute("delete from wt04 where wct001=?",wt03.getWct001());
+
         saveWt04List(wt04s);
 
         /**
@@ -755,11 +755,29 @@ public class QdenvServiceImpl implements QdenvService {
      * @param wt04s
      */
     public void saveWt04List(List<Wt04> wt04s){
+        Wt04 wt04s1=CommonJdbcUtils.queryFirst("select GROUP_CONCAT(bcz001) bcz002 from wt04 where wct001=? ",Wt04.class,wt04s.get(0).getWct001());
+        String bcz001s=wt04s1==null||wt04s1.getBcz002()==null?"":wt04s1.getBcz002();
+        CommonJdbcUtils.execute("delete from wt04 where wct001=? and not FIND_IN_SET(bcz001,? ) ",
+                wt04s.get(0).getWct001(),bcz001s);
         for (Wt04 wt04:wt04s){
-            CommonJdbcUtils.saveOrUpdateObject(wt04,false);
+           if(!isInString(wt04.getBcz001().toString(),bcz001s)){
+               CommonJdbcUtils.saveOrUpdateObject(wt04,false);
+           }
+
         }
     }
 
+    public boolean isInString(String str,String strArray){
+        if (!strArray.equals("")){
+            String array[]=strArray.split(",");
+            for (int i=0;i<array.length;i++){
+                if (str.equals(array[i])){
+                    return  true;
+                }
+            }
+        }
+        return  false;
+    }
     public String generateQueryWt(List<Object> args,Wt01Dto wt01Dto){
         StringBuffer stringBuffer=new StringBuffer();
         stringBuffer.append("select a.*,b.wft001,b.wft002,b.wft003,b.wft004,b.wft005,b.wft006,b.wft007," +
@@ -768,6 +786,11 @@ public class QdenvServiceImpl implements QdenvService {
                 "(select GROUP_CONCAT(d.userid) from wt08 d WHERE a.wat001=d.wat001) fuserids, " +
                 "(select GROUP_CONCAT(d.name) from wt08 d WHERE a.wat001=d.wat001) fnames from " +
                 " wt01 a ,wt05 b,app_user c where a.wat001=b.wat001 and a.userid=c.user_id ");
+        if (StringTools.hasText(wt01Dto.getInType())&&
+                "2".equals(wt01Dto.getInType())){//如果是采样任务查询
+            stringBuffer.append(" And EXISTS (select 1 from wt08 d where a.wat001=d.wat001 and d.userid=? )");
+            args.add(ContextUtils.getUserId());
+        }
         if(wt01Dto.getWat001()!=null){
             stringBuffer.append(" and a.wat001=? ");
             args.add(wt01Dto.getWat001());
@@ -775,6 +798,10 @@ public class QdenvServiceImpl implements QdenvService {
         if(StringTools.hasText(wt01Dto.getWat002())){
             stringBuffer.append(" and a.wat002=? ");
             args.add(wt01Dto.getWat002().toUpperCase());
+        }
+        if(StringTools.hasText(wt01Dto.getWat002Like())&&wt01Dto.getWat002Like().length()>=4){
+            stringBuffer.append(" and a.wat002 like ? ");
+            args.add("%"+wt01Dto.getWat002Like().toUpperCase()+"%");
         }
         if(StringTools.hasText(wt01Dto.getWat018())){
             stringBuffer.append(" and a.wat018=? ");
@@ -1047,7 +1074,8 @@ public class QdenvServiceImpl implements QdenvService {
         }
 
         if (wt06==null) return  null;
-        CommonJdbcUtils.execute("update wt01 set wat028=wat018,wat018=? where wat001=?",wt06.getWlt003(),wt01Dto.getWat001());
+        CommonJdbcUtils.execute("update wt01 set wat028=wat018,wat018=?,wat020=? where wat001=?",
+                wt06.getWlt003(),DateUtil.now(),wt01Dto.getWat001());
         wt01Dto.setWat018(wt06.getWlt003());
         /**
          * 保存日志
@@ -1420,7 +1448,38 @@ public class QdenvServiceImpl implements QdenvService {
         CommonJdbcUtils.queryPageList(page,sql,Wt11Dto.class,wt11Dto.getWst001(),wt11Dto.getWxt001());
         return page.getData();
     }
+    /**
+     * 查询原始记录表List
+     * @param wt11Dto
+     * @return
+     */
+    public List<Wt11Dto> queryWt11List(Wt11Dto wt11Dto){
+        StringBuffer sql=new StringBuffer("select b.bcz002,bcz001,a.* from wt11 a,wt04 b " +
+                "where a.wxt001=b.wxt001 ");
+        List<String> args=new ArrayList<String>();
+        if (wt11Dto.getWst001()!=null){
+            sql.append(" and  a.wst001=? ");
+            args.add(wt11Dto.getWst001().toString());
+        }
+        if (wt11Dto.getWxt001()!=null){
+            sql.append(" and  a.wxt001=? ");
+            args.add(wt11Dto.getWxt001().toString());
+        }
+        sql.append(" order by a.wrt008 ");
+        return  CommonJdbcUtils.queryList(sql.toString(),Wt11Dto.class,args.toArray());
+    }
 
+    /**
+     * 查询某个报告下所有的原始记录表
+     * @param wt11Dto
+     * @return
+     */
+    public List<Wt11Dto> queryWt11ListByWbt001(Wt11Dto wt11Dto){
+        String sql="select a.bcz001,a.bcz002,d.* from wt04 a,( " +
+                "select b.* from wt11 b where b.wxt001=96 and b.wrt008=(select max(c.wrt008) from wt11 c where c.wxt001=b.wxt001)) d " +
+                "where a.wxt001=d.wxt001 and a.wbt001=? ";
+        return  CommonJdbcUtils.queryList(sql.toString(),Wt11Dto.class,wt11Dto.getWbt001());
+    }
     /**
      * 保存检验步骤
      * @param bcz013

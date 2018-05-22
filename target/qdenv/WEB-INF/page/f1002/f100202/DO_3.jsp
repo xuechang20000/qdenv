@@ -313,14 +313,20 @@
                 return true;
             }
         });
-        grid2.removeRows(rows2,true);
-        grid.removeRow(row1);
+        Web.util.confirm("确定要删除吗？",function () {
+            grid2.removeRows(rows2,true);
+            grid.removeRow(row1);
+        })
+
     }
     function renderUser2(e) {
         return $("#grid_buttons2").clone().css("display","inline").html();
     }
     function onRemove2() {
-        grid2.removeRow( grid2.getSelected());
+        Web.util.confirm("确定要删除吗？",function () {
+            grid2.removeRow( grid2.getSelected());
+        })
+
         setJianceFee();
     }
     function onEdit2() {

@@ -40,6 +40,8 @@
         table.dataintable tr:nth-child(even) {
             background-color:#fff;
         }
+        .dataintable img:hover{cursor:pointer}
+        .dataintable img{vertical-align:middle}
     </style>
 </head>
 <body>
@@ -77,9 +79,11 @@
     </div>
 </div>
 <div style="margin-top: 10px;padding: 0;text-align: center">
-<a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
-&nbsp;&nbsp;
-<a class="mini-button" href="javascript:doCheck();" id="doCheck"  iconCls="icon-filter" >判定</a>
+    <a class="mini-button" href="javascript:doGerOra();" id="doGerOra"  iconCls="icon-goto" >获取原始记录</a>
+    &nbsp;&nbsp;
+    <a class="mini-button" href="javascript:doCheck();" id="doCheck"  iconCls="icon-filter" >判定</a>
+    &nbsp;&nbsp;
+    <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
 </div>
 <script id="formTemplate" type="text/x-jquery-tmpl">
 
@@ -91,7 +95,8 @@
          <td rowspan="{{= wt04size}}">采样点ID:{{= wct001}}<br>{{= wct002}}</td>
         {{/if}}
         <td>{{= bcz002}}{{= j}} <input type="hidden" value="{{= wxt001}}" name="wxt001"/></td>
-        <td align="left"><input name="wxt002" type="text" style="width:80px" value="{{= wxt002 }}" />{{= bcz006}}
+        <td align="left"><input name="wxt002" type="text" style="width:70px" value="{{= wxt002 }}" />{{= bcz006}}
+         &nbsp;<img src="${pageContext.request.contextPath}/resources/image/data.png"/ onclick="onOutWt11({{= wxt001}})" title="原始记录" alt="原始纪录">
                     <input name="wct001" type="hidden" value={{= wct001}}  />
                     <input name="bcz003" type="hidden" value={{= bcz003}}  />
                     <input name="bcz004" type="hidden" value={{= bcz004}}  />
@@ -276,6 +281,22 @@
             }
             wxt003.prop("checked", isLegle);
         });
+    }
+    function onOutWt11(wxt001) {
+        var url='${pageContext.request.contextPath}/work/f100207/queryWt11List'
+        Web.util.request(url,"post",{wxt001:wxt001},function (data) {
+            alert(JSON.stringify(data));
+        })
+    }
+
+    /**
+     * 获取原始记录
+     */
+    function doGerOra() {
+        var url='${pageContext.request.contextPath}/work/f100207/queryWt11ListByWbt001'
+        Web.util.request(url,"post",{wbt001:wbt001},function (data) {
+            alert(JSON.stringify(data));
+        })
     }
 </script>
 </html>

@@ -470,6 +470,18 @@ public class WtContrallor {
         this.qdenvService.queryWt11Page(page,wt11Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
     }
+    @RequestMapping(value="/f100207/queryWt11List",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt11Page(Wt11Dto wt11Dto){
+        List<Wt11Dto> wt11Dtos=  this.qdenvService.queryWt11List(wt11Dto);
+        return JSON.toJSONStringWithDateFormat(wt11Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100207/queryWt11ListByWbt001",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt11ListByWbt001(Wt11Dto wt11Dto){
+        List<Wt11Dto> wt11Dtos=  this.qdenvService.queryWt11ListByWbt001(wt11Dto);
+        return JSON.toJSONStringWithDateFormat(wt11Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
     @RequestMapping(value="/f100207/queryBcz013List",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String queryBcz013List(Integer bcz001){

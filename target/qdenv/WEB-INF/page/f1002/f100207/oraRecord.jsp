@@ -151,6 +151,7 @@
     function doReset() {
         var form = new mini.Form("#form1");
         form.reset();
+        mini.get("wrt002").load("${pageContext.request.contextPath}/work/f100207/queryBcz013List?bcz001=${param.bcz001}");
         mini.get("doSubmit").enable();
     }
 </script>

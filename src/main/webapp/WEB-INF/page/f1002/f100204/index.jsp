@@ -34,6 +34,7 @@
         <input id="aab301" class="mini-combobox" style="width: 100px;"  textField="dictName" valueField="dictVal"
                url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=AAB301"    showNullItem="true" emptyText="请选择区市..."/>
         <br/>
+        委托编号： <input class="mini-textbox" style="width:100px;" id="wat002Like" name="wat002Like" onenter="onSerach()"/>
         委托单位： <input class="mini-textbox" style="width:200px;" id="daw002" name="daw002" onenter="onSerach()"/>
         地址： <input class="mini-textbox" style="width:120px;" id="daw005" name="daw002" onenter="onSerach()"/>
         电话： <input class="mini-textbox" style="width:100px;" id="daw004" name="daw002" onenter="onSerach()"/>
@@ -70,7 +71,7 @@
 <script type="text/javascript">
     mini.parse();
     var grid=mini.get("datagrid1");
-    grid.load();
+    grid.load({"inType":"2"});
     function onSerach() {
         var form = new mini.Form("#form1");
         var data = form.getData(true);
@@ -81,6 +82,12 @@
         data.daw005=mini.get("daw005").getValue();
         data.daw004=mini.get("daw004").getValue();
         data.daw002=mini.get("daw002").getValue();
+        data.inType = "2";
+        var wat002Like=mini.get("wat002Like").getValue();
+        if (wat002Like.length<4&&wat002Like.length>0){
+            Web.util.showTipsWanring("通过编号模糊查询不得少于4位！");
+            return;
+        }
         grid.load(data);
     }
     function renderDO(e) {

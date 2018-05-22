@@ -70,4 +70,6 @@ public interface QdenvService {
     public void AddBcz013(String bcz013,Integer bcz001);
     public void deleteBcz013(String bcz013,Integer bcz001);
     public List<AppDictDetail> queryBcz013List(Integer bcz001);
+    public List<Wt11Dto> queryWt11List(Wt11Dto wt11Dto);
+    public List<Wt11Dto> queryWt11ListByWbt001(Wt11Dto wt11Dto);
 }

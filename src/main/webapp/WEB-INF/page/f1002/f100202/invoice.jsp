@@ -187,10 +187,13 @@
         var row=grid.getSelected();
         var url="${pageContext.request.contextPath}/work/f100201/saveWt07";
         var data={wft020:row.wft020,aae016:"0",wft015:"0"};
-        Web.util.request(url,"post",data,function () {
-            Web.util.showTips("删除成功");
-            loadWt();
+        Web.util.confirm("确认要删除？",function () {
+            Web.util.request(url,"post",data,function () {
+                Web.util.showTips("删除成功");
+                loadWt();
+            })
         })
+
     }
     function onrowclick(e) {
         mini.get("wft020").setValue(e.record.wft020) ;

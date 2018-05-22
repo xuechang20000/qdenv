@@ -34,6 +34,17 @@ public class Wt01Dto extends Wt01 {
     private String fnames;
     private String roleCode;
     private String wlt003;
+    private String inType;//2代表采样任务
+    private String wat002Like;
+
+    public String getWat002Like() {
+        return wat002Like;
+    }
+
+    public void setWat002Like(String wat002Like) {
+        this.wat002Like = wat002Like;
+    }
+
     public String getJson1() {
         return json1;
     }
@@ -240,5 +251,13 @@ public class Wt01Dto extends Wt01 {
 
     public void setWlt003(String wlt003) {
         this.wlt003 = wlt003;
+    }
+
+    public String getInType() {
+        return inType;
+    }
+
+    public void setInType(String inType) {
+        this.inType = inType;
     }
 }

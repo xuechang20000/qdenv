@@ -52,8 +52,9 @@
     }
     function onInput() {
         var row = grid.getSelected();
+        var wat002=mini.get("wat002").getValue();
         var url="${pageContext.request.contextPath}/work/f100202/loadDO_4?wbt001="+row.wbt001;
-        Web.util.openMiniWindow('检测数据录入', url, 1000, 500, function () {
+        Web.util.openMiniWindow('检测数据录入('+wat002+')', url, 1000, 500, function () {
             //grid.reload();
         })
     }

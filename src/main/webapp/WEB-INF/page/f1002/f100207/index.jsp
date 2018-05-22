@@ -13,7 +13,7 @@
 </head>
 <body>
 <span id="search" style="margin: 6px;display: block">
-    样品编号:<input id="wst003"  name="wst003" class="mini-textbox"  style="width:200px;" />
+    样品编号:<input id="wst003"  name="wst003" class="mini-textbox"  style="width:200px;" onenter="onSerach()"/>
     <a class="mini-button" iconCls="icon-search" id="doSearch" onclick="onSerach()">查询</a>
 </span>
 <div id="datagrid" class="mini-datagrid" style="width: 100%;height: 350px;" allowResize="true" pageSize="10"
