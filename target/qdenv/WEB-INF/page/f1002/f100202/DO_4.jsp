@@ -85,6 +85,29 @@
     &nbsp;&nbsp;
     <a class="mini-button" href="javascript:doSubmit();" id="doSubmit"  iconCls="icon-save" >保存</a>
 </div>
+
+<div id="editWindow" class="mini-window" title="Window" style="width:650px;"
+     showModal="true" allowResize="true" allowDrag="true"
+>
+    <div id="datagrid" class="mini-datagrid" style="width: 100%;height: 350px;" allowResize="true" pageSize="100"
+         url="${pageContext.request.contextPath}/work/f100207/queryWt11List"  idField="wbt001" onselect="selectOra" >
+        <div property="columns">
+            <div field="wrt001" width="20" headerAlign="center" visible="false">原始记录ID</div>
+            <div field="bcz001" width="20" headerAlign="center" visible="false">检测项目ID</div>
+            <div field="wct001" width="20" headerAlign="center" visible="false">采样点ID</div>
+            <div field="wst001" width="20" headerAlign="center" visible="false">样品ID</div>
+            <div field="bcz002" width="100" headerAlign="center" visible="false" >检测项目</div>
+            <div field="wrt008" width="30" headerAlign="center" >步骤序号</div>
+            <div field="wrt002" width="70" headerAlign="center" >步骤</div>
+            <div field="wrt003" width="30" headerAlign="center" >阴阳性</div>
+            <div field="wrt004" width="100" headerAlign="center" >检测值</div>
+            <div field="wrt005" width="30" headerAlign="center" >结果值</div>
+            <div field="wrt006" width="80" headerAlign="center" dataType="date" dateFormat="yyyy-MM-dd HH:mm:ss">录入时间</div>
+            <!--<div field="wrt007" width="70" headerAlign="center" >录入人</div>-->
+            <div field="aae013" width="80" headerAlign="center" >备注</div>
+        </div>
+    </div>
+</div>
 <script id="formTemplate" type="text/x-jquery-tmpl">
 
      {{each(i,wt04) wt04DtoList}}
@@ -123,7 +146,8 @@
 <script type="text/javascript">
 
     mini.parse();
-
+    var grid=mini.get("datagrid");
+    var editWindow = mini.get("editWindow");
     var wbt001=${param.wbt001};
     var wat001;
         loadWt();
@@ -181,7 +205,7 @@
     function doSubmit() {
         /**是否全部录入**/
         if(!doValidate()){
-            Web.util.showTipsWanring("检测值不允许有空值！")
+            Web.util.showTipsWanring("检测值不允许有空值且只能为数字！")
             return;
         }
         var wbt005=mini.get("wbt005").getFormValue();
@@ -233,7 +257,8 @@
             var wxt001=$(this).find("input[name='wxt001']").val();
             if(!wxt001) return true;
             var wxt002=$(this).find("input[name='wxt002']").val();
-            if(!wxt002){
+            var reg=/^(-?\d+)(\.\d+)?$/;
+            if(!wxt002||!reg.exec(wxt002)){
                 isAllset=false;
                 return false;
             }
@@ -283,12 +308,22 @@
         });
     }
     function onOutWt11(wxt001) {
-        var url='${pageContext.request.contextPath}/work/f100207/queryWt11List'
-        Web.util.request(url,"post",{wxt001:wxt001},function (data) {
-            alert(JSON.stringify(data));
-        })
+        editWindow.show();
+        grid.load({wxt001:wxt001})
     }
-
+    function selectOra(sender,record) {
+        var row = grid.getSelected();
+        $("#collect_list .dataintable tr").each(function(i){
+            var wxt001=$(this).find("input[name='wxt001']").val();
+            if(wxt001==row.wxt001&&row.wrt005){
+                $(this).find("input[name='wxt002']").val(row.wrt005);
+            }
+            if(wxt001==row.wxt001&&row.wrt003){
+                $(this).find("input[name='wxt002']").val(row.wrt003=='阴性'?'0':'1');
+            }
+        });
+        editWindow.hide();
+    }
     /**
      * 获取原始记录
      */

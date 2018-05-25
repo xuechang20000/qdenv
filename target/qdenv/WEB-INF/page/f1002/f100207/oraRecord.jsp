@@ -98,6 +98,14 @@
     }
     function deleteWt11() {
         var row=grid.getSelected();
+        var rows=grid.findRows(function (row) {             return true;        })
+        var i=0;
+       for (var r;r=rows[i++];){
+            if (r.wrt008>row.wrt008) {
+                Web.util.showTipsWanring('只能从最后一条开始删除！');
+                return;
+            }
+       }
         var url='${pageContext.request.contextPath}/work/f100207/deleteWt11';
         Web.util.request(url,"post",{wrt001:row.wrt001},function (data) {
             onSerach()
@@ -142,6 +150,10 @@
         data.wct001=wct001;
         data.bcz001=bcz001;
         data.wrt002=mini.get("wrt002").getValue();
+        if(!data.wrt003&&!data.wrt005){
+            Web.util.showTipsWanring('结果请填写完整！');
+            return;
+        }
         var url='${pageContext.request.contextPath}/work/f100207/saveWt11';
         Web.util.request(url,"post",data,function (data) {
             onSerach();

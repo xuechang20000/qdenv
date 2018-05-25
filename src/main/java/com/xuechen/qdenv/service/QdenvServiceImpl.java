@@ -1486,12 +1486,13 @@ public class QdenvServiceImpl implements QdenvService {
      * @param bcz001
      */
     public void AddBcz013(String bcz013,Integer bcz001){
+        bcz013=bcz013.startsWith("[")?bcz013:"["+bcz013+"]";
         Bz02 bz02exists=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? and bcz013 like ? ",
-                Bz02.class,bcz001,"%["+bcz013+"]%");
+                Bz02.class,bcz001,"%"+bcz013+"%");
         if (bz02exists!=null) return;
         Bz02 bz02=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? ",Bz02.class,bcz001);
         if (bz02==null) return;
-        String bcz013_in=!StringTools.hasText(bz02.getBcz013())?"["+bcz013+"]":bz02.getBcz013()+",["+bcz013+"]";
+        String bcz013_in=!StringTools.hasText(bz02.getBcz013())?bcz013:bz02.getBcz013()+","+bcz013;
         CommonJdbcUtils.execute("update bz02 set bcz013=? where bcz001=? ",bcz013_in,bcz001);
     }
     /**
