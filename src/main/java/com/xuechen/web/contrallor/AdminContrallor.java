@@ -15,15 +15,20 @@ import com.xuechen.web.service.AdminService;
 import com.xuechen.web.service.UserService;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,6 +98,11 @@ public class AdminContrallor {
         public String loadDictDetailAdd(){
             return "/WEB-INF/page/f1001/f100103/dictDetailAdd";
         }
+        @RequestMapping("/loadWelcome")
+        public String loadWelcome(){
+        return "/WEB-INF/page/welcome";
+    }
+
         @RequestMapping(value="/queryAllUser",produces = "application/json; charset=utf-8")
         @ResponseBody
         public String queryAllUser(Page page, AppUser appUser){
@@ -148,9 +158,68 @@ public class AdminContrallor {
         this.userService.updatePassword(appUser);
         return "";
     }
+    @RequestMapping("/updateSignature")
+    @ResponseBody
+    public String updateSignature(HttpServletRequest request,String ext1){
+        AppUserDTO appUserDTO=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        AppUser appUser=new AppUser();
+        appUser.setUserId(appUserDTO.getUserId());
+        //String ext1r=request.getParameter("ext1");
+        //appUser.setExt1(ext1r);
+        List<MultipartFile> multipartFiles=FileUtils.getMutipartFileFromRequest(request);
+        if(multipartFiles.size()>0) {
+            MultipartFile signature=multipartFiles.get(0);
+            byte[] sibyte = new byte[40 * 1024];
+            try {
+                sibyte = signature.getBytes();
+                if (sibyte.length > 10 * 1024) throw new BusinessException("上传图片不能超过10KB");
+            } catch (BusinessException e) {
+                throw new BusinessException(e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            appUser.setSignature(sibyte);
+        }
+        this.userService.updateSignature(appUser);
+        return "";
+    }
+    @RequestMapping("/updateAppUserExt")
+    @ResponseBody
+    public String updateAppUserExt(AppUserDTO appUserDTO){
+        AppUserDTO appUserDTO1=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        AppUser appUser=new AppUser();
+        BeanUtils.copyProperties(appUserDTO,appUser);
+        appUser.setUserId(appUserDTO1.getUserId());
+        this.userService.updatePassword(appUser);
+        return "";
+    }
+    @RequestMapping("/querySignature")
+    public void querySignature(HttpServletResponse response,AppUserDTO appUserDTO){
+        AppUserDTO appUserDTO1=(AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        if (appUserDTO.getUserId()==null) appUserDTO.setUserId(appUserDTO1.getUserId());
+        AppUser appUser=this.userService.querySignature(appUserDTO);
+        OutputStream outputStream=null;
+        try {
+             outputStream=response.getOutputStream();
+            outputStream.write(appUser.getSignature());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
     @RequestMapping("/loadUpdatePassword")
     public String loadUpdatePassword(){
         return "/WEB-INF/page/f1001/f100101/userUpdatePassword";
+    }
+    @RequestMapping("/loadUpdateSignature")
+    public String loadUpdateSignature(){
+        return "/WEB-INF/page/f1001/f100101/userUpdateSignature";
     }
         @RequestMapping(value = "/queryAllRoleList",produces = "application/json; charset=utf-8")
         @ResponseBody
@@ -312,7 +381,7 @@ public class AdminContrallor {
     @RequestMapping(value = "/uploadAttachMent",produces = "application/json; charset=utf-8")
     @ResponseBody
     public String uploadAttachment(HttpServletRequest request,String id){
-        Map map=FileUtils.uploadFiles(request,"E:\\springUpload\\");
+        Map map=FileUtils.uploadFilesByType(request,"MAIL");
         AppNoticeAttachment appNoticeAttachment=new AppNoticeAttachment();
         appNoticeAttachment.setCtime(new Date());
         appNoticeAttachment.setExtname((String)map.get("fileExtName"));

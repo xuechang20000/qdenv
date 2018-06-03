@@ -31,7 +31,7 @@ public class Wt02 {
 
     private Integer wbt010;
 
-    private Date wbt011;
+    private String wbt011;
 
     private String wbt012;
 
@@ -42,6 +42,10 @@ public class Wt02 {
     private Date wbt015;
 
     private byte[] wbt013;
+    private String wct011;
+    private String wct012;
+    private String wbt016;
+    private  String aae016;
 @Id
     public Integer getWbt001() {
         return wbt001;
@@ -139,11 +143,11 @@ public class Wt02 {
         this.wbt010 = wbt010;
     }
 
-    public Date getWbt011() {
+    public String getWbt011() {
         return wbt011;
     }
 
-    public void setWbt011(Date wbt011) {
+    public void setWbt011(String wbt011) {
         this.wbt011 = wbt011;
     }
 
@@ -185,5 +189,37 @@ public class Wt02 {
 
     public void setWbt013(byte[] wbt013) {
         this.wbt013 = wbt013;
+    }
+
+    public String getWct011() {
+        return wct011;
+    }
+
+    public void setWct011(String wct011) {
+        this.wct011 = wct011;
+    }
+
+    public String getWct012() {
+        return wct012;
+    }
+
+    public void setWct012(String wct012) {
+        this.wct012 = wct012;
+    }
+
+    public String getWbt016() {
+        return wbt016;
+    }
+
+    public void setWbt016(String wbt016) {
+        this.wbt016 = wbt016;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
     }
 }

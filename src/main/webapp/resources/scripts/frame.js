@@ -1,7 +1,6 @@
 mini.namespace("Web.util");
 
 var timeout__ = 1000;
-
 Web.util.request = function(url,method,params,successFunction,failureFunction,waitMsg){
 	var method__ = 'POST';
 	if(method)
@@ -92,9 +91,11 @@ Web.util.formLoad = function(formId,url,method,params,successFunction,failureFun
 	           data=mini.decode(text);   //反序列化成对象
 	           }catch(e){
 	        	   fialureF(text);
+	        	   return ;
 	           }
+	           if(data[0]) data=data[0];
 	           form.setData(data);             //设置多个控件数据
-	           if(successFunction) successFunction();
+	           if(successFunction) successFunction(data);
 	       },
 	       error:fialureF
 	   });
@@ -179,6 +180,14 @@ Web.util.tip = function(eid,text,postion,state,time){
         timeout: time__
     });
 }
+Web.util.prompt=function (title,message,successFunc) {
+    mini.prompt(message, title,function (action, value) {
+            if (action == "ok") {
+              successFunc(value);
+            }
+        }
+    );
+}
 Web.util.showTips=function(content,state,x,y,timeout) {
     if(!x) x='center';
     if(!y) y='center';
@@ -196,7 +205,7 @@ Web.util.showTipsWanring=function(content,state,x,y,timeout) {
     if(!x) x='center';
     if(!y) y='center';
     if(!state) state='warning';
-    if(!timeout) timeout=1000;
+    if(!timeout) timeout=3000;
     mini.showTips({
         content: content,
         state: state,
@@ -276,4 +285,7 @@ function getWebRootPath() {
 	    var rootpath="/"+webroot;
 	    return rootpath;
 	}
+function PrefixInteger(num, n) {
+    return (Array(n).join(0) + num).slice(-n);
 
+}

@@ -10,6 +10,8 @@ public class Wt01 {
     private Integer wat001;
 
     private String wat002;
+    private String wat015;
+    private int wat016;
 
     private Integer aae003;
 
@@ -29,10 +31,13 @@ public class Wt01 {
 
     private String daw005;
 
-    private Date wat004;
+    private String wat004;
 
+    private Date wat017;
+    private String wat018;
+    private String wat028;
     private Integer userid;
-
+    private String aae016;
     private String wat009;
 
     private String wat010;
@@ -41,10 +46,10 @@ public class Wt01 {
 
     private String wat012;
 
-    private Date wat013;
+    private String wat013;
 
     private String wat014;
-
+    private String wat019;
     private Integer wat007;
 
     private Date wat008;
@@ -54,6 +59,7 @@ public class Wt01 {
     private String aae013;
 
     private byte[] wat006;
+    private String wat020;
 
     @Id
     public Integer getWat001() {
@@ -72,6 +78,22 @@ public class Wt01 {
         this.wat002 = wat002 == null ? null : wat002.trim();
     }
 
+    public String getWat015() {
+        return wat015;
+    }
+
+    public void setWat015(String wat015) {
+        this.wat015 = wat015;
+    }
+
+    public int getWat016() {
+        return wat016;
+    }
+
+    public void setWat016(int wat016) {
+        this.wat016 = wat016;
+    }
+
     public Integer getAae003() {
         return aae003;
     }
@@ -86,6 +108,14 @@ public class Wt01 {
 
     public void setWat003(String wat003) {
         this.wat003 = wat003 == null ? null : wat003.trim();
+    }
+
+    public String getWat018() {
+        return wat018;
+    }
+
+    public void setWat018(String wat018) {
+        this.wat018 = wat018;
     }
 
     public String getBhz003() {
@@ -144,12 +174,20 @@ public class Wt01 {
         this.daw005 = daw005 == null ? null : daw005.trim();
     }
 
-    public Date getWat004() {
+    public String getWat004() {
         return wat004;
     }
 
-    public void setWat004(Date wat004) {
+    public void setWat004(String wat004) {
         this.wat004 = wat004;
+    }
+
+    public Date getWat017() {
+        return wat017;
+    }
+
+    public void setWat017(Date wat017) {
+        this.wat017 = wat017;
     }
 
     public Integer getUserid() {
@@ -192,11 +230,11 @@ public class Wt01 {
         this.wat012 = wat012 == null ? null : wat012.trim();
     }
 
-    public Date getWat013() {
+    public String getWat013() {
         return wat013;
     }
 
-    public void setWat013(Date wat013) {
+    public void setWat013(String wat013) {
         this.wat013 = wat013;
     }
 
@@ -246,5 +284,37 @@ public class Wt01 {
 
     public void setWat006(byte[] wat006) {
         this.wat006 = wat006;
+    }
+
+    public String getAae016() {
+        return aae016;
+    }
+
+    public void setAae016(String aae016) {
+        this.aae016 = aae016;
+    }
+
+    public String getWat019() {
+        return wat019;
+    }
+
+    public void setWat019(String wat019) {
+        this.wat019 = wat019;
+    }
+
+    public String getWat028() {
+        return wat028;
+    }
+
+    public void setWat028(String wat028) {
+        this.wat028 = wat028;
+    }
+
+    public String getWat020() {
+        return wat020;
+    }
+
+    public void setWat020(String wat020) {
+        this.wat020 = wat020;
     }
 }

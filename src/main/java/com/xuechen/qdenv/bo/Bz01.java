@@ -21,6 +21,7 @@ public class Bz01 {
 
     private  String aae016;
     private String aae013;
+    private String bmz003;
 
     @Id
     public Integer getBbz001() {
@@ -85,5 +86,13 @@ public class Bz01 {
 
     public void setAae013(String aae013) {
         this.aae013 = aae013 == null ? null : aae013.trim();
+    }
+
+    public String getBmz003() {
+        return bmz003;
+    }
+
+    public void setBmz003(String bmz003) {
+        this.bmz003 = bmz003;
     }
 }

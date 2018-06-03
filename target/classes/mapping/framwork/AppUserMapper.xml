@@ -1,38 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xuechen.web.dao.AppUserMapper" >
-  <resultMap id="BaseResultMap" type="com.xuechen.web.bo.AppUser" >
-    <id column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="removed" property="removed" jdbcType="VARCHAR" />
-    <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
-    <result column="ext1" property="ext1" jdbcType="VARCHAR" />
-    <result column="ext2" property="ext2" jdbcType="VARCHAR" />
-    <result column="ext3" property="ext3" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuechen.web.dao.AppUserMapper">
+  <resultMap id="BaseResultMap" type="com.xuechen.web.bo.AppUser">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="loginname" jdbcType="VARCHAR" property="loginname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="removed" jdbcType="VARCHAR" property="removed" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="ext1" jdbcType="VARCHAR" property="ext1" />
+    <result column="ext2" jdbcType="VARCHAR" property="ext2" />
+    <result column="ext3" jdbcType="VARCHAR" property="ext3" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xuechen.web.bo.AppUser">
+    <result column="signature" jdbcType="LONGVARBINARY" property="signature" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -43,25 +46,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -72,170 +75,220 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     user_id, loginname, password, name, sex, status, removed, ctime, ext1, ext2, ext3
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xuechen.web.bo.AppUserExample" >
+  <sql id="Blob_Column_List">
+    signature
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xuechen.web.bo.AppUserExample" resultMap="ResultMapWithBLOBs">
     select
-    <if test="distinct" >
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from app_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xuechen.web.bo.AppUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from app_user
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from app_user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from app_user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.xuechen.web.bo.AppUserExample" >
+  <delete id="deleteByExample" parameterType="com.xuechen.web.bo.AppUserExample">
     delete from app_user
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.xuechen.web.bo.AppUser" useGeneratedKeys="true" keyProperty="userId" >
+  <insert id="insert" parameterType="com.xuechen.web.bo.AppUser" useGeneratedKeys="true" keyProperty="userId">
     insert into app_user (user_id, loginname, password, 
       name, sex, status, 
       removed, ctime, ext1, 
-      ext2, ext3)
+      ext2, ext3, signature
+      )
     values (#{userId,jdbcType=INTEGER}, #{loginname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{removed,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, #{ext1,jdbcType=VARCHAR}, 
-      #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR})
+      #{ext2,jdbcType=VARCHAR}, #{ext3,jdbcType=VARCHAR}, #{signature,jdbcType=LONGVARBINARY}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.xuechen.web.bo.AppUser" useGeneratedKeys="true" keyProperty="userId" >
+  <insert id="insertSelective" parameterType="com.xuechen.web.bo.AppUser" useGeneratedKeys="true" keyProperty="userId">
     insert into app_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
         user_id,
       </if>
-      <if test="loginname != null" >
+      <if test="loginname != null">
         loginname,
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         password,
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name,
       </if>
-      <if test="sex != null" >
+      <if test="sex != null">
         sex,
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status,
       </if>
-      <if test="removed != null" >
+      <if test="removed != null">
         removed,
       </if>
-      <if test="ctime != null" >
+      <if test="ctime != null">
         ctime,
       </if>
-      <if test="ext1 != null" >
+      <if test="ext1 != null">
         ext1,
       </if>
-      <if test="ext2 != null" >
+      <if test="ext2 != null">
         ext2,
       </if>
-      <if test="ext3 != null" >
+      <if test="ext3 != null">
         ext3,
       </if>
+      <if test="signature != null">
+        signature,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="loginname != null" >
+      <if test="loginname != null">
         #{loginname,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="sex != null" >
+      <if test="sex != null">
         #{sex,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="removed != null" >
+      <if test="removed != null">
         #{removed,jdbcType=VARCHAR},
       </if>
-      <if test="ctime != null" >
+      <if test="ctime != null">
         #{ctime,jdbcType=TIMESTAMP},
       </if>
-      <if test="ext1 != null" >
+      <if test="ext1 != null">
         #{ext1,jdbcType=VARCHAR},
       </if>
-      <if test="ext2 != null" >
+      <if test="ext2 != null">
         #{ext2,jdbcType=VARCHAR},
       </if>
-      <if test="ext3 != null" >
+      <if test="ext3 != null">
         #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        #{signature,jdbcType=LONGVARBINARY},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.xuechen.web.bo.AppUserExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.xuechen.web.bo.AppUserExample" resultType="java.lang.Integer">
     select count(*) from app_user
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update app_user
-    <set >
-      <if test="record.userId != null" >
+    <set>
+      <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.loginname != null" >
+      <if test="record.loginname != null">
         loginname = #{record.loginname,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null" >
+      <if test="record.password != null">
         password = #{record.password,jdbcType=VARCHAR},
       </if>
-      <if test="record.name != null" >
+      <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.sex != null" >
+      <if test="record.sex != null">
         sex = #{record.sex,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
+      <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.removed != null" >
+      <if test="record.removed != null">
         removed = #{record.removed,jdbcType=VARCHAR},
       </if>
-      <if test="record.ctime != null" >
+      <if test="record.ctime != null">
         ctime = #{record.ctime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.ext1 != null" >
+      <if test="record.ext1 != null">
         ext1 = #{record.ext1,jdbcType=VARCHAR},
       </if>
-      <if test="record.ext2 != null" >
+      <if test="record.ext2 != null">
         ext2 = #{record.ext2,jdbcType=VARCHAR},
       </if>
-      <if test="record.ext3 != null" >
+      <if test="record.ext3 != null">
         ext3 = #{record.ext3,jdbcType=VARCHAR},
       </if>
+      <if test="record.signature != null">
+        signature = #{record.signature,jdbcType=LONGVARBINARY},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update app_user
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      loginname = #{record.loginname,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      removed = #{record.removed,jdbcType=VARCHAR},
+      ctime = #{record.ctime,jdbcType=TIMESTAMP},
+      ext1 = #{record.ext1,jdbcType=VARCHAR},
+      ext2 = #{record.ext2,jdbcType=VARCHAR},
+      ext3 = #{record.ext3,jdbcType=VARCHAR},
+      signature = #{record.signature,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
     update app_user
     set user_id = #{record.userId,jdbcType=INTEGER},
       loginname = #{record.loginname,jdbcType=VARCHAR},
@@ -248,47 +301,65 @@
       ext1 = #{record.ext1,jdbcType=VARCHAR},
       ext2 = #{record.ext2,jdbcType=VARCHAR},
       ext3 = #{record.ext3,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xuechen.web.bo.AppUser" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuechen.web.bo.AppUser">
     update app_user
-    <set >
-      <if test="loginname != null" >
+    <set>
+      <if test="loginname != null">
         loginname = #{loginname,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="sex != null" >
+      <if test="sex != null">
         sex = #{sex,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="removed != null" >
+      <if test="removed != null">
         removed = #{removed,jdbcType=VARCHAR},
       </if>
-      <if test="ctime != null" >
+      <if test="ctime != null">
         ctime = #{ctime,jdbcType=TIMESTAMP},
       </if>
-      <if test="ext1 != null" >
+      <if test="ext1 != null">
         ext1 = #{ext1,jdbcType=VARCHAR},
       </if>
-      <if test="ext2 != null" >
+      <if test="ext2 != null">
         ext2 = #{ext2,jdbcType=VARCHAR},
       </if>
-      <if test="ext3 != null" >
+      <if test="ext3 != null">
         ext3 = #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        signature = #{signature,jdbcType=LONGVARBINARY},
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xuechen.web.bo.AppUser" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xuechen.web.bo.AppUser">
+    update app_user
+    set loginname = #{loginname,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      removed = #{removed,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      ext1 = #{ext1,jdbcType=VARCHAR},
+      ext2 = #{ext2,jdbcType=VARCHAR},
+      ext3 = #{ext3,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=LONGVARBINARY}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xuechen.web.bo.AppUser">
     update app_user
     set loginname = #{loginname,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

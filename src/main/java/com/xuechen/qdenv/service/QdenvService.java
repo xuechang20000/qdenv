@@ -1,17 +1,16 @@
 package com.xuechen.qdenv.service;
 
+import com.wondersgroup.framwork.dao.CommonJdbcUtils;
 import com.wondersgroup.framwork.dao.bo.Page;
-import com.xuechen.qdenv.bo.Bz02;
-import com.xuechen.qdenv.bo.Bz03;
-import com.xuechen.qdenv.bo.Bz04;
-import com.xuechen.qdenv.dto.Bz01Dto;
-import com.xuechen.qdenv.dto.Bz02Dto;
-import com.xuechen.qdenv.dto.Bz03Dto;
-import com.xuechen.qdenv.dto.Bz04Dto;
+import com.xuechen.qdenv.bo.*;
+import com.xuechen.qdenv.dto.*;
+import com.xuechen.web.bo.AppDictDetail;
 
 import java.util.List;
 
 public interface QdenvService {
+    public Wt09 saveWt09(Wt09Dto wt09Dto);
+    public  List<Wt09Dto> queryWt09List(Page page,Wt09Dto wt09Dto);
     public void saveBz04(Bz04 bz04);
     public void updateBz04(Bz04 bz04);
     public List<Bz04Dto> queryBz04(Page page, Bz04Dto bz04Dto);
@@ -27,4 +26,50 @@ public interface QdenvService {
     public Bz03 saveBz03(Bz03Dto bz03Dto);
     public void deleteBz03(Bz03Dto bz03Dto);
     public List<Bz03Dto> queryBz03(Page page,Bz03Dto bz03Dto);
+    public List<Bz03Dto> queryBz03List(Bz03Dto bz03Dto);
+    public List<Bz06Dto> queryBz06(Page page,Bz06Dto bz06Dto);
+    public List<Bz06Dto> queryBz06List(Bz06Dto bz06Dto);
+    public Bz06 saveOrUpdateBz06(Bz06Dto bz06Dto);
+    public String getWat016(String wat015);
+    public Wt01 saveWt(Wt01Dto wt01Dto);
+    public Wt01 saveWt(Wt01Dto wt01Dto, List<Wt02Dto> wt02Dtos, List<Wt03Dto> wt03Dtos);
+    public Wt05 saveWt05(Wt05 wt05);
+    public void saveWt02(List<Wt02Dto> wt02Dtos);
+    public void updateWt02(Wt02Dto wt02Dto,String flag);
+    public Wt03 saveOrUpdateWt03(Wt03Dto wt03Dto);
+    public void updateWt03(List<Wt03Dto> wt03Dtos);
+    public List<Wp01Dto> queryWp01List(Wp01Dto wp01Dto);
+    public  List<Wt04> getWt04List(String bcz001s,Integer wct001,Integer wbt001);
+    public void saveWt04List(List<Wt04> wt04s);
+    public List<Wt01Dto> queryWtList(Wt01Dto dto);
+    public List<Wt01Dto> queryWt(Page page,Wt01Dto dto);
+    public List<Wt02Dto> queryWt02(Wt02Dto wt02Dto);
+    public List<Wt03Dto> queryWt03(Wt03Dto wt03Dto);
+    public List<Wt04Dto> queryWt04(Wt04Dto wt04Dto);
+    public List<Wt06Dto> queryWt06(Boolean isPermission);
+    public List<Wt06Dto> queryWt06(Integer wlt004);
+    public List<Wt08Dto> queryWt08ByWat001(Integer wat001);
+    public void saveWt08List(Wt01Dto wt01Dto,List<Wt08> wt08s);
+    public Wt01Dto saveNextProcess(Wt01Dto wt01Dto);
+    public Wt01Dto savePreProcess(Wt01Dto wt01Dto);
+    public Wt02Dto queryWt02Report(Wt02Dto wt02Dto);
+    public List<Wt07Dto> queryWt07list(Wt07Dto wt07Dto);
+    public Wt07 saveWt07(Wt07Dto wt07Dto);
+    public List<Wt02Dto> queryWt02Disables(Page page,Wt02Dto wt02Dto);
+    public Wt02 updateWt02Simple(Wt02Dto wt02Dto);
+    public Wt03 updateWt03Simple(Wt03Dto wt03Dto);
+    public Wt05 updateWt05(Wt05Dto wt05Dto);
+    public void hideAndShow(Wt01Dto wt01Dto,String type);
+    public void saveWt10(Wt10Dto wt10Dto);
+    public void deleteWt10(Wt10Dto wt10Dto);
+    public List<Wt10Dto> queryWt10Page(Page page,Wt10Dto wt10Dto);
+    public List<Wt10Dto> queryWt10PageForRecord(Page page,Wt10Dto wt10Dto);
+    public Wt11 saveWt11(Wt11Dto wt11Dto);
+    public void deleteWt11(Wt11Dto wt11Dto);
+    public List<Wt11Dto> queryWt11Page(Page page,Wt11Dto wt11Dto);
+    public void AddBcz013(String bcz013,Integer bcz001);
+    public void deleteBcz013(String bcz013,Integer bcz001);
+    public List<AppDictDetail> queryBcz013List(Integer bcz001);
+    public List<Wt11Dto> queryWt11List(Wt11Dto wt11Dto);
+    public List<Wt11Dto> queryWt11ListByWbt001(Wt11Dto wt11Dto);
 }

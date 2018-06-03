@@ -6,7 +6,7 @@
     <title>用户管理</title>
     <%@include file="/include/head.jsp"%>
     <style type="text/css">
-        fieldset{float: left;margin-left:10px;padding-left: 10px;width:390px;height: 400px}
+        fieldset{float: left;margin-left:10px;padding-left: 10px;width:390px;height: 400px;overflow: scroll}
     </style>
 </head>
 <body>

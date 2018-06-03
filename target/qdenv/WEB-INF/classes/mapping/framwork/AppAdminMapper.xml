@@ -185,6 +185,7 @@
           LEFT OUTER JOIN APP_RESOURCE E
             ON C.PERMISSION_RESOURCE_ID = E.RESOURCE_ID
            AND C.PERMISSION_TYPE = '2'
+           and c.status = '1'
          WHERE 1=1
           <if test="roleId!=null">
            AND A.ROLE_ID = #{roleId}

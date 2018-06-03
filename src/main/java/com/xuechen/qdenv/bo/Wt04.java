@@ -1,5 +1,6 @@
 package com.xuechen.qdenv.bo;
 
+import com.wondersgroup.framwork.dao.annotation.Id;
 import com.wondersgroup.framwork.dao.annotation.Table;
 
 import java.util.Date;
@@ -33,7 +34,16 @@ public class Wt04 {
     private Integer wxt005;
 
     private Date wxt006;
+    private String wxt007;
+    private String wxt008;
+    private String wxt009;
+    private String wxt010;
+    private String wxt011;
+    private String wxt012;
+    private String wxt013;
 
+
+    @Id
     public Integer getWxt001() {
         return wxt001;
     }
@@ -152,5 +162,61 @@ public class Wt04 {
 
     public void setWxt006(Date wxt006) {
         this.wxt006 = wxt006;
+    }
+
+    public String getWxt007() {
+        return wxt007;
+    }
+
+    public void setWxt007(String wxt007) {
+        this.wxt007 = wxt007;
+    }
+
+    public String getWxt008() {
+        return wxt008;
+    }
+
+    public void setWxt008(String wxt008) {
+        this.wxt008 = wxt008;
+    }
+
+    public String getWxt009() {
+        return wxt009;
+    }
+
+    public void setWxt009(String wxt009) {
+        this.wxt009 = wxt009;
+    }
+
+    public String getWxt010() {
+        return wxt010;
+    }
+
+    public void setWxt010(String wxt010) {
+        this.wxt010 = wxt010;
+    }
+
+    public String getWxt011() {
+        return wxt011;
+    }
+
+    public void setWxt011(String wxt011) {
+        this.wxt011 = wxt011;
+    }
+
+    public String getWxt012() {
+        return wxt012;
+    }
+
+    public void setWxt012(String wxt012) {
+        this.wxt012 = wxt012;
+    }
+
+    public String getWxt013() {
+        return wxt013;
+    }
+
+    public void setWxt013(String wxt013) {
+        this.wxt013 = wxt013;
     }
 }

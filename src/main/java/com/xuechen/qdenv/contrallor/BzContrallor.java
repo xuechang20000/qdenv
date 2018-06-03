@@ -7,10 +7,8 @@ import com.wondersgroup.framwork.dao.bo.Page;
 import com.xuechen.qdenv.bo.Bz02;
 import com.xuechen.qdenv.bo.Bz03;
 import com.xuechen.qdenv.bo.Bz04;
-import com.xuechen.qdenv.dto.Bz01Dto;
-import com.xuechen.qdenv.dto.Bz02Dto;
-import com.xuechen.qdenv.dto.Bz03Dto;
-import com.xuechen.qdenv.dto.Bz04Dto;
+import com.xuechen.qdenv.bo.Bz06;
+import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +51,10 @@ public class BzContrallor {
     public String index_f100603(){
         return "/WEB-INF/page/f1006/f100603/index";
     }
+    @RequestMapping("/f100604/index")
+    public String index_f100604(){
+        return "/WEB-INF/page/f1006/f100604/index";
+    }
     @RequestMapping("/f100601/loadHangyeAdd")
     public String loadHangyeAdd(){
         return "/WEB-INF/page/f1006/f100601/hangyeAdd";
@@ -60,6 +62,14 @@ public class BzContrallor {
     @RequestMapping("/f100602/loadBiaoZhunAdd")
     public String loadBiaoZhunAdd(){
         return "/WEB-INF/page/f1006/f100602/biaoZhunAdd";
+    }
+    @RequestMapping("/f100604/loadInstrumentAdd")
+    public String loadInstrumentAdd(){
+        return "/WEB-INF/page/f1006/f100604/instrumentAdd";
+    }
+    @RequestMapping("/f100604/loadInstrumentEdit")
+    public String loadInstrumentEdit(){
+        return "/WEB-INF/page/f1006/f100604/instrumentEdit";
     }
     @RequestMapping("/f100602/loadBiaoZhunCopy")
     public String loadBiaoZhunCopy( Bz01Dto bz01Dto,HttpServletRequest request){
@@ -256,5 +266,29 @@ public class BzContrallor {
     public String queryFenzu(Page page,Bz03Dto bz03Dto){
         this.qdenvService.queryBz03(page,bz03Dto);
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100603/queryFenzuList",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryFenzuList(Bz03Dto bz03Dto){
+        List<Bz03Dto> bz03Dtos=this.qdenvService.queryBz03List(bz03Dto);
+        return JSON.toJSONStringWithDateFormat(bz03Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100604/queryBz06",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryBz06(Page page,Bz06Dto bz06Dto){
+        this.qdenvService.queryBz06(page,bz06Dto);
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100604/queryBz06List",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryBz06List(Bz06Dto bz06Dto){
+        List<Bz06Dto> bz06Dtos=this.qdenvService.queryBz06List(bz06Dto);
+        return JSON.toJSONStringWithDateFormat(bz06Dtos, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100604/saveOrUpdateBz06",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveOrUpdateBz06(Bz06Dto bz06Dto){
+        Bz06 bz06=this.qdenvService.saveOrUpdateBz06(bz06Dto);
+        return JSON.toJSONStringWithDateFormat(bz06, "yyyy-MM-dd HH:mm:ss.SSS");
     }
 }

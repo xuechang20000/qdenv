@@ -26,9 +26,10 @@ var bootPATH = __CreateJSPath("boot.js");
 mini_debugger = true;   
 
 //miniui
-document.write('<script src="' + bootPATH + 'jquery.js" type="text/javascript"></sc' + 'ript>');
-document.write('<script src="' + bootPATH + 'miniui.js" type="text/javascript" ></sc' + 'ript>');
-document.write('<script src="' + bootPATH + 'validate.js" type="text/javascript" ></sc' + 'ript>');
+document.write('<script src="' + bootPATH + 'jquery.js" type="text/javascript"></script>');
+document.write('<script src="' + bootPATH + 'jquery.tmpl.js" type="text/javascript"></script>');
+document.write('<script src="' + bootPATH + 'miniui.js" type="text/javascript" ></script>');
+document.write('<script src="' + bootPATH + 'validate.js" type="text/javascript" ></script>');
 document.write('<link href="' + bootPATH + 'themes/default/skin.css" rel="stylesheet" type="text/css" />');
 document.write('<link href="' + bootPATH + 'themes/icons.css" rel="stylesheet" type="text/css" />');
 

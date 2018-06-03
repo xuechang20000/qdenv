@@ -25,6 +25,8 @@ public class AppUser {
 
     private String ext3;
 
+    private byte[] signature;
+
     public Integer getUserId() {
         return userId;
     }
@@ -111,5 +113,13 @@ public class AppUser {
 
     public void setExt3(String ext3) {
         this.ext3 = ext3 == null ? null : ext3.trim();
+    }
+
+    public byte[] getSignature() {
+        return signature;
+    }
+
+    public void setSignature(byte[] signature) {
+        this.signature = signature;
     }
 }

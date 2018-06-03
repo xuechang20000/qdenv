@@ -18,6 +18,12 @@
     }
     #container_demo{margin-top:30px;}
   </style>
+  <script type="text/javascript">
+      if ( parent.location != document.location )
+      {
+          parent.location = "${pageContext.request.contextPath}/login.jsp";
+      }
+  </script>
 </head>
 <body>
 <div class="container">
