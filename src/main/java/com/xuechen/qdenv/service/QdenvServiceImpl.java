@@ -857,7 +857,7 @@ public class QdenvServiceImpl implements QdenvService {
             stringBuffer.append(" and a.userid=? ");
             args.add(wt01Dto.getUserid());
         }
-        stringBuffer.append(" and  FIND_IN_SET(a.wat018,?) ");
+        stringBuffer.append(" and  FIND_IN_SET(a.wat018,?) order by a.wat017 desc");
         args.add(queryWt06s(true));
         return stringBuffer.toString();
     }
