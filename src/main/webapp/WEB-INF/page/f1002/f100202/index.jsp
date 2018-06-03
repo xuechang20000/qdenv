@@ -45,9 +45,9 @@
 
     <a class="mini-button" id="id_onSerach" iconCls="icon-search" onclick="onSerach">查询</a>
 </div>
-<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"  pagerButtons="#exportExcel"v
+<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"  pagerButtons="#exportExcel"
      url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail" showSummaryRow="true"
-     idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu"  >
+     idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu" ondrawsummarycell="onDrawSummaryCell" >
     <div property="columns">
         <div type="expandcolumn"></div>
         <div field="wat001" width="40" headerAlign="center" align="center" visible="false" allowSort="true">委托id</div>
@@ -57,11 +57,13 @@
         <div field="wat020" width="60" headerAlign="center" align="center" dateFormat="yyyy/MM/dd HH:mm" allowSort="true">上步提交时间</div>
         <div field="aab301" width="40" headerAlign="center"  align="center" renderer="oncodeRender" allowSort="true" >地区</div>
         <div field="daw005" width="140" headerAlign="center"  align="center" allowSort="true" >地点</div>
-        <div field="daw002" width="120" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
+        <div field="daw002" width="80" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
+        <div field="daw003" width="40" headerAlign="center"  align="center" allowSort="true" >联系人</div>
+        <div field="daw004" width="60" headerAlign="center"  align="center" allowSort="true" >电话</div>
         <div field="userid" width="60" headerAlign="center" visible="false" align="center" allowSort="true" >创建人</div>
         <div field="username" width="40" headerAlign="center"  align="center" allowSort="true" >创建人</div>
-        <div field="wat017" width="60" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
-        <div field="wft007" width="40" headerAlign="center" align="center" summaryType="sum" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
+        <div field="wat017" width="50" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
+        <div field="wft007" width="50" headerAlign="center" align="center" summaryType="sum" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
         <div field="wft010" width="40" headerAlign="center" align="center" visible="false" allowSort="true" >是否实收</div>
         <div field="do" width="50" headerAlign="center" align="center" visible="false" allowSort="true" renderer='onrenderDO'>操作</div>
     </div>
@@ -161,6 +163,27 @@ function onShowRowDetail(e) {
     })
 
 }
+    function onDrawSummaryCell(e) {
+        var result = e.result;
+        var grid = e.sender;
+        //客户端汇总计算
+        var rows=grid.findRows(function (row) {
+            if (row.wft010=="1"){
+                return false;
+            }
+            return true;
+        });
+        var sum=0;
+        for (var i=0;i<rows.length;i++){
+            sum=sum+parseFloat(rows[i].wft007?rows[i].wft007:0);
+        }
+        if (e.field=="wat017"){
+            e.cellHtml =e.cellHtml+ "未缴费:￥ " + sum;
+        }
+        if (e.field=="wft007"){
+            e.cellHtml ="合计："+e.cellHtml
+        }
+    }
     function onBeforeOpen(e) {
         var menu = e.sender;
         var editItem = mini.getbyName("edit", menu);
