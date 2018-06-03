@@ -180,6 +180,18 @@ function onShowRowDetail(e) {
         if (e.field=="wat017"){
             e.cellHtml =e.cellHtml+ "未缴费:￥ " + sum;
         }
+        rows=grid.findRows(function (row) {
+            if (row.wft010=="1"){
+                return true;
+            }else{return false;}
+        });
+        sum=0;
+        for (var i=0;i<rows.length;i++){
+            sum=sum+parseFloat(rows[i].wft007?rows[i].wft007:0);
+        }
+        if (e.field=="daw004"){
+            e.cellHtml =e.cellHtml+ "已缴费:￥ " + sum;
+        }
         if (e.field=="wft007"){
             e.cellHtml ="合计："+e.cellHtml
         }
