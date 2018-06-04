@@ -1356,7 +1356,8 @@ public class QdenvServiceImpl implements QdenvService {
         wt10.setWst009(ContextUtils.getUserId());
         CommonJdbcUtils.insert(wt10);
         String[] wxt001=wt10Dto.getWxt001s().split(",");
-        String sql="update wt04 set wxt009=CONCAT_WS(' ',IFNULL(wxt009,''),?) where wxt001= ? ";
+        //String sql="update wt04 set wxt009=CONCAT_WS(' ',IFNULL(wxt009,''),?) where wxt001= ? ";
+        String sql="update wt04 set wxt009=? where wxt001= ? ";
         if (wxt001.length>0){
             for (int i=0;i<wxt001.length;i++){
             CommonJdbcUtils.execute(sql,wt10.getWst003()+" ",wxt001[i]);
@@ -1372,8 +1373,9 @@ public class QdenvServiceImpl implements QdenvService {
     public void deleteWt10(Wt10Dto wt10Dto){
         String sql="delete from wt10 where wst001= ? ";
         CommonJdbcUtils.execute(sql,wt10Dto.getWst001());
-        sql="update wt04 set wxt009=replace(wxt009,?,'') where wct001=? ";
-        CommonJdbcUtils.execute(sql,wt10Dto.getWst003()+" ",wt10Dto.getWct001());
+        //sql="update wt04 set wxt009=replace(wxt009,?,'') where wct001=? ";
+        sql="update wt04 set wxt009='' where wct001=? and wxt009=? ";
+        CommonJdbcUtils.execute(sql,wt10Dto.getWct001(),wt10Dto.getWst003());
     }
     public List<Wt10Dto> queryWt10Page(Page page,Wt10Dto wt10Dto){
         StringBuffer stringBuffer=new StringBuffer("select * from wt10 where wct001=? ");
@@ -1486,12 +1488,13 @@ public class QdenvServiceImpl implements QdenvService {
      * @param bcz001
      */
     public void AddBcz013(String bcz013,Integer bcz001){
+        bcz013=bcz013.startsWith("[")?bcz013:"["+bcz013+"]";
         Bz02 bz02exists=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? and bcz013 like ? ",
-                Bz02.class,bcz001,"%["+bcz013+"]%");
+                Bz02.class,bcz001,"%"+bcz013+"%");
         if (bz02exists!=null) return;
         Bz02 bz02=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? ",Bz02.class,bcz001);
         if (bz02==null) return;
-        String bcz013_in=!StringTools.hasText(bz02.getBcz013())?"["+bcz013+"]":bz02.getBcz013()+",["+bcz013+"]";
+        String bcz013_in=!StringTools.hasText(bz02.getBcz013())?bcz013:bz02.getBcz013()+","+bcz013;
         CommonJdbcUtils.execute("update bz02 set bcz013=? where bcz001=? ",bcz013_in,bcz001);
     }
     /**
@@ -1519,8 +1522,10 @@ public class QdenvServiceImpl implements QdenvService {
      */
     public List<AppDictDetail> queryBcz013List(Integer bcz001){
         Bz02 bz02=CommonJdbcUtils.queryFirst("select * from bz02 where bcz001=? ",Bz02.class,bcz001);
-        String[] bcz013=bz02.getBcz013().split(",");
         List<AppDictDetail> appDictDetails=new ArrayList<AppDictDetail>();
+        if(bz02==null||!StringTools.hasText(bz02.getBcz013())) return appDictDetails;
+        String[] bcz013=bz02.getBcz013().split(",");
+
         AppDictDetail appDictDetail=null;
         for (int i=0;i<bcz013.length;i++){
             appDictDetail=new AppDictDetail();
