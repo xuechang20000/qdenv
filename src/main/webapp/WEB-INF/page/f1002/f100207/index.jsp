@@ -13,7 +13,8 @@
 </head>
 <body>
 <span id="search" style="margin: 6px;display: block">
-    样品编号:<input id="wst003"  name="wst003" class="mini-textbox"  style="width:200px;" onenter="onSerach()"/>
+      委托编号:<input id="wat002"  name="wat002" class="mini-textbox"  style="width:100px;" onenter="onSerach()"/>
+    样品编号:<input id="wst003"  name="wst003" class="mini-textbox"  style="width:100px;" onenter="onSerach()"/>
     <a class="mini-button" iconCls="icon-search" id="doSearch" onclick="onSerach()">查询</a>
 </span>
 <div id="datagrid" class="mini-datagrid" style="width: 100%;height: 350px;" allowResize="true" pageSize="10"
@@ -24,8 +25,9 @@
         <div field="bcz001" width="20" headerAlign="center" visible="false">检测项目ID</div>
         <div field="wct001" width="20" headerAlign="center" visible="false">采样点ID</div>
         <div field="wst001" width="20" headerAlign="center" visible="false">样品ID</div>
+        <div field="wat002" width="50" headerAlign="center" >委托编号</div>
         <div field="bcz002" width="100" headerAlign="center" >检测项目</div>
-        <div field="wst003" width="70" headerAlign="center" >样品编号</div>
+        <div field="wst003" width="30" headerAlign="center" >样品编号</div>
         <div field="wst004" width="70" headerAlign="center" dataType="date" dateFormat="yyyy-MM-dd HH:mm:ss" >采样时间起</div>
         <div field="wst005" width="70" headerAlign="center" dataType="date" dateFormat="yyyy-MM-dd HH:mm:ss" >采样时间止</div>
         <div field="wst008" width="70" headerAlign="center" dataType="date" dateFormat="yyyy-MM-dd HH:mm:ss">录入时间</div>
@@ -43,12 +45,18 @@
     var grid=mini.get("datagrid");
     function onSerach(){
         var wst003=mini.get("wst003").getValue();
-        if(!wst003){
+        var wat002=mini.get("wat002").getValue();
+        if(!wst003&&!wat002){
+            Web.util.showTipsWanring("请输入查询条件！")
+            return;
+        }
+        if (wat002&&wat002.length<10&&!wst003){
             Web.util.showTipsWanring("请输入样品编号！")
             return;
         }
-        wst003=wst003.trim();
-        grid.load({wst003:wst003});
+        if(wst003) wst003=wst003.trim();
+        if(wat002) wat002=wat002.trim();
+        grid.load({wst003:wst003,wat002:wat002});
     }
     function renderUser(e) {
         return $("#grid_buttons").clone().css("display","inline").html();

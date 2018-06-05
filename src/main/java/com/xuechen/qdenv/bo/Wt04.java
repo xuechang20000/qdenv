@@ -42,6 +42,16 @@ public class Wt04 {
     private String wxt012;
     private String wxt013;
 
+    public String getWxt014() {
+        return wxt014;
+    }
+
+    public void setWxt014(String wxt014) {
+        this.wxt014 = wxt014;
+    }
+
+    private String wxt014;
+
 
     @Id
     public Integer getWxt001() {

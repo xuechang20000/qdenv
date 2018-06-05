@@ -15,6 +15,12 @@
         .temp_select_title{color:#1296db}
         .temp_select{padding-bottom: 4px}
         .wft010_1{color: #449d44;}
+        .report_button{padding-left:4px;padding-right:4px;border: 1px #3bb8af solid }
+        .report_button_1{color: #2fd85e}
+        .report_button_2{color: #2bb4e8}
+        .report_button_3{color: #8b9199}
+        .report_button_4{color: #a47e3c}
+        .report_button:hover{cursor:pointer}
     </style>
 
 </head>
@@ -79,7 +85,7 @@
     <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
         </shiro:hasPermission>
     <shiro:hasPermission name="DO_15">
-        <li name="DO_15" iconCls="icon-node" onclick="onWt01DO('DO_15','隐藏')">隐藏</li>
+        <li name="DO_15" iconCls="icon-node" onclick="onWt01DO('DO_15','审核权限')">审核权限</li>
     </shiro:hasPermission>
     <shiro:hasPermission name="DO_16">
         <li name="DO_16" iconCls="icon-node" onclick="onWt01DO('DO_16','恢复显示')">恢复显示</li>
@@ -103,16 +109,20 @@
 <span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
   <!--<img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">-->
 <shiro:hasPermission name="DO_4">
- <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" title="检测录入">
+    <span class="report_button report_button_1" onclick="onEditWt02({{= wbt001}})" >检测录入</span>
+ <!--<img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" title="检测录入">-->
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_7">
- <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" title="报告编写">
+    <span class="report_button report_button_2" onclick="onPreviewWt02({{= wbt001}})" >报告编写</span>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" title="报告编写">-->
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_8">
- <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" title="报告签发">
+    <span class="report_button report_button_3" onclick="onOutWt02({{= wbt001}})" >报告签发</span>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" title="报告签发">-->
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_9">
- <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" title="报告审核">
+    <span class="report_button report_button_4" onclick="onCheckWt02({{= wbt001}})" >报告审核</span>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" title="报告审核">-->
  </shiro:hasPermission>
 </span>
 

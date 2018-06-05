@@ -488,6 +488,13 @@ public class WtContrallor {
         List<AppDictDetail> appDictDetails=this.qdenvService.queryBcz013List(bcz001);
         return JSON.toJSONStringWithDateFormat(appDictDetails, "yyyy-MM-dd HH:mm:ss.SSS");
     }
+    @RequestMapping(value="/f100202/updateWt04",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String updateWt04(Wt04Dto wt04Dto){
+        Wt04 wt04=this.qdenvService.updateWt04(wt04Dto);
+        return JSON.toJSONStringWithDateFormat(wt04, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){
         logger.info("任务调度！");

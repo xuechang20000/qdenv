@@ -327,9 +327,21 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public List<Bz02Dto> queryBz02(Bz02Dto dto){
-        String sql="select a.*,case WHEN bcz003='5' THEN CONCAT_WS('~',bcz004,bcz005) ELSE bcz004 end as bcz0045 " +
-                "from bz02 a where bbz001=? order by bcz007 asc";
-       return CommonJdbcUtils.queryList(sql,Bz02Dto.class,dto.getBbz001());
+        StringBuffer sql=new StringBuffer(
+                "select a.*,case WHEN bcz003='5' THEN CONCAT_WS('~',bcz004,bcz005) ELSE bcz004 end as bcz0045 " +
+                        "from bz02 a where 1=1 "
+        ) ;
+        List<String> args=new ArrayList<String>();
+        if (dto.getBbz001()!=null){
+            sql.append(" and bbz001=? ");
+            args.add(dto.getBbz001().toString());
+        }
+        if (dto.getBcz001()!=null){
+            sql.append(" and bcz001=? ");
+            args.add(dto.getBcz001().toString());
+        }
+        sql.append(" order by bcz007 asc ");
+       return CommonJdbcUtils.queryList(sql.toString(),Bz02Dto.class,args.toArray());
     }
     /**
      * 保存标准下的检测项目
@@ -767,6 +779,17 @@ public class QdenvServiceImpl implements QdenvService {
         }
     }
 
+    /**
+     * 更新检测项目
+     * @param wt04Dto
+     * @return
+     */
+    public Wt04 updateWt04(Wt04Dto wt04Dto){
+        Wt04 wt04=new Wt04();
+        BeanUtils.copyProperties(wt04Dto,wt04);
+        CommonJdbcUtils.updateSelect(wt04);
+        return  wt04;
+    }
     public boolean isInString(String str,String strArray){
         if (!strArray.equals("")){
             String array[]=strArray.split(",");
@@ -1357,10 +1380,11 @@ public class QdenvServiceImpl implements QdenvService {
         CommonJdbcUtils.insert(wt10);
         String[] wxt001=wt10Dto.getWxt001s().split(",");
         //String sql="update wt04 set wxt009=CONCAT_WS(' ',IFNULL(wxt009,''),?) where wxt001= ? ";
-        String sql="update wt04 set wxt009=? where wxt001= ? ";
+        String sql="update wt04 set wxt007=?,wxt014=?,wxt008=?,wxt010=?,wxt009=? where wxt001= ? ";
         if (wxt001.length>0){
             for (int i=0;i<wxt001.length;i++){
-            CommonJdbcUtils.execute(sql,wt10.getWst003()+" ",wxt001[i]);
+            CommonJdbcUtils.execute(sql,wt10.getWst006(),wt10.getWst007(),wt10.getWst004(),wt10.getWst005(),
+                    wt10.getWst003()+" ",wxt001[i]);
             }
         }
     }
@@ -1390,7 +1414,8 @@ public class QdenvServiceImpl implements QdenvService {
      * @return
      */
     public List<Wt10Dto> queryWt10PageForRecord(Page page,Wt10Dto wt10Dto){
-        StringBuffer stringBuffer=new StringBuffer("select a.wxt001,a.bcz002,a.bcz001,b.* from wt04 a,wt10 b where a.wct001=b.wct001");
+        StringBuffer stringBuffer=new StringBuffer("select a.wxt001,a.bcz002,a.bcz001,d.wat002,b.* from wt04 a,wt10 b,wt02 c ,wt01 d " +
+                " where a.wbt001=c.wbt001 and c.wat001=d.wat001 and a.wct001=b.wct001");
         List<String> args=new ArrayList<String>();
         if (StringTools.hasText(wt10Dto.getWst003())){
             stringBuffer.append(" and b.wst003=? ");
@@ -1399,6 +1424,10 @@ public class QdenvServiceImpl implements QdenvService {
         if(wt10Dto.getWct001()!=null){
             stringBuffer.append(" and b.wct001=? ");
             args.add(wt10Dto.getWct001().toString());
+        }
+        if(wt10Dto.getWat002()!=null){
+            stringBuffer.append(" and d.wat002 like ? ");
+            args.add("%"+wt10Dto.getWat002().toString()+"%");
         }
         if (args.size()==0) throw new  BusinessException("查询条件为空");
         CommonJdbcUtils.queryPageList(page,stringBuffer.toString(),Wt10Dto.class,args.toArray());
@@ -1422,11 +1451,11 @@ public class QdenvServiceImpl implements QdenvService {
         }
         wt11.setWrt006(new Date());
         wt11.setWrt007(ContextUtils.getUserId());
-        if (!wt11.getWrt002().startsWith("["))
-            wt11.setWrt002("["+wt11.getWrt002()+"]");
+        //if (!wt11.getWrt002().startsWith("["))
+          //  wt11.setWrt002("["+wt11.getWrt002()+"]");
         CommonJdbcUtils.insert(wt11);
         //添加步骤字典
-        AddBcz013(wt11Dto.getWrt002(),wt11Dto.getBcz001());
+        //AddBcz013(wt11Dto.getWrt002(),wt11Dto.getBcz001());
         return wt11;
     }
 

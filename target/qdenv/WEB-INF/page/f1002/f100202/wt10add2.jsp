@@ -17,49 +17,17 @@
     <table>
         <tr>
             <td align="right">
-            <label >样品编号：</label>
-        </td>
-            <td align="left">
-                <input id="wst003"  name="wst003" class="mini-textbox" vtype="int" style="width:150px"  required="true" />
-                <input id="wct001" name = "wct001" class="mini-textbox" visible="false" value="${param.wct001}"/>
-            </td>
-            <td align="right">
-                <label >容器类型：</label>
+                <label for="wxt007">采样设备：</label>
             </td>
             <td align="left">
-                <input id="wst002" class="mini-combobox"   textField="dictName" valueField="dictVal" style="width:150px"
-                       url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=WST002"   required="true" allowInput="true" nullItemText="请选择..."/>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <label for="wst004">采样时间起：</label>
-            </td>
-            <td align="left">
-                <input id="wst004"  name="wst004" class="mini-datepicker" style="width:150px" required="true"
-                       format="yyyy-MM-dd H:mm:ss" timeFormat="H:mm:ss" showTime="true" />
-            </td>
-            <td align="right">
-                <label for="wst005">采样时间止：</label>
-            </td>
-            <td align="left">
-                <input id="wst005"  name="wst005" class="mini-datepicker" style="width:150px" required="true"
-                       format="yyyy-MM-dd H:mm:ss" timeFormat="H:mm:ss" showTime="true" />
-            </td>
-        </tr>
-        <tr>
-            <td align="right">
-                <label for="wst006">采样设备：</label>
-            </td>
-            <td align="left">
-                <input name="wst006" class="mini-combobox" textField="bmz002" valueField="bmz001" id="wst006" style="width:150px"
+                <input name="wxt007" class="mini-combobox" textField="bmz002" valueField="bmz001" id="wxt007" style="width:150px"
                         onvaluechanged="onSelectWst006"   popupWidth="220"  url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1&bmz003=1" />
             </td>
             <td align="right">
-                <label for="wst007">采样设备编号：</label>
+                <label for="wxt014">采样设备编号：</label>
             </td>
             <td align="left">
-                <input name="wst007" class="mini-combobox" textField="text" valueField="text" id="wst007" style="width:150px"
+                <input name="wxt014" class="mini-combobox" textField="text" valueField="text" id="wxt014" style="width:150px"
                         popupWidth="220" />
             </td>
         </tr>
@@ -69,12 +37,19 @@
     </td>
     <td colspan="3">
 
-        <div id="wxt001s" class="mini-checkboxlist" repeatItems="3" repeatLayout="table"
+        <div id="wxt001s" class="mini-radiobuttonlist" repeatItems="3" repeatLayout="table"
              textField="bcz002" valueField="wxt001"  >
         </div>
     </td>
-
     </tr>
+        <tr>
+            <td align="right">
+                <label for="wxt002">检测值：</label>
+            </td>
+            <td colspan="3">
+                <input id="wxt002"  name="wxt002" class="mini-textbox"   required="true" />
+            </td>
+        </tr>
         <tr>
             <td align="right">
                 <label for="aae013">备注：</label>
@@ -106,11 +81,11 @@
             Web.util.showTipsWanring('填写有误，请修正！');
             return;
         }
-        var url="${pageContext.request.contextPath}/work/f100202/saveWt10"
+        var url="${pageContext.request.contextPath}/work/f100202/updateWt04"
         var data = form.getData(true);
-        data.wxt001s=mini.get("wxt001s").getValue();
-        data.wst002=mini.get("wst002").getValue();
-        data.wst003=wct001+data.wst002+data.wst003;
+        data.wxt007=mini.get("wxt007").getValue();
+        data.wxt014=mini.get("wxt014").getValue();
+        data.wxt001=mini.get("wxt001s").getValue();
         Web.util.request(url,"post",data,function () {
             Web.util.showTips("保存成功");
             mini.get('doSubmit').disable()
@@ -128,7 +103,7 @@
         });
     }
     function onSelectWst006() {
-        var wst006=mini.get("wst006").getValue();
+        var wst006=mini.get("wxt007").getValue();
         var url="${pageContext.request.contextPath}/work/f100604/queryBz06List";
         Web.util.request(url,"post",{bmz001:wst006},function (data) {
             var bmz004s,wst007s=[];
@@ -140,7 +115,7 @@
                     }
                 }
             }
-            mini.get("wst007").set({data:wst007s})
+            mini.get("wxt014").set({data:wst007s})
         })
 
     }

@@ -110,7 +110,7 @@
         var data = form.getData(true);
         data.wxt001s=mini.get("wxt001s").getValue();
         data.wst002=mini.get("wst002").getValue();
-        data.wst003=wct001+"-"+data.wst003;
+        data.wst003=wct001+data.wst002+data.wst003;
         Web.util.request(url,"post",data,function () {
             Web.util.showTips("保存成功");
             mini.get('doSubmit').disable()

@@ -8,6 +8,16 @@ public class Wt10Dto extends Wt10 {
     private String bcz002;
     private Integer wxt001;
 
+    private String wat002;
+
+    public String getWat002() {
+        return wat002;
+    }
+
+    public void setWat002(String wat002) {
+        this.wat002 = wat002;
+    }
+
     public Integer getWxt001() {
         return wxt001;
     }

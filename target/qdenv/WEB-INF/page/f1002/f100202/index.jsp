@@ -15,6 +15,12 @@
         .temp_select_title{color:#1296db}
         .temp_select{padding-bottom: 4px}
         .wft010_1{color: #449d44;}
+        .report_button{padding-left:4px;padding-right:4px;border: 1px #3bb8af solid }
+        .report_button_1{color: #2fd85e}
+        .report_button_2{color: #2bb4e8}
+        .report_button_3{color: #8b9199}
+        .report_button_4{color: #a47e3c}
+        .report_button:hover{cursor:pointer}
     </style>
 
 </head>
@@ -45,9 +51,9 @@
 
     <a class="mini-button" id="id_onSerach" iconCls="icon-search" onclick="onSerach">查询</a>
 </div>
-<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"  pagerButtons="#exportExcel"v
+<div id="datagrid1" class="mini-datagrid" style="width:100%;height:430px;" allowResize="true"  pagerButtons="#exportExcel"
      url="<%=request.getContextPath()%>/work/f100201/queryWt" onshowrowdetail="onShowRowDetail" showSummaryRow="true"
-     idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu"  >
+     idField="wat001"  pageSize='100'  sortMode="client"  contextMenu="#gridMenu" ondrawsummarycell="onDrawSummaryCell" >
     <div property="columns">
         <div type="expandcolumn"></div>
         <div field="wat001" width="40" headerAlign="center" align="center" visible="false" allowSort="true">委托id</div>
@@ -57,11 +63,13 @@
         <div field="wat020" width="60" headerAlign="center" align="center" dateFormat="yyyy/MM/dd HH:mm" allowSort="true">上步提交时间</div>
         <div field="aab301" width="40" headerAlign="center"  align="center" renderer="oncodeRender" allowSort="true" >地区</div>
         <div field="daw005" width="140" headerAlign="center"  align="center" allowSort="true" >地点</div>
-        <div field="daw002" width="120" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
+        <div field="daw002" width="80" headerAlign="center"  align="center" allowSort="true" >委托单位</div>
+        <div field="daw003" width="40" headerAlign="center"  align="center" allowSort="true" >联系人</div>
+        <div field="daw004" width="60" headerAlign="center"  align="center" allowSort="true" >电话</div>
         <div field="userid" width="60" headerAlign="center" visible="false" align="center" allowSort="true" >创建人</div>
         <div field="username" width="40" headerAlign="center"  align="center" allowSort="true" >创建人</div>
-        <div field="wat017" width="60" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
-        <div field="wft007" width="40" headerAlign="center" align="center" summaryType="sum" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
+        <div field="wat017" width="50" headerAlign="center"   dateFormat="yyyy-MM-dd" align="center" allowSort="true" >创建时间</div>
+        <div field="wft007" width="50" headerAlign="center" align="center" summaryType="sum" dataType="currency" currencyUnit="￥" allowSort="true" >费用</div>
         <div field="wft010" width="40" headerAlign="center" align="center" visible="false" allowSort="true" >是否实收</div>
         <div field="do" width="50" headerAlign="center" align="center" visible="false" allowSort="true" renderer='onrenderDO'>操作</div>
     </div>
@@ -77,7 +85,7 @@
     <li name="DO_3" iconCls="icon-node" onclick="onWt01DO('DO_3','信息修正')">信息修正</li>
         </shiro:hasPermission>
     <shiro:hasPermission name="DO_15">
-        <li name="DO_15" iconCls="icon-node" onclick="onWt01DO('DO_15','隐藏')">隐藏</li>
+        <li name="DO_15" iconCls="icon-node" onclick="onWt01DO('DO_15','审核权限')">审核权限</li>
     </shiro:hasPermission>
     <shiro:hasPermission name="DO_16">
         <li name="DO_16" iconCls="icon-node" onclick="onWt01DO('DO_16','恢复显示')">恢复显示</li>
@@ -101,16 +109,20 @@
 <span class="temp_report_title">报告({{= wbt001}}):{{= bbz002}}({{= bbz004}}) {{= bbz003}}
   <!--<img src="${pageContext.request.contextPath}/resources/image/add.png"/ onclick="onAddWt03({{= wbt001}})">-->
 <shiro:hasPermission name="DO_4">
- <img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" title="检测录入">
+    <span class="report_button report_button_1" onclick="onEditWt02({{= wbt001}})" >检测录入</span>
+ <!--<img src="${pageContext.request.contextPath}/resources/image/edit.png"/ onclick="onEditWt02({{= wbt001}})" title="检测录入">-->
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_7">
- <img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" title="报告编写">
+    <span class="report_button report_button_2" onclick="onPreviewWt02({{= wbt001}})" >报告编写</span>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/write.png"/ onclick="onPreviewWt02({{= wbt001}})" title="报告编写">-->
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_8">
- <img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" title="报告签发">
+    <span class="report_button report_button_3" onclick="onOutWt02({{= wbt001}})" >报告签发</span>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/sign.png"/ onclick="onOutWt02({{= wbt001}})" title="报告签发">-->
 </shiro:hasPermission>
 <shiro:hasPermission name="DO_9">
- <img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" title="报告审核">
+    <span class="report_button report_button_4" onclick="onCheckWt02({{= wbt001}})" >报告审核</span>
+    <!--<img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" title="报告审核">-->
  </shiro:hasPermission>
 </span>
 
@@ -161,6 +173,39 @@ function onShowRowDetail(e) {
     })
 
 }
+    function onDrawSummaryCell(e) {
+        var result = e.result;
+        var grid = e.sender;
+        //客户端汇总计算
+        var rows=grid.findRows(function (row) {
+            if (row.wft010=="1"){
+                return false;
+            }
+            return true;
+        });
+        var sum=0;
+        for (var i=0;i<rows.length;i++){
+            sum=sum+parseFloat(rows[i].wft007?rows[i].wft007:0);
+        }
+        if (e.field=="wat017"){
+            e.cellHtml =e.cellHtml+ "未缴费:￥ " + sum;
+        }
+        rows=grid.findRows(function (row) {
+            if (row.wft010=="1"){
+                return true;
+            }else{return false;}
+        });
+        sum=0;
+        for (var i=0;i<rows.length;i++){
+            sum=sum+parseFloat(rows[i].wft007?rows[i].wft007:0);
+        }
+        if (e.field=="daw004"){
+            e.cellHtml =e.cellHtml+ "已缴费:￥ " + sum;
+        }
+        if (e.field=="wft007"){
+            e.cellHtml ="合计："+e.cellHtml
+        }
+    }
     function onBeforeOpen(e) {
         var menu = e.sender;
         var editItem = mini.getbyName("edit", menu);

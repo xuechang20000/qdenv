@@ -48,6 +48,9 @@
             <div field="bcz009"  headerAlign="center" >样品要求
                 <input property="editor" class="mini-textbox" style="width:100%;" minWidth="350" />
             </div>
+            <div field="bcz014"  headerAlign="center" >检测过程
+                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="350" />
+            </div>
             <div headerAlign="center" width="40" renderer="renderUser">操作</div>
         </div>
     </div>

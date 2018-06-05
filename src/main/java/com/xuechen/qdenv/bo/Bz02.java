@@ -37,6 +37,7 @@ public class Bz02 {
     private String bcz011;
     private String bcz012;
     private String bcz013;
+    private String bcz014;
     @Id
     public Integer getBcz001() {
         return bcz001;
@@ -140,5 +141,13 @@ public class Bz02 {
 
     public void setBcz013(String bcz013) {
         this.bcz013 = bcz013;
+    }
+
+    public String getBcz014() {
+        return bcz014;
+    }
+
+    public void setBcz014(String bcz014) {
+        this.bcz014 = bcz014;
     }
 }

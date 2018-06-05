@@ -13,6 +13,8 @@
         #zyupload{margin-bottom: 0px;padding-bottom: 0px}
         #displayPhoto{clear:both}
         #displayPhoto img{padding: 4px}
+        .notinsert{background-color: #EF6F66;}
+        #datagrid2 .mini-pager-reload{display: none}
     </style>
 </head>
 <body>
@@ -142,7 +144,7 @@
     </div>
 </div>
 <div title="采样信息">
-    <div id="datagrid2" class="mini-datagrid" style="width:63%;height:100%; float: left" allowResize="true" pageSize="100" title="样品"
+    <div id="datagrid2" class="mini-datagrid" style="width:50%;height:100%; float: left" allowResize="true" pageSize="100" title="样品"
          idField="wst001" pagerButtons="buttons" url="${pageContext.request.contextPath}/work/f100202/queryWt10Page?wct001=${param.wct001}"
          multiSelect="true" allowResize="true">
         <div property="columns">
@@ -164,22 +166,25 @@
             <div field="wst006" type="comboboxcolumn" width="40" headerAlign="center" >采样设备
                 <input property="editor" class="mini-combobox" textField="bmz002" valueField="bmz001"
                        popupWidth="220"  url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1&bmz003=1" /></div>
-            <div field="wst007"  width="40" headerAlign="center" >设备编号</div>
+            <div field="wst007"  width="20" headerAlign="center" >设备编号</div>
         </div>
     </div>
-    <div id="datagrid" class="mini-datagrid" style="width:35%;height:100%; float: left;margin-left: 8px" allowResize="true" pageSize="100" title="检测项目"
-         idField="wxt001"  allowCellEdit="true" allowCellSelect="true" showGroupSummary="true" showSummaryRow="true"
+    <div id="datagrid" class="mini-datagrid" style="width:48%;height:100%; float: left;margin-left: 8px" allowResize="true" pageSize="100" title="检测项目"
+         idField="wxt001" pagerButtons="buttons2" allowCellEdit="true" allowCellSelect="true" showGroupSummary="true" showSummaryRow="true"
          editNextOnEnterKey="true"  editNextRowCell="true" navEditMode="true">
         <div property="columns">
             <div field="wxt001"  headerAlign="center" visible="false">检测项目ID</div>
             <div field="wct001"  headerAlign="center" visible="false">采样点ID</div>
-            <div field="bcz002" width="40" headerAlign="center" >检测项目</div>
-            <div field="wxt009" width="30" headerAlign="center" >样品编号
+            <div field="bcz002" width="25" headerAlign="center" >检测项目</div>
+            <div field="wxt009" width="15" headerAlign="center" >样品编号
                <!-- <input property="editor" class="mini-textbox" style="width:100%;" />-->
             </div>
             <div field="wxt002" width="15" headerAlign="center" >检测值
                 <input property="editor" class="mini-textbox" style="width:100%;" /></div>
             <div field="bcz006" width="10" headerAlign="center" >单位</div>
+            <div field="wxt007" type="comboboxcolumn" width="40" headerAlign="center" >采样设备
+                <input property="editor" class="mini-combobox" textField="bmz002" valueField="bmz001"
+                       popupWidth="220"  url="<%=request.getContextPath()%>/work/f100604/queryBz06List?aae016=1&bmz003=1" /></div>
         </div>
     </div>
 </div>
@@ -195,6 +200,10 @@
         <a class="mini-button" iconCls="icon-add" plain="true" onclick="addWt10()"></a>
         <span class="separator"></span>
         <a class="mini-button" iconCls="icon-remove" plain="true" onclick="deleteWt10()"></a>
+</div>
+<div id="buttons2">
+    <span class="separator"></span>
+    <a class="mini-button" iconCls="icon-add" plain="true" onclick="addWt102()"></a>
 </div>
 </body>
 <script type="text/javascript">
@@ -235,6 +244,13 @@
     function addWt10() {
         var url="${pageContext.request.contextPath}/work/f100202/loadWt10add?wct001="+wct001;
         Web.util.openMiniWindow("添加样品",url,1000,350,function () {
+            grid2.reload();
+            loadWt03();
+        })
+    }
+    function addWt102() {
+        var url="${pageContext.request.contextPath}/work/load/f1002/f100202/wt10add2?wct001="+wct001;
+        Web.util.openMiniWindow("添加值",url,1000,350,function () {
             grid2.reload();
             loadWt03();
         })
@@ -315,6 +331,13 @@
             }
         });
 
+    });
+
+    grid.on("drawcell", function (e) {
+        var record = e.record
+        if (!record.wxt009&&!record.wxt002) {
+            e.rowCls = "notinsert";
+        }
     });
 </script>
 </html>
