@@ -566,7 +566,12 @@ public class QdenvServiceImpl implements QdenvService {
                 }
             }
         }
+
+        for (Wt02Dto wt02Dto : wt02Dtos) {
+            wt02Dto.setWat001(wt01.getWat001());
+        }
         saveWt02(wt02Dtos);
+
         /**
          * 保存日志
          */
@@ -1384,7 +1389,7 @@ public class QdenvServiceImpl implements QdenvService {
         if (wxt001.length>0){
             for (int i=0;i<wxt001.length;i++){
             CommonJdbcUtils.execute(sql,wt10.getWst006(),wt10.getWst007(),wt10.getWst004(),wt10.getWst005(),
-                    wt10.getWst003()+" ",wxt001[i]);
+                    wt10.getWst003()+"",wxt001[i]);
             }
         }
     }
@@ -1562,5 +1567,97 @@ public class QdenvServiceImpl implements QdenvService {
             appDictDetails.add(appDictDetail);
         }
         return appDictDetails;
+    }
+
+    /**
+     * 查询流转单信息
+     * @param wt04Dto
+     * @return
+     */
+    public List<Wt04Dto> queryLzd(Wt04Dto wt04Dto){
+        StringBuffer sb=new StringBuffer();
+        sb.append("SELECT A.*,                                                       ");
+        sb.append("       B.WCT003,                                                  ");
+        sb.append("       B.WCT005,                                                  ");
+        sb.append("       C.WST010,                                                  ");
+        sb.append("       (SELECT D.DICT_NAME                                        ");
+        sb.append("          FROM APP_DICT_DETAIL D                                  ");
+        sb.append("         WHERE D.DICT_CODE = 'WST010'                             ");
+        sb.append("           AND D.DICT_VAL = C.WST010) AS WST010S                  ");
+        sb.append("  FROM WT04 A                                                     ");
+        sb.append("  LEFT OUTER JOIN WT03 B                                          ");
+        sb.append("    ON A.WCT001 = B.WCT001                                        ");
+        sb.append("  LEFT OUTER JOIN WT10 C                                          ");
+        sb.append("    ON A.WXT009 = C.WST003                                        ");
+        sb.append(" WHERE A.WBT001 IN (SELECT WBT001 FROM WT02 WHERE WAT001 = ?)    ");
+        sb.append("   AND A.WXT009 IS NOT NULL                                       ");
+        sb.append("   AND A.WXT009 != ''                                             ");
+        return  CommonJdbcUtils.queryList(sb.toString(),Wt04Dto.class,wt04Dto.getWat001());
+    }
+
+    /**
+     * 保存流转单
+     * @param wt12Dto
+     * @return
+     */
+    public Wt12 saveOrUpdateWt12(Wt12Dto wt12Dto){
+        Wt12 wt12=new Wt12();
+        BeanUtils.copyProperties(wt12Dto,wt12);
+        if("2".equals(wt12Dto.getType())){//打印
+            wt12.setWlt007("1");
+            wt12.setWlt008(ContextUtils.getUserId());
+            wt12.setWlt009(new Date());
+            wt12.setWlt010(wt12.getWlt010()==null?1:wt12.getWlt010()+1);
+        }else{
+            wt12.setWlt004(ContextUtils.getUserId());
+            if (!StringTools.hasText(wt12.getWlt005()))wt12.setWlt005("1");
+            wt12.setWlt006(new Date());
+        }
+
+        CommonJdbcUtils.saveOrUpdateObject(wt12,false);
+        return wt12;
+    }
+
+    /**
+     * 查询流转单
+     * @param wt12Dto
+     * @return
+     */
+    public Wt12Dto queryWt12Byid(Wt12Dto wt12Dto){
+        StringBuffer sb=new StringBuffer("select * from wt12 where 1=1 ");
+        List<Integer> args=new ArrayList<Integer>();
+        if (wt12Dto.getWat001()!=null){
+            sb.append(" and wat001=? ");
+            args.add(wt12Dto.getWat001());
+        }
+        if (wt12Dto.getWlt001()!=null){
+            sb.append(" and wlt001=? ");
+            args.add(wt12Dto.getWlt001());
+        }
+        if (args.size()==0) return null;
+        return  CommonJdbcUtils.queryFirst(sb.toString(),Wt12Dto.class,args.toArray());
+    }
+
+    /**
+     * 查询设备使用记录
+     * @param wt04Dto
+     * @return
+     */
+    public List<Wt04Dto> queryEquipment(Page page,Wt04Dto wt04Dto){
+            String sql="select c.wat001,c.wat002,b.wct002,(select bmz002 from bz06 where bmz001=a.wxt007) " +
+                    " wxt007s,a.wxt007,a.wxt014,a.bcz002,a.wxt008,a.wxt010,(select name from app_user where user_id=d.wst009) username " +
+                    " from wt04 a,wt03 b,wt01 c,wt10 d where a.wxt009=d.wst003 and a.wct001=b.wct001 and b.wat001=c.wat001 " +
+                    "AND a.wxt007=? and a.wxt014=? ";
+            if ("1".equals(wt04Dto.getBmz003())){//采样
+                CommonJdbcUtils.queryPageList(page,sql,Wt04Dto.class,wt04Dto.getBmz001(),wt04Dto.getBmz004());
+            }
+            if ("2".equals(wt04Dto.getBmz003())||"3".equals(wt04Dto.getBmz003())){//微生物，化学
+             sql="select c.wat001,c.wat002,d.wct002,(select bmz002 from bz06 where bmz001=a.wxt011) wxt007s,a.wxt007, a.wxt012 wxt014,a.bcz002,b.wbt005,b.wbt006,(select name from app_user where user_id=a.wxt005) username " +
+                    " from wt04 a,wt02 b,wt01 c,wt03 d where a.wct001=d.wct001 and   a.wbt001=b.wbt001 and b.wat001=c.wat001 AND a.wxt011=? and a.wxt012=?";
+                CommonJdbcUtils.queryPageList(page,sql,Wt04Dto.class,wt04Dto.getBmz001(),wt04Dto.getBmz004());
+
+            }
+            return page.getData();
+
     }
 }

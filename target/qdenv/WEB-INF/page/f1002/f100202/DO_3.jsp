@@ -206,6 +206,7 @@
     </shiro:hasPermission>
     <div title="发票信息" class="mini-fit" style="height:100%;"></div>
     <div title="快递信息" class="mini-fit" style="height: 100%"></div>
+    <div title="样品流转单" class="mini-fit" style="height: 100%"></div>
 </div>
 
 <span id="grid_buttons" style="display: none"  >
@@ -530,6 +531,12 @@
             var tab = tabs.getActiveTab();
             if(!tabs.getTabBodyEl(tab).innerHTML)
             tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadDO_6?wat001="+wat001, tab);
+            e.cancel = true;
+        }
+        if (e.tab.title == "样品流转单") {
+            var tab = tabs.getActiveTab();
+            //if(!tabs.getTabBodyEl(tab).innerHTML)
+                tabs.loadTab("${pageContext.request.contextPath}/work/f100202/loadLzd?wat001="+wat001, tab);
             e.cancel = true;
         }
     });

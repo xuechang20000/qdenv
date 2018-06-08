@@ -73,4 +73,8 @@ public interface QdenvService {
     public List<AppDictDetail> queryBcz013List(Integer bcz001);
     public List<Wt11Dto> queryWt11List(Wt11Dto wt11Dto);
     public List<Wt11Dto> queryWt11ListByWbt001(Wt11Dto wt11Dto);
+    public List<Wt04Dto> queryLzd(Wt04Dto wt04Dto);
+    public Wt12 saveOrUpdateWt12(Wt12Dto wt12Dto);
+    public Wt12Dto queryWt12Byid(Wt12Dto wt12Dto);
+    public List<Wt04Dto> queryEquipment(Page page,Wt04Dto wt04Dto);
 }

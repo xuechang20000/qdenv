@@ -177,10 +177,10 @@
             <div field="wct001"  headerAlign="center" visible="false">采样点ID</div>
             <div field="bcz002" width="25" headerAlign="center" >检测项目</div>
             <div field="wxt009" width="15" headerAlign="center" >样品编号
-               <!-- <input property="editor" class="mini-textbox" style="width:100%;" />-->
+                <!--<input property="editor" class="mini-textbox" style="width:100%;" />-->
             </div>
             <div field="wxt002" width="15" headerAlign="center" >检测值
-                <input property="editor" class="mini-textbox" style="width:100%;" /></div>
+                <!-- <input property="editor" class="mini-textbox" style="width:100%;" />--></div>
             <div field="bcz006" width="10" headerAlign="center" >单位</div>
             <div field="wxt007" type="comboboxcolumn" width="40" headerAlign="center" >采样设备
                 <input property="editor" class="mini-combobox" textField="bmz002" valueField="bmz001"

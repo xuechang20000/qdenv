@@ -130,7 +130,7 @@
                      {{= bcz004}}
                     {{/if}}</td>
         <td><input name="wxt003"  type="checkbox" {{if typeof wxt003!='undefined'&&(wxt003=='1')}} checked=true {{/if}} /></td>
-       <td>{{= bmz002}}</td>
+       <td>{{= bmz002}} <input name="bmz001" type="hidden" value={{= bmz001}}   /></td>
         <td>
             <select name="wxt012" >
              {{each(k,ml) mlist}}
@@ -227,10 +227,12 @@
                 if(!wxt001) return true;
                 var wxt002=$(this).find("input[name='wxt002']").val();
                 var wxt012=$(this).find("select[name='wxt012']").val();
+                var wxt011=$(this).find("input[name='bmz001']").val();
                 var wxt003=$(this).find("input[name='wxt003']").prop("checked");
                 wt04.wxt001=wxt001;
                 wt04.wxt002=wxt002;
                 wt04.wxt012=wxt012;
+                wt04.wxt011=wxt011;
                 if(wxt003==true) wxt003='1'; else wxt003='0';
                 wt04.wxt003=wxt003;
                 wt03.wt04DtoList.push(wt04)

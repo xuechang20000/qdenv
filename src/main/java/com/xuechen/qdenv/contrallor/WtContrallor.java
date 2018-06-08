@@ -70,6 +70,10 @@ public class WtContrallor {
     public String index_f100207(){
         return "/WEB-INF/page/f1002/f100207/index";
     }
+    @RequestMapping("/f100208/index")
+    public String index_f100208(){
+        return "/WEB-INF/page/f1002/f100208/index";
+    }
     @RequestMapping("/f100206/index")
     public String index_f100206(){
         return "/WEB-INF/page/f1002/f100206/index";
@@ -125,6 +129,19 @@ public class WtContrallor {
     @RequestMapping("/f100202/loadDO_6")
     public String index_load_do_6(){
         return "/WEB-INF/page/f1002/f100202/DO_6";
+    }
+    @RequestMapping("/f100202/loadLzd")
+    public String index_load_lzd(HttpServletRequest request,Wt04Dto wt04Dto){
+        Wt01Dto wt01Dto=new Wt01Dto();
+        wt01Dto.setWat001(wt04Dto.getWat001());
+        List<Wt01Dto> wt01Dtos=this.qdenvService.queryWtList(wt01Dto);
+        List<Wt04Dto> wt04s=this.qdenvService.queryLzd(wt04Dto);
+        request.setAttribute("wt04s",wt04s);
+        request.setAttribute("wt01",wt01Dtos.get(0));
+        Wt12Dto wt12Dto=new Wt12Dto();
+        wt12Dto.setWat001(wt01Dtos.get(0).getWat001());
+        request.setAttribute("wt12",this.qdenvService.queryWt12Byid(wt12Dto));
+        return "/WEB-INF/page/f1002/f100202/lzd";
     }
     @RequestMapping("/f100202/loadSign")
     public String index_loadSign(){
@@ -494,7 +511,30 @@ public class WtContrallor {
         Wt04 wt04=this.qdenvService.updateWt04(wt04Dto);
         return JSON.toJSONStringWithDateFormat(wt04, "yyyy-MM-dd HH:mm:ss.SSS");
     }
-
+    @RequestMapping(value="/f100202/queryLzd",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryLzd(Wt04Dto wt04Dto){
+        List<Wt04Dto> wt04s=this.qdenvService.queryLzd(wt04Dto);
+        return JSON.toJSONStringWithDateFormat(wt04s, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100202/queryWt12Byid",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryWt12(Wt12Dto wt12Dto){
+        Wt12Dto wt12=this.qdenvService.queryWt12Byid(wt12Dto);
+        return JSON.toJSONStringWithDateFormat(wt12, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100202/saveOrUpdateWt12",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String saveOrUpdateWt12(Wt12Dto wt12Dto){
+        Wt12 wt12=this.qdenvService.saveOrUpdateWt12(wt12Dto);
+        return JSON.toJSONStringWithDateFormat(wt12, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping(value="/f100208/queryEquipment",produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String queryEquipment(Page page,Wt04Dto wt04Dto){
+        this.qdenvService.queryEquipment(page,wt04Dto );
+        return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){
         logger.info("任务调度！");

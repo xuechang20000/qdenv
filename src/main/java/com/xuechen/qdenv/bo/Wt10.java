@@ -17,6 +17,7 @@ public class Wt10 {
     private String  wst007          ;//     varchar(50) comment '采样设备编码',
     private String  wst008           ;//    varchar(50) comment '录入时间',
     private Integer wst009            ;//   int comment '录入人',
+    private String wst010;
     private String  aae013             ;//  varchar(200) comment '备注',
 
     @Id
@@ -106,5 +107,13 @@ public class Wt10 {
 
     public void setWct001(Integer wct001) {
         this.wct001 = wct001;
+    }
+
+    public String getWst010() {
+        return wst010;
+    }
+
+    public void setWst010(String wst010) {
+        this.wst010 = wst010;
     }
 }
