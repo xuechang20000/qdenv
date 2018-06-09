@@ -27,7 +27,7 @@
                 选择仪器类别：
             </td>
             <td class="form-td-odd">
-                <input id="bmz003" class="mini-combobox" style="width: 150px;"  textField="dictName" valueField="dictVal"
+                <input id="bmz003" class="mini-combobox" style="width: 150px;"  textField="dictName" valueField="dictVal" onvaluechanged="onSelectBmz003"
                        url="${pageContext.request.contextPath}/admin/queryRenderedAppDictDetails?dictCode=BMZ003"   required="true" allowInput="true" nullItemText="请选择..."/>
             </td>
             <td align="right">
@@ -35,7 +35,7 @@
             </td>
             <td align="left">
                 <input name="wst006" class="mini-combobox" textField="bmz002" valueField="bmz001" id="wst006" style="width:250px"
-                       onvaluechanged="onSelectWst006"   popupWidth="220" allowInput="true"  url="/qdenv/work/f100604/queryBz06List?aae016=1" />
+                       onvaluechanged="onSelectWst006"   popupWidth="220" allowInput="true"   />
             </td>
             <td align="right">
                 <label for="wst007">编号：</label>
@@ -102,6 +102,11 @@
             mini.get("wst007").set({data:wst007s})
         })
 
+    }
+    function onSelectBmz003() {
+        var bmz003=mini.get("bmz003").getValue();
+        var url="${pageContext.request.contextPath}/work/f100604/queryBz06List?aae016=1&bmz003="+bmz003;
+        mini.get("wst006").load(url);
     }
 </script>
 

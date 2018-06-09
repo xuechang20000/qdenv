@@ -188,7 +188,7 @@
         </div>
     </div>
 </div>
-    <div title="照片上传">
+<div title="照片上传">
         <div id="zyupload" class="zyupload"></div>
         <div id="displayPhoto" >
 

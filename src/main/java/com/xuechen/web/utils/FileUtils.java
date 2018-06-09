@@ -1,12 +1,8 @@
 package com.xuechen.web.utils;
 
-import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +16,18 @@ public class FileUtils {
      private  static String filePath_mail;
      private  static String filePath_head;
      private  static String filePath_collect;
+
+
+
+    private  static String filePath_licence;
+
      public FileUtils(){
      }
-     public FileUtils(String filePath_collect,String filePath_head,String filePath_mail){
+     public FileUtils(String filePath_collect,String filePath_head,String filePath_mail,String filePath_licence){
          this.filePath_collect=filePath_collect;
          this.filePath_head=filePath_head;
          this.filePath_mail=filePath_mail;
+         this.filePath_licence=filePath_licence;
      }
 
     /**
@@ -43,6 +45,9 @@ public class FileUtils {
          }
          if ("HEAD".equals(uploadType)){
              return uploadFiles(request,filePath_head);
+         }
+         if ("LICE".equals(uploadType)){
+             return uploadFiles(request,filePath_licence);
          }
          return  null;
      }
@@ -172,5 +177,11 @@ public class FileUtils {
     public static void setFilePath_collect(String filePath_collect) {
         FileUtils.filePath_collect = filePath_collect;
     }
+    public static String getFilePath_licence() {
+        return filePath_licence;
+    }
 
+    public static void setFilePath_licence(String filePath_licence) {
+        FileUtils.filePath_licence = filePath_licence;
+    }
 }

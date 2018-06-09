@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>字典管理</title>
     <%@include file="/include/head.jsp"%>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/miniui/ajaxfileupload.js"></script>
     <style type="text/css">
         #form1 table td{padding: 3px}
         #bz02list{
@@ -23,13 +24,14 @@
             z-index: 999;
             display: none;
         }
+        #dis_licence{padding: 4px;margin-top: 5px}
     </style>
 </head>
 <body>
 <div class="mini-tabs"  id="tabs1" activeIndex="0" style="width:100%;height:100%;" plain='false'>
 
     <div  title="委托信息" class="mini-fit" style="height:100%;">
-        <div id="form1" >
+        <div id="form1"  style="width: 70%;float: left;">
             <input name="wat001" class="mini-hidden" />
             <table>
                 <tr>
@@ -151,6 +153,12 @@
                     <a class="mini-button" href="javascript:doReset();"  iconCls="icon-redo" >重置</a>
                 </td></tr>
             </table>
+        </div>
+        <div id="uploadLicence" style="width: 29%;float: left;">
+            营业执照上传：
+                <input id="licence" class="mini-htmlfile" name="licence" limitType="*.jpg;*.png;*.JPG" />
+            <br/>
+            <span id="dis_licence"></span>
         </div>
     </div>
     <div  title="检测信息" class="mini-fit" style="height:100%;">
@@ -300,6 +308,7 @@
             grid.accept();
             grid2.accept();
         });
+        loadPhotos();
     }
 
 
@@ -497,7 +506,8 @@
             Web.util.request(url,"post",data,function (data) {
                 //mini.get("doSubmit").disable();
                 loadWt();
-                Web.util.showTips("保存成功！")
+                ajaxFileUpload();
+                Web.util.showTips("保存成功！");
             })
         });
     }
@@ -540,5 +550,44 @@
             e.cancel = true;
         }
     });
+
+    function ajaxFileUpload() {
+        var inputFile = $("#licence > input:file")[0];
+        $.ajaxFileUpload({
+            url: '${pageContext.request.contextPath}/work/f100202/updateLicence?wat001='+wat001,      //用于文件上传的服务器端请求地址
+            fileElementId: inputFile,               //文件上传域的ID
+            data: {"wat001":wat001},            //附加的额外参数
+            dataType: 'text',                   //返回值类型 一般设置为json
+            success: function (data, status)    //服务器成功响应处理函数
+            {
+                if (data) alert(data);
+                else{
+                    loadPhotos();
+                }
+
+            },
+            error: function (data, status, e)   //服务器响应失败处理函数
+            {
+                alert(e);
+            },
+            complete: function () {
+                var jq = $("#file1 > input:file");
+                jq.before(inputFile);
+                jq.remove();
+            }
+        });
+    }
+    function loadPhotos() {
+        var url='${pageContext.request.contextPath}/work/f100201/queryWp01List';
+        Web.util.request(url,"post",{wtp002:'LICE',wtp003:wat001},function (data) {
+            var img,i=0;
+            $("#dis_licence").html("");
+            for(var d;d=data[i++];){
+                img='<img src="${pageContext.request.contextPath}/work/f100201/downLoadAttachment?wtp001='+d.wtp001+'" width="250" alt=""/>'
+                $(img).appendTo($("#dis_licence"))
+            }
+        })
+
+    }
 </script>
 </html>

@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-<div id="datagrid" class="mini-datagrid" style="width: 100%;height: 100px;" allowResize="true" pageSize="10" pagerButtons="buttons"
+<div id="datagrid" class="mini-datagrid" style="width: 100%;height: 230px;" allowResize="true" pageSize="10" pagerButtons="buttons"
     url="${pageContext.request.contextPath}/work/f100207/queryWt11Page"  idField="wbt001">
     <div property="columns">
         <div field="wrt001" width="20" headerAlign="center" visible="false">原始记录ID</div>

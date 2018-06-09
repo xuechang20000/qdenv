@@ -10,7 +10,9 @@ import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
 import com.xuechen.qdenv.service.QdenvServiceImpl;
 import com.xuechen.web.bo.AppDictDetail;
+import com.xuechen.web.bo.AppUser;
 import com.xuechen.web.dto.AppUserDTO;
+import com.xuechen.web.exception.BusinessException;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -20,10 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -534,6 +538,22 @@ public class WtContrallor {
     public String queryEquipment(Page page,Wt04Dto wt04Dto){
         this.qdenvService.queryEquipment(page,wt04Dto );
         return JSON.toJSONStringWithDateFormat(page, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+    @RequestMapping("/f100202/updateLicence")
+    @ResponseBody
+    public String updateLicence(HttpServletRequest request,String wat001){
+        Map map=  FileUtils.uploadFilesByType(request,"LICE");
+        AppUserDTO user = (AppUserDTO)SecurityUtils.getSubject().getSession().getAttribute("user");
+        Wp01 wp01=new Wp01();
+        wp01.setWtp004(new Date());
+        wp01.setWtp007((String)map.get("fileExtName"));
+        wp01.setWtp006((String)map.get("fileName"));
+        wp01.setWtp005((String)map.get("filePath"));
+        wp01.setWtp002("LICE");
+        wp01.setUserid(user.getUserId());
+        wp01.setWtp003(wat001);
+        CommonJdbcUtils.insert(wp01);
+        return "";
     }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){
