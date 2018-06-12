@@ -77,4 +77,6 @@ public interface QdenvService {
     public Wt12 saveOrUpdateWt12(Wt12Dto wt12Dto);
     public Wt12Dto queryWt12Byid(Wt12Dto wt12Dto);
     public List<Wt04Dto> queryEquipment(Page page,Wt04Dto wt04Dto);
+    public void  saveWt13(Wt13Dto wt13Dto);
+    public  Wt13Dto queryWt13(Wt13Dto wt13Dto);
 }

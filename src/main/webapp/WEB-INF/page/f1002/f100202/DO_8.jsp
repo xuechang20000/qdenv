@@ -38,6 +38,7 @@
 <!--<input type="button" id="preview" value="打印预览" onClick="dopreview()">&nbsp;&nbsp;-->
 <shiro:hasPermission name="DO_10">
 <input type="button" id="print" value="打印" onClick="doprint()">&nbsp;&nbsp;
+<input type="button" id="print" value="存档" onClick="doSaveFile()">&nbsp;&nbsp;
 </shiro:hasPermission>
 <span style="color:#C00000;">
 <c:if test="${dto.wbt009!=null}">
@@ -247,6 +248,7 @@
 </body>
 <script language="javascript" type="text/javascript">
     var wbt001=${dto.wbt001};
+    var wat001=${dto.wat001};
     var LODOP; //声明为全局变量
     function init() {
         LODOP=getLodop();
@@ -282,6 +284,19 @@
                    $("#print").hide();
                })
        };
+    }
+    function doSaveFile() {
+        init();
+        var filePath="d:/a.jpg";
+        //LODOP.SET_SAVE_MODE("SAVEAS_IMGFILE_EXENAME",".jpg");
+        //LODOP.SAVE_TO_FILE("新的矢量图片文件.jpg");
+        LODOP.SET_SAVE_MODE("FILE_PROMPT",false);
+        LODOP.SAVE_TO_FILE(filePath);
+        var imageBuffer=LODOP.FORMAT("FILE:EncodeBase64",filePath);
+        Web.util.request("${pageContext.request.contextPath}/work/f100202/saveWt13","post",
+            {wat001:wat001,wbt001:wbt001,content:imageBuffer},function () {
+               mini.alert("存档成功");
+            })
     }
     function docheck() {
      var url="${pageContext.request.contextPath}/work/f100201/updateWt02"

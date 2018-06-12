@@ -1,5 +1,6 @@
 package com.xuechen.qdenv.contrallor;
 
+import cn.hutool.core.codec.Base64Decoder;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wondersgroup.framwork.dao.CommonJdbcUtils;
@@ -10,9 +11,7 @@ import com.xuechen.qdenv.dto.*;
 import com.xuechen.qdenv.service.QdenvService;
 import com.xuechen.qdenv.service.QdenvServiceImpl;
 import com.xuechen.web.bo.AppDictDetail;
-import com.xuechen.web.bo.AppUser;
 import com.xuechen.web.dto.AppUserDTO;
-import com.xuechen.web.exception.BusinessException;
 import com.xuechen.web.utils.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -22,12 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -554,6 +552,17 @@ public class WtContrallor {
         wp01.setWtp003(wat001);
         CommonJdbcUtils.insert(wp01);
         return "";
+    }
+    @RequestMapping("/f100202/saveWt13")
+    @ResponseBody
+    public String saveWt13(Wt13Dto wt13Dto){
+        this.qdenvService.saveWt13(wt13Dto);
+        return  "";
+    }
+    @RequestMapping(value="/f100202/downLoadWt13")
+    public void downloadWp01List(HttpServletRequest request,HttpServletResponse response,Wt13Dto wt13Dto){
+        Wt13Dto wt13Dto1=this.qdenvService.queryWt13(wt13Dto);
+            FileUtils.downLoadFileFromBase64(request,response,wt13Dto1.getContent(),wt13Dto.getWbt001().toString()+".jpg");
     }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){

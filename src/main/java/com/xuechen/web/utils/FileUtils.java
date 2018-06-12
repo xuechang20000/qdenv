@@ -4,6 +4,7 @@ package com.xuechen.web.utils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -138,6 +139,23 @@ public class FileUtils {
             }
             os.close();
             inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void downLoadFileFromBase64(HttpServletRequest request,HttpServletResponse response,String fileStr,String fileName){
+        if (fileStr==null) return;
+        BASE64Decoder decoder = new BASE64Decoder();
+        try {
+            //设置文件MIME类型
+            response.setContentType(request.getSession().getServletContext().getMimeType(fileName));
+            //设置Content-Disposition
+            response.setHeader("Content-Disposition", "attachment;filename="+fileName);
+            OutputStream os= new BufferedOutputStream(response.getOutputStream());
+            //写文件
+            byte[] bs = decoder.decodeBuffer(fileStr);
+            os.write(bs);
+            os.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

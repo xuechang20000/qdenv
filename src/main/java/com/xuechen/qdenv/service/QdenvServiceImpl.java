@@ -19,6 +19,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -730,6 +735,9 @@ public class QdenvServiceImpl implements QdenvService {
         /**
          * 保存日志
          */
+        if(wt03.getWat001()==null){
+            wt03=CommonJdbcUtils.queryFirst("select * from wt03 where wct001=?",Wt03.class,wt03.getWct001());
+        }
         String aae013=String.format("采样点%s",wt03.getWct002());
         saveWt09(wt03.getWat001(),"DO_4",aae013);
 
@@ -1659,5 +1667,47 @@ public class QdenvServiceImpl implements QdenvService {
             }
             return page.getData();
 
+    }
+
+    public InputStream string2InputStream(String string){
+        InputStream is = new ByteArrayInputStream(string.getBytes());
+        return  is;
+    }
+    /**
+     * 报告存档
+     * @param wt13Dto
+     */
+    public void  saveWt13(Wt13Dto wt13Dto){
+        if (wt13Dto.getWat001()==null||wt13Dto.getWbt001()==null){
+            throw new BusinessException("未获取委托id或者报告id");
+        }
+        Wt13Dto wt13Dto1=CommonJdbcUtils.queryFirst("select wbt001 from wt13 where wbt001=?",Wt13Dto.class,wt13Dto.getWbt001());
+        if (wt13Dto1!=null) CommonJdbcUtils.execute("delete from  wt13  where wbt001=?",wt13Dto.getWbt001());
+        Connection conn=null;
+        PreparedStatement pst=null;
+        String sql="insert into wt13(wbt001,wat001,content,userid,ctime)" +
+                " values(?,?,?,?,SYSDATE())";
+        try {
+            conn=CommonJdbcUtils.getCommonJdbcDAO().getConnection();
+            pst=conn.prepareStatement(sql);
+            pst.setInt(1,wt13Dto.getWbt001());
+            pst.setInt(2,wt13Dto.getWat001());
+            pst.setBlob(3,string2InputStream(wt13Dto.getContent()));
+            pst.setInt(4,ContextUtils.getUserId());
+            pst.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pst!=null) pst.close();
+                if (conn!=null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public  Wt13Dto queryWt13(Wt13Dto wt13Dto){
+        String sql="select * from wt13 where wbt001=? ";
+        return CommonJdbcUtils.queryFirst(sql,Wt13Dto.class,wt13Dto.getWbt001());
     }
 }
