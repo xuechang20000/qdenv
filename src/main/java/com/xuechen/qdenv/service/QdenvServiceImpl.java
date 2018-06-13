@@ -1707,7 +1707,7 @@ public class QdenvServiceImpl implements QdenvService {
         }
     }
     public  Wt13Dto queryWt13(Wt13Dto wt13Dto){
-        String sql="select * from wt13 where wbt001=? ";
+        String sql="select a.*,b.wat002 from wt13 a,wt01 b where a.wat001=b.wat001 and a.wbt001=? ";
         return CommonJdbcUtils.queryFirst(sql,Wt13Dto.class,wt13Dto.getWbt001());
     }
 }

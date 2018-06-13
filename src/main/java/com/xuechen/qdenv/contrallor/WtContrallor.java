@@ -562,7 +562,9 @@ public class WtContrallor {
     @RequestMapping(value="/f100202/downLoadWt13")
     public void downloadWp01List(HttpServletRequest request,HttpServletResponse response,Wt13Dto wt13Dto){
         Wt13Dto wt13Dto1=this.qdenvService.queryWt13(wt13Dto);
-            FileUtils.downLoadFileFromBase64(request,response,wt13Dto1.getContent(),wt13Dto.getWbt001().toString()+".jpg");
+        if (wt13Dto1==null) return;
+        String fileName=wt13Dto1.getWat002()+"-"+wt13Dto.getWbt001()+".jpg";
+        FileUtils.downLoadFileFromBase64(request,response,wt13Dto1.getContent(),fileName);
     }
     @Scheduled(cron = "0 0/10 * * * ?")
     public void warnningSlect(){

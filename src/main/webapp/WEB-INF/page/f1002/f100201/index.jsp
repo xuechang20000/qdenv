@@ -60,7 +60,7 @@
                 </td>
                 <td>
                     <input id="wat003" class="mini-combobox" style="width: 200px;" onvaluechanged="setWat002" textField="dictName" valueField="dictVal"
-                           url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=WAT003" value="E"  required="true" allowInput="true" nullItemText="请选择..."/>
+                           url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=WAT003" value="E"  required="true"  nullItemText="请选择..."/>
                 </td>
             </tr>
             <tr>
@@ -69,7 +69,7 @@
                 </td>
                 <td>
                     <input id="bhz003" class="mini-combobox" style="width: 200px;" onvaluechanged="setWat002" textField="bzh002" valueField="bhz003"
-                           url="<%=request.getContextPath()%>/work/f100601/queryHangyeList" value="A"  required="true" allowInput="true" nullItemText="请选择..."/>
+                           url="<%=request.getContextPath()%>/work/f100601/queryHangyeList" value="A"  required="true"  nullItemText="请选择..."/>
                 </td>
             </tr>
             <tr>
@@ -98,7 +98,7 @@
                 </td>
                 <td>
                     <input id="aab301" class="mini-combobox" style="width: 70px;" onvaluechanged="setWat002" textField="dictName" valueField="dictVal"
-                           url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=AAB301"   required="true" allowInput="true" nullItemText="请选择..."/>
+                           url="<%=request.getContextPath()%>/admin/queryRenderedAppDictDetails?dictCode=AAB301"   required="true"  nullItemText="请选择..."/>
                     <input id="daw005" name="daw005" style="width: 240px;" class="mini-textbox" required="true"/>
                 </td>
             </tr>
@@ -132,7 +132,7 @@
                            format="yyyy-MM-dd H:mm" timeFormat="H:mm" showTime="true" showOkButton="true" />
                     <label for="userid">业务人员：</label>
                     <input id="userid" class="mini-combobox"  textField="name" valueField="userId"
-                           url="<%=request.getContextPath()%>/admin/queryAllUser" value="${user.userId}"  required="true" allowInput="true" nullItemText="请选择..."/>
+                           url="<%=request.getContextPath()%>/admin/queryAllUser" value="${user.userId}"  required="true"  nullItemText="请选择..."/>
                 </td>
             </tr>
             <tr>

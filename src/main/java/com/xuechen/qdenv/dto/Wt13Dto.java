@@ -9,6 +9,15 @@ public class Wt13Dto
     private String content ; //            blob,
     private Integer userid;//               int,
     private Date ctime;//                datetime,
+    private String wat002;
+
+    public String getWat002() {
+        return wat002;
+    }
+
+    public void setWat002(String wat002) {
+        this.wat002 = wat002;
+    }
 
     public Integer getWbt001() {
         return wbt001;

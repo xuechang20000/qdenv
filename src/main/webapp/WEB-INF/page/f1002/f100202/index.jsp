@@ -20,6 +20,7 @@
         .report_button_2{color: #2bb4e8}
         .report_button_3{color: #8b9199}
         .report_button_4{color: #a47e3c}
+        .report_button_4{color: #3bb8af}
         .report_button:hover{cursor:pointer}
     </style>
 
@@ -124,6 +125,9 @@
     <span class="report_button report_button_4" onclick="onCheckWt02({{= wbt001}})" >报告审核</span>
     <!--<img src="${pageContext.request.contextPath}/resources/image/check.png"/ onclick="onCheckWt02({{= wbt001}})" title="报告审核">-->
  </shiro:hasPermission>
+ <shiro:hasPermission name="DO_9">
+    <span class="report_button report_button_5" onclick="onDownloadWt13({{= wbt001}})" >报告下载</span>
+</shiro:hasPermission>
 </span>
 
 {{each(i,wt03) wt03DtoList}}
@@ -251,6 +255,10 @@ function onOutWt02(v) {
     //审核报告
 function onCheckWt02(v) {
     onOutWt02(v);
+}
+    //审核报告
+function onDownloadWt13(v) {
+    window.open("${pageContext.request.contextPath}/work/f100202/downLoadWt13?wbt001="+v)
 }
 function onWt01DO(v,t) {
     var row = grid.getSelected();
